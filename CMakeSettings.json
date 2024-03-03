@@ -1,0 +1,238 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "FPHSA_NAME_MISMATCHED",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "SFML_DIR",
+          "value": "${projectDir}/libs/msvc/SFML-2.6.1/lib/cmake/SFML",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2MAIN_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2main.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/lib/x64/SDL2_image.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/lib/x64/SDL2_net.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/lib/x64/SDL2_ttf.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/include",
+          "type": "PATH"
+        }
+      ]
+    },
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "FPHSA_NAME_MISMATCHED",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "SFML_DIR",
+          "value": "${projectDir}/libs/msvc/SFML-2.6.1/lib/cmake/SFML",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2MAIN_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2main.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/lib/x64/SDL2_image.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/lib/x64/SDL2_net.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/lib/x64/SDL2_ttf.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/include",
+          "type": "PATH"
+        }
+      ]
+    },
+    {
+      "name": "x64-RelWithDebInfo",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "variables": [
+        {
+          "name": "FPHSA_NAME_MISMATCHED",
+          "value": "true",
+          "type": "BOOL"
+        },
+        {
+          "name": "SFML_DIR",
+          "value": "${projectDir}/libs/msvc/SFML-2.6.1/lib/cmake/SFML",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2MAIN_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/lib/x64/SDL2main.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2-2.0.14/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/lib/x64/SDL2_image.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_IMAGE_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_image-2.0.5/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/lib/x64/SDL2_net.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_NET_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_net-2.0.1/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/lib/x64/SDL2_mixer.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_MIXER_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_mixer-2.0.4/include",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_LIBRARY",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/lib/x64/SDL2_ttf.lib",
+          "type": "PATH"
+        },
+        {
+          "name": "SDL2_TTF_INCLUDE_DIR",
+          "value": "${projectDir}/libs/msvc/SDL2_ttf-2.0.15/include",
+          "type": "PATH"
+        }
+      ]
+    }
+  ]
+}
