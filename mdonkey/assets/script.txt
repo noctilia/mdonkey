@@ -1,0 +1,24 @@
+intro
+  cinenematic: kong climping up
+  cinenematic: kong bouncing map
+  
+level 1
+    screen: 25 m how high can you get?
+    play level
+    cinenematic: kong climbing up with peach
+    
+level 2
+    screen: 50 m how high can you get?
+    play level
+    cinenematic: kong climbing up with peach
+    
+level 3
+    screen: 75 m how high can you get?
+    play level
+    cinenematic: kong climbing up with peach
+    
+level 4
+    screen: 100 m how high can you get?
+    play level
+    cinenematic: kong falling down
+    

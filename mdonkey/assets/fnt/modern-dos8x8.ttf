@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head data-suburl="">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	
+		<meta name="author" content="HarvettFox96" />
+		<meta name="description" content="ttf-moderndos - Modern DOS is a raster monospace serif typeface based on IBM and Verite, extracted from ROM fonts part of various computers, created with FontForge." />
+		<meta name="keywords" content="go, git, self-hosted, gogs">
+	
+	<meta name="referrer" content="no-referrer" />
+	<meta name="_csrf" content="-i73h67pA17o8EqMGngjkjq5rns6MTcwOTQ4Njk4OTk0MTU5Nzg0Nw==" />
+	<meta name="_suburl" content="" />
+	
+	
+	
+		<meta property="og:url" content="https://notabug.org/HarvettFox96/ttf-moderndos" />
+		<meta property="og:type" content="object" />
+		<meta property="og:title" content="HarvettFox96/ttf-moderndos">
+		<meta property="og:description" content="Modern DOS is a raster monospace serif typeface based on IBM and Verite, extracted from ROM fonts part of various computers, created with FontForge.">
+		<meta property="og:image" content="https://notabug.org/avatars/388" />
+	
+
+	<link rel="shortcut icon" href="/img/favicon.png" />
+
+	<script src="/js/jquery-1.11.3.min.js"></script>
+	<script src="/js/libs/jquery.are-you-sure.js"></script>
+        <link href="/img/icon-48.ico" rel="icon" type="image/x-icon" />
+        <link href="/img/icon-60.png" rel="apple-touch-icon">
+        <link href="/img/icon-76.png" rel="apple-touch-icon" sizes="76x76">
+        <link href="/img/icon-120.png" rel="apple-touch-icon" sizes="120x120">
+        <link href="/img/icon-152.png" rel="apple-touch-icon" sizes="152x152">
+        <link href="/img/icon-240.png" rel="apple-touch-icon" sizes="240x240">
+
+	<link rel="stylesheet" href="/assets/font-awesome-4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/octicons-4.3.0/octicons.min.css">
+
+	
+	
+
+	
+
+	
+	<link rel="stylesheet" href="/css/semantic-2.2.13.min.css">
+	<link rel="stylesheet" href="/css/gogs.css?v=6fc9e85aa88133794d3434ea74aa557a">
+	<link rel="stylesheet" href="/css/notabug.css">
+
+	
+	<script src="/js/semantic-2.2.13.min.js"></script>
+	<script src="/js/gogs.js?v=6fc9e85aa88133794d3434ea74aa557a"></script>
+
+	<title>HarvettFox96/ttf-moderndos: Modern DOS is a raster monospace serif typeface based on IBM and Verite, extracted from ROM fonts part of various computers, created with FontForge. @ 2dfa3241120e1ca775f9ee45194f0376a0bf4030 - NotABug.org: Free code hosting</title>
+
+	<meta name="theme-color" content="#428bca">
+
+	
+
+
+<noscript><style>.nojs-popup:hover > .menu { display: block ; }</style></noscript>
+
+
+</head>
+<body>
+	<div class="full height">
+		<noscript>Please enable JavaScript in your browser!</noscript>
+
+		
+			<div id="header-div" class="following bar light">
+				<div class="ui container">
+					<div class="ui grid">
+						<div class="column">
+							<div class="ui top secondary menu">
+								<a class="item brand" href="/">
+									<img class="ui mini image" src="/img/favicon.png">
+								</a>
+
+								
+									<a class="item" href="/">Startseite</a>
+								
+
+								<a class="item" href="/explore/repos">Erkunden</a>
+								
+
+								
+
+
+
+									<a class="notabug-item item" href="/help" rel="noreferrer">Hilfe</a>
+
+
+
+
+									<div class="right menu">
+										
+											<a class="item" href="/user/sign_up">
+												<i class="octicon octicon-person"></i> Registrieren
+											</a>
+										
+										<a class="item" href="/user/login?redirect_to=%2fHarvettFox96%2fttf-moderndos%2fsrc%2f2dfa3241120e1ca775f9ee45194f0376a0bf4030%2fttf%2fModernDOS8x8.ttf">
+											<i class="octicon octicon-sign-in"></i> Anmelden
+										</a>
+									</div>
+
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+
+
+<div class="repository file list">
+	<div class="header-wrapper">
+
+	<div class="ui container">
+		<div class="ui vertically padded grid head">
+			<div class="column">
+				<div class="ui header">
+					<div class="ui huge breadcrumb">
+						<i class="mega-octicon octicon-repo"></i>
+						<a href="/HarvettFox96">HarvettFox96</a>
+						<div class="divider"> / </div>
+						<a href="/HarvettFox96/ttf-moderndos">ttf-moderndos</a>
+						
+						
+					</div>
+
+					
+						<div class="ui right">
+							<div class="ui labeled button" tabindex="0">
+								<a class="ui basic button" href="/HarvettFox96/ttf-moderndos/action/watch?redirect_to=%2fHarvettFox96%2fttf-moderndos%2fsrc%2f2dfa3241120e1ca775f9ee45194f0376a0bf4030%2fttf%2fModernDOS8x8.ttf">
+									<i class="icon fa-eye-slash"></i>Beobachten
+								</a>
+								<a class="ui basic label" href="/HarvettFox96/ttf-moderndos/watchers">
+									1
+								</a>
+							</div>
+							<div class="ui labeled button" tabindex="0">
+								<a class="ui basic button" href="/HarvettFox96/ttf-moderndos/action/star?redirect_to=%2fHarvettFox96%2fttf-moderndos%2fsrc%2f2dfa3241120e1ca775f9ee45194f0376a0bf4030%2fttf%2fModernDOS8x8.ttf">
+									<i class="icon fa-star-o"></i>Favorit hinzufügen
+								</a>
+								<a class="ui basic label" href="/HarvettFox96/ttf-moderndos/stars">
+									0
+								</a>
+							</div>
+							
+								<div class="ui labeled button" tabindex="0">
+									<a class="ui basic button " href="/repo/fork/18365">
+										<i class="octicon octicon-repo-forked"></i>Fork
+									</a>
+									<a class="ui basic label" href="/HarvettFox96/ttf-moderndos/forks">
+										0
+									</a>
+								</div>
+							
+						</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="ui tabs container">
+		<div class="ui tabular menu navbar">
+			
+				<a class="active item" href="/HarvettFox96/ttf-moderndos">
+					<i class="octicon octicon-file-text"></i> Dateien
+				</a>
+			
+			
+				<a class=" item" href="/HarvettFox96/ttf-moderndos/issues">
+					<i class="octicon octicon-issue-opened"></i> Issues <span class="ui gray small label">0</span>
+				</a>
+			
+			
+				<a class=" item" href="/HarvettFox96/ttf-moderndos/pulls">
+					<i class="octicon octicon-git-pull-request"></i> Pull-Requests <span class="ui gray small label">0</span>
+				</a>
+			
+			
+			
+		</div>
+	</div>
+	<div class="ui tabs divider"></div>
+
+</div>
+
+	<div class="ui container">
+		
+
+
+
+
+		
+		<div class="ui secondary menu">
+			
+			<div class="fitted item choose reference">
+	<div class="ui floating filter dropdown" data-no-results="Keine Ergebnisse verfügbar.">
+			<div class="ui basic small button">
+			<span class="text">
+				<i class="octicon octicon-git-branch"></i>
+				Struktur:
+				<strong>2dfa324112</strong>
+			</span>
+			<i class="dropdown icon"></i>
+		</div>
+		<div class="menu">
+			<div class="ui icon search input">
+				<i class="filter icon"></i>
+				<input name="search" placeholder="Nach Branch oder Tag filtern...">
+			</div>
+			<div class="header">
+				<div class="ui grid">
+					<div class="two column row">
+						<a class="reference column" href="#" data-target="#branch-list">
+							<span class="text black">
+								Branches
+							</span>
+						</a>
+						<a class="reference column" href="#" data-target="#tag-list">
+							<span class="text ">
+								Tags
+							</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div id="branch-list" class="scrolling menu" >
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20181216.01/ttf/ModernDOS8x8.ttf">20181216.01</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20181216.02/ttf/ModernDOS8x8.ttf">20181216.02</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20190101.01/ttf/ModernDOS8x8.ttf">20190101.01</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20190101.02/ttf/ModernDOS8x8.ttf">20190101.02</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/master/ttf/ModernDOS8x8.ttf">master</div>
+				
+			</div>
+			<div id="tag-list" class="scrolling menu" style="display: none">
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20190101.02/ttf/ModernDOS8x8.ttf">20190101.02</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20190101.01/ttf/ModernDOS8x8.ttf">20190101.01</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20181216.02/ttf/ModernDOS8x8.ttf">20181216.02</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/20181216.01/ttf/ModernDOS8x8.ttf">20181216.01</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/2018.09.29-1/ttf/ModernDOS8x8.ttf">2018.09.29-1</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/2017.05.01/ttf/ModernDOS8x8.ttf">2017.05.01</div>
+				
+					<div class="item " data-url="/HarvettFox96/ttf-moderndos/src/2017.03.25/ttf/ModernDOS8x8.ttf">2017.03.25</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+			<div class="fitted item">
+				<div class="ui breadcrumb">
+					<a class="section" href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030">ttf-moderndos</a>
+					
+					
+					
+						<div class="divider"> / </div>
+						
+							
+							<span class="section"><a href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf">ttf</a></span>
+						
+					
+						<div class="divider"> / </div>
+						
+							<span class="active section">ModernDOS8x8.ttf</span>
+						
+					
+				</div>
+			</div>
+			<div class="right fitted item">
+				
+					<div id="file-buttons" class="ui tiny blue buttons">
+						
+						
+					</div>
+				
+
+				
+				
+			</div>
+		</div>
+		
+			<div id="file-content" class="tab-size-8">
+	<h4 class="ui top attached header" id="repo-read-file">
+		
+			<i class="file text outline icon ui left"></i>
+			<strong>ModernDOS8x8.ttf</strong> <span class="text grey normal">30 KB</span>
+		
+		
+			<div class="ui right file-actions">
+				<div class="ui buttons">
+					
+					<a class="ui button" href="/HarvettFox96/ttf-moderndos/commits/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf">Verlauf</a>
+					<a class="ui button" href="/HarvettFox96/ttf-moderndos/raw/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf">Originalformat</a>
+				</div>
+				
+					
+						<i class="octicon octicon-pencil btn-octicon poping up disabled" data-content="Nicht-Text Dateien können nicht bearbeitet werden" data-position="bottom center" data-variation="tiny inverted"></i>
+					
+					
+						<i class="octicon octicon-trashcan btn-octicon poping up disabled" data-content="Sie müssen sich in einem Branch befinden, um Änderungen an dieser Datei vorzuschlagen oder vorzunehmen" data-position="bottom center" data-variation="tiny inverted"></i>
+					
+				
+			</div>
+		
+	</h4>
+	<div class="ui attached table segment">
+		<div id="" class="file-view  has-emoji">
+			
+				<div class="view-raw ui center">
+					
+						<a href="/HarvettFox96/ttf-moderndos/raw/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf" rel="nofollow" class="btn btn-gray btn-radius">Ansicht im Originalformat</a>
+					
+				</div>
+			
+		</div>
+	</div>
+</div>
+
+<script>
+function submitDeleteForm() {
+    var message = prompt("delete_confirm_message\n\ndelete_commit_summary", "Delete ''");
+    if (message != null) {
+        $("#delete-message").val(message);
+        $("#delete-file-form").submit()
+    }
+}
+</script>
+
+		
+	</div>
+</div>
+
+	</div>
+	<footer>
+		<div class="ui container">
+			<div class="ui left">
+
+
+
+				<a href="/tos">Terms of Service</a>
+				&bull;
+				<a href="/about">About us</a>
+				&bull;
+				<a href="/outages">Outages</a>
+				&bull;
+				<a href="/hp/gogs/issues">Report a problem</a>
+				&bull;
+				<a href="/assets/librejs/librejs.html" data-jslicense="1">Javascript licenses</a>
+				&bull;
+				<a href="/fingerprints">SSH Fingerprints</a>
+
+
+
+			</div>
+			<div class="ui right links">
+				
+				<div class="ui language bottom floating slide up dropdown link item">
+					<i class="world icon"></i>
+					<div class="text">Deutsch</div>
+					<div class="menu">
+						
+							<a class="item active selected" href="#">Deutsch</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=en-US">English</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=zh-CN">简体中文</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=zh-HK">繁體中文（香港）</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=zh-TW">繁體中文（臺灣）</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=fr-FR">français</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=nl-NL">Nederlands</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=lv-LV">latviešu</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=ru-RU">русский</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=ja-JP">日本語</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=es-ES">español</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=pt-BR">português do Brasil</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=pl-PL">polski</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=bg-BG">български</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=it-IT">italiano</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=fi-FI">suomi</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=tr-TR">Türkçe</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=cs-CZ">čeština</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=sr-SP">српски</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=sv-SE">svenska</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=ko-KR">한국어</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=gl-ES">galego</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=uk-UA">українська</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=en-GB">English (United Kingdom)</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=hu-HU">Magyar</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=sk-SK">Slovenčina</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=id-ID">Indonesian</a>
+						
+							<a class="item " href="/HarvettFox96/ttf-moderndos/src/2dfa3241120e1ca775f9ee45194f0376a0bf4030/ttf/ModernDOS8x8.ttf?lang=fa-IR">Persian</a>
+						
+					</div>
+				</div>
+
+
+
+				
+			</div>
+		</div>
+	</footer>
+</body>
+
+
+
+	<link rel="stylesheet" href="/plugins/highlight-9.6.0/github.css">
+	<script src="/plugins/highlight-9.6.0/highlight.pack.js"></script>
+
+
+
+
+<script src="/js/libs/emojify-1.1.0.min.js"></script>
+<script src="/js/libs/clipboard-1.5.9.min.js"></script>
+	
+</html>
+
