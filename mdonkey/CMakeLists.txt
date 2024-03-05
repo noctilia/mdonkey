@@ -6,8 +6,8 @@ set(TARGET_NAME ${PROJECT_NAME})
 option(BUILD_UNIT_TESTS "Build unit tests" ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/stubs)
-file(GLOB SRC src/*.cpp stubs/*.cpp)
-add_executable(${TARGET_NAME} ${SRC})
+file(GLOB SRC src/*.cpp src/*.rc)
+add_executable(${TARGET_NAME} WIN32 ${SRC})
 
 target_include_directories(${TARGET_NAME} PUBLIC src)
 target_include_directories(${TARGET_NAME} PUBLIC 
