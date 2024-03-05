@@ -1,9 +1,9 @@
 #ifndef DONKEY_KONG_1981_SPRITES_HH
 #define DONKEY_KONG_1981_SPRITES_HH
 
-#include <allegro5/allegro.h>
+#include <SFML/Graphics.hpp>
 #include <array>
-#include "../core/math.hh"
+#include "../core/math.hpp"
 
 enum sprite_sheet_id
 {
@@ -174,7 +174,7 @@ struct sprite
   vector2f offset;
 };
 
-using sprite_sheet = ALLEGRO_BITMAP*;
+using sprite_sheet = sf::Sprite*;
 
 /** Called during init to load all sprite sheets. */
 bool load_sprite_sheets();

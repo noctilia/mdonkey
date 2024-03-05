@@ -1,13 +1,13 @@
 #ifndef DONKEY_KONG_1981_TYPES_HH
 #define DONKEY_KONG_1981_TYPES_HH
 
-#include "../assets/sprites.hh"
-#include "../assets/fonts.hh"
-#include "../assets/sounds.hh"
-#include "../core/math.hh"
-#include "../core/animation.hh"
-#include "../core/cutscene.hh"
-#include "game.hh"
+#include "../assets/sprites.hpp"
+#include "../assets/fonts.hpp"
+#include "../assets/sounds.hpp"
+#include "../core/math.hpp"
+#include "../core/animation.hpp"
+#include "../core/cutscene.hpp"
+#include "game.hpp"
 
 enum class look_direction { left, right };
 

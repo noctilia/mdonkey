@@ -1,13 +1,13 @@
-#include <allegro5/allegro_primitives.h>
-#include "types.hh"
-#include "game.hh"
-#include "constants.hh"
-#include "stages/stages.hh"
-#include "../core/input.hh"
-#include "../core/rand.hh"
-#include "../assets/fonts.hh"
-#include "../assets/sounds.hh"
-#include "../core/global.hh"
+#include <SFML/Graphics.hpp>
+#include "types.h"
+#include "game.h"
+#include "constants.h"
+#include "stages/stages.h"
+#include "../core/input.h"
+#include "../core/rand.h"
+#include "../assets/fonts.h"
+#include "../assets/sounds.h"
+#include "../core/global.h"
 
 namespace intermission {
   void on_enter(game_data& gd);

@@ -1,7 +1,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <array>
 #include "fonts.hh"
-#include "../core/log.hh"
+#include "../core/log.h"
 
 static ALLEGRO_FONT* game_font;
 static std::array<ALLEGRO_COLOR, TEXT_COLOR_COUNT> text_color_palette;

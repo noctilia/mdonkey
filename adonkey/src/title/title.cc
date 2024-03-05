@@ -1,6 +1,6 @@
-#include "title.hh"
-#include "../assets/sprites.hh"
-#include "../assets/fonts.hh"
+#include "title.h"
+#include "../assets/sprites.h"
+#include "../assets/fonts.h"
 
 namespace title {
   constexpr int flash_count = 21;

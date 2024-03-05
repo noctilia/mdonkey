@@ -1,37 +1,45 @@
-cmake_minimum_required(VERSION 3.20)
-project(donkey_kong_1981 VERSION 0.1)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+cmake_minimum_required(VERSION 3.5.1)
 
-set(SOURCE_FILES
-        src/core/main.cc
-        src/core/log.cc
-        src/core/input.cc
-        src/core/rand.cc
-        src/assets/sprites.cc
-        src/game/play.cc
-        src/core/animation.cc
-        src/core/cutscene.cc
-        src/game/game.cc
-        src/game/intermission.cc
-        src/game/world.cc
-        src/game/constants.cc
-        src/game/stages/classic_barrels.cc
-        src/game/stages/classic_factory.cc
-        src/game/stages/classic_elevators.cc
-        src/game/stages/classic_rivets.cc
-        src/assets/cutscenes.cc src/assets/fonts.cc src/assets/fonts.hh src/hud/hud.hh src/hud/hud.cc src/assets/sounds.hh src/assets/sounds.cc src/hiscores/hiscores.cc src/hiscores/hiscores.hh src/menu/menu.cc src/menu/menu.hh src/title/title.cc src/title/title.hh)
+project(adonkey VERSION 0.0.0 DESCRIPTION "adonkey")
+set(TARGET_NAME ${PROJECT_NAME})
 
-set(ALLEGRO_LIBRARIES
-        -lallegro
-        -lallegro_main
-        -lallegro_font
-        -lallegro_ttf
-        -lallegro_audio
-        -lallegro_primitives
-        -lallegro_image
-        -lallegro_audio
-        -lallegro_acodec)
+option(BUILD_UNIT_TESTS "Build unit tests" ON)
 
-add_executable(donkey_kong_1981 ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES(donkey_kong_1981 ${ALLEGRO_LIBRARIES})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/core ${CMAKE_CURRENT_SOURCE_DIR}/src/game)
+file(GLOB SRC src/*.cpp src/core/*.cpp src/game/*.cpp src/hiscores/*.cpp  src/hud/*.cpp src/menu/*.cpp src/title/*.cpp)
+add_executable(${TARGET_NAME} WIN32 ${SRC} "src/stub.cpp")
+
+target_include_directories(${TARGET_NAME} PUBLIC src)
+target_include_directories(${TARGET_NAME} PUBLIC 
+  ${SDL2_INCLUDE_DIR} 
+  ${SDL2_IMAGE_INCLUDE_DIR} 
+  ${SDL2_NET_INCLUDE_DIR} 
+  ${SDL2_MIXER_INCLUDE_DIR} 
+  ${SDL2_TTF_INCLUDE_DIR}
+  )
+
+target_link_libraries(${TARGET_NAME} sfml-system sfml-window sfml-graphics sfml-network sfml-audio)
+
+# install the target
+#install(TARGETS ${TARGET_NAME} DESTINATION ".")
+
+set (CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS ${COPYDLLS})
+set (CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+include(InstallRequiredSystemLibraries)
+
+if( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
+  install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${TARGET_NAME} COMPONENT System)
+endif( CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS )
+
+install(
+    TARGETS ${TARGET_NAME}
+    RUNTIME DESTINATION ${TARGET_NAME}
+    CONFIGURATIONS ${CMAKE_CONFIGURATION_TYPES}
+)
+
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/${BUILD_TYPE}/${TARGET_NAME}/assets/
+    FILES_MATCHING 
+    PATTERN "*.*"
+)

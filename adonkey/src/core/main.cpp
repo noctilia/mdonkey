@@ -1,10 +1,7 @@
-#include <allegro5/allegro5.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
+#include <SFML/Graphics.hpp>
+
+#if 0
+
 #include <exception>
 #include <string>
 #include <cstring>
@@ -12,19 +9,20 @@
 #include <ctime>
 #include <random>
 #include <memory>
-#include "log.hh"
-#include "input.hh"
-#include "../assets/sprites.hh"
-#include "../assets/fonts.hh"
-#include "../assets/sounds.hh"
-#include "../game/constants.hh"
-#include "../hud/hud.hh"
-#include "../title/title.hh"
-#include "../menu/menu.hh"
-#include "../hiscores/hiscores.hh"
-#include "../game/game.hh"
-#include "rand.hh"
-#include "math.hh"
+#include "log.h"
+#include "input.h"
+#include "../assets/sprites.hpp"
+#include "../assets/fonts.h"
+#include "../assets/sounds.h"
+#include "../game/constants.h"
+#include "../hud/hud.h"
+#include "../title/title.h"
+#include "../menu/menu.h"
+#include "../hiscores/hiscores.h"
+#include "../game/game.h"
+#include "rand.h"
+#include "math.h"
+
 
 namespace global
 {
@@ -552,3 +550,4 @@ int main()
     al_shutdown_primitives_addon();
   }
 }
+#endif

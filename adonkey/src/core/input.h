@@ -1,7 +1,7 @@
 #ifndef DONKEY_KONG_1981_INPUT_HH
 #define DONKEY_KONG_1981_INPUT_HH
 
-#include <allegro5/allegro.h>
+#include <SFML/Graphics.hpp>
 #include <array>
 
 namespace input

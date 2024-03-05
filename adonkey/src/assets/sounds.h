@@ -1,7 +1,7 @@
 #ifndef DONKEY_KONG_1981_SOUNDS_HH
 #define DONKEY_KONG_1981_SOUNDS_HH
 
-#include <allegro5/allegro_audio.h>
+#include <SFML/Graphics.hpp>
 #include <optional>
 
 enum sound_id
