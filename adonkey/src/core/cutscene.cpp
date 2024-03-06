@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "cutscene.hh"
+#include "cutscene.hpp"
 
 void cutscene::initialise(const cutscene_frames& frames)
 {

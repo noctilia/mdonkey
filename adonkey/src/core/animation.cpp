@@ -1,5 +1,5 @@
 #include <cassert>
-#include "animation.hh"
+#include "animation.hpp"
 
 void animation::initialise(const animation_frames& frames, mode m)
 {
