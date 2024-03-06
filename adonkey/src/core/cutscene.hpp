@@ -2,8 +2,8 @@
 #define DONKEY_KONG_1981_CUTSCENE_HH
 
 #include <vector>
-#include "math.hh"
-#include "../assets/sprites.hh"
+#include "math.hpp"
+#include "../assets/sprites.hpp"
 
 constexpr int FLIP_FRAME_X = 0b01;
 constexpr int FLIP_FRAME_Y = 0b10;

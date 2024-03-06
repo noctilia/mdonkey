@@ -1,7 +1,7 @@
 #ifndef DONKEY_KONG_1981_MOVIES_HH
 #define DONKEY_KONG_1981_MOVIES_HH
 
-#include "../core/cutscene.h"
+#include "../core/cutscene.hpp"
 
 namespace cutscenes {
   /** An all black delay between levels (used to simulate loading). */

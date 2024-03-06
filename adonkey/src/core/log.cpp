@@ -1,5 +1,5 @@
 #include <iostream>
-#include "log.h"
+#include "log.hpp"
 
 static void print_level(log_lvl lvl)
 {

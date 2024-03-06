@@ -1,5 +1,5 @@
 #include <limits>
-#include "rand.h"
+#include "rand.hpp"
 
 namespace rnd
 {

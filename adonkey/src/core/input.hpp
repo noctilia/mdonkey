@@ -4,6 +4,20 @@
 #include <SFML/Graphics.hpp>
 #include <array>
 
+const int ALLEGRO_KEY_N = sf::Keyboard::N;  
+const int ALLEGRO_KEY_A = sf::Keyboard::A;  
+const int ALLEGRO_KEY_D = sf::Keyboard::D;
+const int ALLEGRO_KEY_W = sf::Keyboard::W;
+const int ALLEGRO_KEY_S = sf::Keyboard::S;
+
+const int ALLEGRO_KEY_LEFT = sf::Keyboard::Left;
+const int ALLEGRO_KEY_RIGHT = sf::Keyboard::Right;
+const int ALLEGRO_KEY_UP = sf::Keyboard::Up;
+const int ALLEGRO_KEY_DOWN = sf::Keyboard::Down;
+
+const int ALLEGRO_KEY_SPACE = sf::Keyboard::Space;
+const int ALLEGRO_KEY_ENTER = sf::Keyboard::Enter;
+
 namespace input
 {
   /** All the input actions a user can perform. */

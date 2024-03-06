@@ -1,5 +1,5 @@
-#include "cutscenes.hh"
-#include "../core/animation.hh"
+#include "cutscenes.hpp"
+#include "../core/animation.hpp"
 
 namespace cutscenes
 {

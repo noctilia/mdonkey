@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <optional>
 
+typedef int ALLEGRO_SAMPLE_ID;
+
 enum sound_id
 {
   SND_MUSIC_1,

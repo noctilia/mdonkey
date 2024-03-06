@@ -2,7 +2,7 @@
 #define DONKEY_KONG_1981_ANIMATION_HH
 
 #include <vector>
-#include "../assets/sprites.hh"
+#include "../assets/sprites.hpp"
 
 constexpr int ANIM_FRAME_FLIP_X = 0b0001;
 constexpr int ANIM_FRAME_FLIP_Y = 0b0010;

@@ -1,7 +1,5 @@
 #include <SFML/Graphics.hpp>
 
-#if 0
-
 #include <exception>
 #include <string>
 #include <cstring>
@@ -9,19 +7,25 @@
 #include <ctime>
 #include <random>
 #include <memory>
-#include "log.h"
-#include "input.h"
+#include <cassert>
+
+#include "log.hpp"
+#include "input.hpp"
+
 #include "../assets/sprites.hpp"
-#include "../assets/fonts.h"
-#include "../assets/sounds.h"
-#include "../game/constants.h"
-#include "../hud/hud.h"
-#include "../title/title.h"
-#include "../menu/menu.h"
-#include "../hiscores/hiscores.h"
-#include "../game/game.h"
-#include "rand.h"
-#include "math.h"
+#include "../assets/fonts.hpp"
+#include "../assets/sounds.hpp"
+
+#include "../game/constants.hpp"
+#include "../hud/hud.hpp"
+#include "../title/title.hpp"
+#include "../menu/menu.hpp"
+#include "../hiscores/hiscores.hpp"
+#include "../game/game.hpp"
+
+#include "rand.hpp"
+#include "math.hpp"
+
 
 
 namespace global
@@ -64,6 +68,9 @@ irect calculate_world_bitmap_blit_rect(int new_width_px, int new_height_px)
   };
 }
 
+int main() {}
+
+#if 0
 int main()
 {
   float target_fps_hz = 60.f;
