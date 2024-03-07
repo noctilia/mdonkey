@@ -1,6 +1,6 @@
 #include <cassert>
 #include <array>
-#include "input.hh"
+#include "input.hpp"
 
 namespace input
 {

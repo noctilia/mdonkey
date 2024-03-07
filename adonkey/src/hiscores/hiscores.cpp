@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <algorithm>
 
+#include "../stubs/al_stubs.hpp"
+
 #include "hiscores.hpp"
 #include "../core/log.hpp"
 #include "../core/input.hpp"

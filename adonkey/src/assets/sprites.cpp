@@ -2,8 +2,9 @@
 #include <cassert>
 #include <sstream>
 #include <cmath>
-#include "sprites.hh"
-#include "../core/log.hh"
+#include "sprites.hpp"
+#include "../core/log.hpp"
+#include "../stubs/al_stubs.hpp"
 
 namespace
 {

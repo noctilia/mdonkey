@@ -6,7 +6,7 @@ set(TARGET_NAME ${PROJECT_NAME})
 option(BUILD_UNIT_TESTS "Build unit tests" ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/core ${CMAKE_CURRENT_SOURCE_DIR}/src/game)
-file(GLOB SRC src/assets/*.cpp src/*.cpp src/core/*.cpp src/game/*.cpp src/hiscores/*.cpp  src/hud/*.cpp src/menu/*.cpp src/title/*.cpp)
+file(GLOB SRC src/assets/*.cpp src/*.cpp src/core/*.cpp src/game/*.cpp src/hiscores/*.cpp  src/hud/*.cpp src/menu/*.cpp src/title/*.cpp src/stubs/*.cpp)
 add_executable(${TARGET_NAME} WIN32 ${SRC} "src/wstub.cpp")
 
 target_include_directories(${TARGET_NAME} PUBLIC src)

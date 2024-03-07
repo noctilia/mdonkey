@@ -68,15 +68,20 @@ irect calculate_world_bitmap_blit_rect(int new_width_px, int new_height_px)
   };
 }
 
-int main() {}
+//int main() {}
 
-#if 0
+
 int main()
 {
   float target_fps_hz = 60.f;
-  ALLEGRO_DISPLAY* display;
+  /*ALLEGRO_DISPLAY* display;
   ALLEGRO_EVENT_QUEUE* event_queue;
-  ALLEGRO_TIMER* game_ticker;
+  ALLEGRO_TIMER* game_ticker;*/
+
+  sf::Window* window = nullptr;
+  sf::Event event;
+  sf::Clock clock;  
+
   double real_time_s = 0.0;
   double game_time_s = 0.0;
   float tick_delta_s;
@@ -91,13 +96,20 @@ int main()
   double fps_timer_s = 0.0;
   double fps = 0.0;
   int top_hiscore = 0;
-  ALLEGRO_FONT* debug_font;
-  ALLEGRO_BITMAP* world_bitmap;  // world drawn to this 224x256px bitmap, then scale drawn to window.
+  
+  //ALLEGRO_FONT* debug_font;
+  //ALLEGRO_BITMAP* world_bitmap;  // world drawn to this 224x256px bitmap, then scale drawn to window.
+
+  sf::Font debug_font;
+  sf::Texture world_texture;
+  sf::Sprite world_sprite;  
+
   irect world_bitmap_blit_rect;   // area of window to draw world_bitmap to.
   std::unique_ptr<game_data> game;
 
   hiscores::reg::initialise();
 
+#if 0
   enum class app_state { title, menu, game, hi_score };
   app_state app_state_;
   const auto change_app_state = [&game, &app_state_](app_state new_state, int new_score = 0)
@@ -556,5 +568,6 @@ int main()
     al_shutdown_image_addon();
     al_shutdown_primitives_addon();
   }
-}
+
 #endif
+}

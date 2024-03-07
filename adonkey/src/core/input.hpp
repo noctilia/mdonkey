@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <array>
 
+const int ALLEGRO_KEY_MAX = sf::Keyboard::KeyCount;
+
 const int ALLEGRO_KEY_N = sf::Keyboard::N;  
 const int ALLEGRO_KEY_A = sf::Keyboard::A;  
 const int ALLEGRO_KEY_D = sf::Keyboard::D;
