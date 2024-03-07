@@ -1,16 +1,15 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
 #include <cassert>
 #include <cstring>
 #include <exception>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include "hiscores.hh"
-#include "../core/log.hh"
-#include "../core/input.hh"
-#include "../assets/fonts.hh"
-#include "../assets/sprites.hh"
+
+#include "hiscores.hpp"
+#include "../core/log.hpp"
+#include "../core/input.hpp"
+#include "../assets/fonts.hpp"
+#include "../assets/sprites.hpp"
 
 namespace hiscores {
   /** Internally maintained hiscores. */

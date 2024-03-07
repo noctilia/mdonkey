@@ -1,4 +1,4 @@
-#include "constants.h"
+#include "constants.hpp"
 
 namespace con {
   const vector2f wide_rebound_dirs[wide_rebound_dirs_count] = {
