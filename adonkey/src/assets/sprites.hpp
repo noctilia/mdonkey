@@ -174,7 +174,7 @@ struct sprite
   vector2f offset;
 };
 
-using sprite_sheet = sf::Sprite*;
+using sprite_sheet = sf::Texture*;
 
 /** Called during init to load all sprite sheets. */
 bool load_sprite_sheets();

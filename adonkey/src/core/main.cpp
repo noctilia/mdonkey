@@ -367,7 +367,8 @@ int main()
       exit(EXIT_FAILURE);
     }
     if(!load_sounds()){
-      exit(EXIT_FAILURE);
+      // todo: exit(EXIT_FAILURE);  
+      //exit(EXIT_FAILURE);
     }
     game = std::move(game::create());
   }
@@ -569,6 +570,7 @@ int main()
       }
     }
   }
+#endif
 
   // shutdown game
   {
@@ -577,7 +579,6 @@ int main()
     unload_fonts();
     unload_sounds();
   }
-#endif
 
 #if 0
   // shutdown core

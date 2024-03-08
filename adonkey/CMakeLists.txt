@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5.1)
 
 project(adonkey VERSION 0.0.0 DESCRIPTION "adonkey")
-set(TARGET_NAME ${PROJECT_NAME})
+set(TARGET_NAME adonkey)
 
 option(BUILD_UNIT_TESTS "Build unit tests" ON)
 

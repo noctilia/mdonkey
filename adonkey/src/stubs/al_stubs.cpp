@@ -4,7 +4,9 @@
 
 ALLEGRO_BITMAP* al_load_bitmap(const char* filename)
 {
-  return nullptr;
+  sf::Texture* texture = new sf::Texture();
+  texture->loadFromFile(filename);  
+  return texture;
 }
 
 int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, float sh, float dx, float dy, int flags)
@@ -14,6 +16,7 @@ int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, 
 
 void al_destroy_bitmap(ALLEGRO_BITMAP* bitmap)
 {
+  delete bitmap;
 }
 
 ALLEGRO_CONFIG* al_load_config_file(const char* filename)

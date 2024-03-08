@@ -13,8 +13,8 @@
 namespace
 {
   /** internal store of all loaded sound effects. */
-  std::array<sf::SoundBuffer, SND_COUNT> audio_samples;
-  std::array<sf::Sound, SND_COUNT> audio_sound;
+  std::array<sf::SoundBuffer*, SND_COUNT> audio_samples;
+  std::array<sf::Sound*, SND_COUNT> audio_sound;
 
   std::array<const char*, SND_COUNT> snd_filenames {
     "music_1.wav",
@@ -59,7 +59,9 @@ bool load_sounds()
 
   for(auto snd = 0; snd < SND_COUNT; ++snd){
     log_loading(snd_filenames[snd]);
-    bool rc = audio_samples[snd].loadFromFile((snd_path + snd_filenames[snd]).c_str());
+    audio_samples[snd] = new sf::SoundBuffer;
+    audio_sound[snd] = new sf::Sound; 
+    bool rc = audio_samples[snd]->loadFromFile((snd_path + snd_filenames[snd]).c_str());
     if(!rc){
       log_load_fail(snd_filenames[snd]);
       return false;
@@ -72,9 +74,13 @@ bool load_sounds()
 void unload_sounds()
 {
   log(log_lvl::info, "unloading sounds");
-  //for(auto sample : audio_samples){
+  for(auto& sample : audio_samples){
   //  al_destroy_sample(sample);
-  //}
+    delete sample;
+  }
+  for (auto& sound : audio_sound) {
+    delete sound;
+  }   
 }
 
 snd_play_id play_sound(sound_id snd, float speed, bool loop, float gain)
@@ -90,8 +96,8 @@ snd_play_id play_sound(sound_id snd, float speed, bool loop, float gain)
 
   // TODO: check if sound is already playing and stop it.
   // TODO: set sound buffer on initialization.?
-  audio_sound[snd].setBuffer(audio_samples[snd]);
-  audio_sound[snd].play();
+  audio_sound[snd]->setBuffer(*audio_samples[snd]);
+  audio_sound[snd]->play();
 
   return sample_id;
 }
@@ -101,5 +107,5 @@ void stop_sound(snd_play_id id)
   if(!id.has_value()) 
     return;
   //al_stop_sample(&id.value());
-  audio_sound[id.value()].stop(); 
+  audio_sound[id.value()]->stop(); 
 }

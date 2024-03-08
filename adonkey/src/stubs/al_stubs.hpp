@@ -8,7 +8,7 @@
 
 
 
-typedef  sf::Sprite ALLEGRO_BITMAP;
+typedef sf::Texture ALLEGRO_BITMAP;
 
 ALLEGRO_BITMAP* al_load_bitmap(const char* filename); 
 int al_draw_bitmap(ALLEGRO_BITMAP* bitmap, float dx, float dy, int flags);  

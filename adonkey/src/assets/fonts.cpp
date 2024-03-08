@@ -25,15 +25,15 @@ bool load_fonts()
   //game_font = al_load_ttf_font(font_path, 8, ALLEGRO_TTF_MONOCHROME);
   assert(game_font == nullptr); // (game_font == nullptr, "game_font already loaded")
   game_font = new sf::Font();
-  game_font->loadFromFile(font_path);
+  auto rc = game_font->loadFromFile(font_path);
 
-  if(!game_font){
+  if(!rc){
     std::string msg{"failed to load game font '"};
     msg += font_path;
     msg += "'";
     log(log_lvl::fatal, msg);
   }
-  return game_font != nullptr;
+  return rc;
 }
 
 void unload_fonts()
