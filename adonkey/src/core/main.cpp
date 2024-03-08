@@ -298,9 +298,14 @@ int main()
     require_init(al_install_audio(), "allegro audio addon");
     require_init(al_init_acodec_addon(), "allegro audio codecs addon");
     require_init(al_reserve_samples(16), "audio sample reservation");
+#endif
 
-    if(is_fullscreen) al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    else al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
+#if 0
+    if(is_fullscreen) 
+      al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+    else 
+      al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
+
     display = al_create_display(global::window_width_px, global::window_height_px);
     require_init(display != nullptr, "allegro display");
     global::window_width_px = al_get_display_width(display);
