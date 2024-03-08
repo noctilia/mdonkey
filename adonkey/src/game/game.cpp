@@ -1,13 +1,19 @@
 #include <SFML/Graphics.hpp>
-#include "types.h"
-#include "game.h"
-#include "constants.h"
-#include "stages/stages.h"
-#include "../core/input.h"
-#include "../core/rand.h"
-#include "../assets/fonts.h"
-#include "../assets/sounds.h"
-#include "../core/global.h"
+#include <cassert>
+
+#include "types.hpp"
+#include "game.hpp"
+#include "constants.hpp"
+#include "stages/stages.hpp"
+#include "../core/input.hpp"
+#include "../core/rand.hpp"
+#include "../assets/fonts.hpp"
+#include "../assets/sounds.hpp"
+#include "../core/global.hpp"
+
+#include "stubs/al_stubs.hpp"
+
+
 
 namespace intermission {
   void on_enter(game_data& gd);

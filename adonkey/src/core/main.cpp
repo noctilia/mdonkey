@@ -78,7 +78,7 @@ int main()
   ALLEGRO_EVENT_QUEUE* event_queue;
   ALLEGRO_TIMER* game_ticker;*/
 
-  sf::Window* window = nullptr;
+  sf::Window* display = nullptr;
   sf::Event event;
   sf::Clock clock;  
 
@@ -101,7 +101,7 @@ int main()
   //ALLEGRO_BITMAP* world_bitmap;  // world drawn to this 224x256px bitmap, then scale drawn to window.
 
   sf::Font debug_font;
-  sf::Texture world_texture;
+  sf::Texture world_bitmap;
   sf::Sprite world_sprite;  
 
   irect world_bitmap_blit_rect;   // area of window to draw world_bitmap to.
@@ -127,7 +127,7 @@ int main()
   };
   change_app_state(app_state::title, 1000);
 
-
+#if 0
   // load config file.
   {
     log(log_lvl::info, "loading config");
@@ -267,6 +267,7 @@ int main()
     }
     else log(log_lvl::warning, "failed to load config file");
   }
+#endif
 
   // load hiscores
   {
@@ -275,9 +276,9 @@ int main()
     hiscores::log_hiscores();
   }
 
-#if 0
   // initialise core
   {
+#if 0
     const auto require_init = [](bool init_result, const char* system_name) -> void {
       if(!init_result){
         std::string msg{"failed to initialise "};
@@ -311,6 +312,16 @@ int main()
     global::window_width_px = al_get_display_width(display);
     global::window_height_px = al_get_display_height(display);
 
+#endif
+
+    display = new sf::Window(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Default); 
+    global::window_width_px = display->getSize().x;  
+    global::window_height_px = display->getSize().y;   
+
+    world_bitmap.create(con::world_width_px, con::world_height_px);  
+    world_bitmap_blit_rect = calculate_world_bitmap_blit_rect(global::window_width_px, global::window_height_px);
+    
+#if 0
     auto old_bitmap_flags = al_get_new_bitmap_flags();
     al_set_new_bitmap_flags(ALLEGRO_NO_PRESERVE_TEXTURE);
     world_bitmap = al_create_bitmap(con::world_width_px, con::world_height_px);
@@ -320,7 +331,13 @@ int main()
 
     event_queue = al_create_event_queue();
     require_init(event_queue != nullptr, "allegro event queue");
+#endif
 
+    tick_delta_s = 1.f / target_fps_hz;
+    //game_ticker = al_create_timer(tick_delta_s);  
+    //require_init(game_ticker != nullptr, "allegro timer for game ticker");  
+
+#if 0
     tick_delta_s = 1.f / target_fps_hz;
     game_ticker = al_create_timer(tick_delta_s);
     require_init(game_ticker != nullptr, "allegro timer for game ticker");
@@ -331,6 +348,7 @@ int main()
 
     debug_font = al_create_builtin_font();
     require_init(debug_font, "debug font");
+#endif
 
     // seed random number generator.
     auto seq = std::seed_seq{std::time(nullptr)};
@@ -354,6 +372,7 @@ int main()
     game = std::move(game::create());
   }
 
+#if 0
   play_sound(SND_BOOT);
 
   // runloop
@@ -558,7 +577,9 @@ int main()
     unload_fonts();
     unload_sounds();
   }
+#endif
 
+#if 0
   // shutdown core
   {
     log(log_lvl::info, "shutting down core.");

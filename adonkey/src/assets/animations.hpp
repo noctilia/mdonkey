@@ -1,9 +1,9 @@
 #ifndef DONKEY_KONG_1981_ANIMATIONS_HH
 #define DONKEY_KONG_1981_ANIMATIONS_HH
 
-#include "sprites.h"
-#include "../core/animation.h"
-#include "../game/types.h"
+#include "sprites.hpp"
+#include "../core/animation.hpp"
+#include "../game/types.hpp"
 
 static constexpr auto infinite_delta_s = 1.0e10f;
 

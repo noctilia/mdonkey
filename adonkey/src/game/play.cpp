@@ -1,16 +1,20 @@
-#include <allegro5/allegro_primitives.h>
+//#include <allegro5/allegro_primitives.h>
+#include <cassert>  
 #include <tuple>
 #include <sstream>
 #include <iomanip>
-#include "types.hh"
-#include "constants.hh"
-#include "world.hh"
-#include "../core/input.hh"
-#include "../core/global.hh"
-#include "../core/rand.hh"
-#include "../assets/animations.hh"
-#include "../assets/sounds.hh"
-#include "../assets/fonts.hh"
+#include "types.hpp"
+#include "constants.hpp"
+#include "world.hpp"
+#include "../core/input.hpp"
+#include "../core/global.hpp"
+#include "../core/rand.hpp"
+#include "../assets/animations.hpp"
+#include "../assets/sounds.hpp"
+#include "../assets/fonts.hpp"
+
+#include "stubs/al_stubs.hpp"
+
 
 namespace {
   snd_play_id pid_music;

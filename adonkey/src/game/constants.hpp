@@ -2,7 +2,7 @@
 #define DONKEY_KONG_1981_CONSTANTS_HH
 
 #include <cmath>
-#include "types.hh"
+#include "types.hpp"
 
 namespace con
 {

@@ -1,8 +1,8 @@
 #ifndef DONKEY_KONG_1981_WORLD_HH
 #define DONKEY_KONG_1981_WORLD_HH
 
-#include "types.hh"
-#include "../core/math.hh"
+#include "types.hpp"
+#include "../core/math.hpp"
 
 void set_mob_vulnerability(game_data& gd, bool is_vulnerable);
 void light_oil_can(oil_can_data& can, bool birth_fireball = false);

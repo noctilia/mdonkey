@@ -1,9 +1,11 @@
 #include <array>
-#include "types.hh"
-#include "constants.hh"
-#include "../assets/sounds.hh"
-#include "../assets/sprites.hh"
-#include "../assets/fonts.hh"
+#include <cassert>
+
+#include "types.hpp"
+#include "constants.hpp"
+#include "../assets/sounds.hpp"
+#include "../assets/sprites.hpp"
+#include "../assets/fonts.hpp"
 
 namespace intermission {
   static float clock_s;

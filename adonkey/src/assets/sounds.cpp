@@ -1,16 +1,20 @@
+#include <SFML/Audio.hpp>
+
 #include <array>
 #include <string>
 #include <sstream>
 #include <cassert>
-#include <allegro5/allegro_audio.h>
+
 #include <algorithm>
-#include "sounds.hh"
-#include "../core/log.hh"
+#include "sounds.hpp"
+#include "../core/log.hpp"
+
 
 namespace
 {
   /** internal store of all loaded sound effects. */
-  std::array<ALLEGRO_SAMPLE*, SND_COUNT> audio_samples;
+  std::array<sf::SoundBuffer, SND_COUNT> audio_samples;
+  std::array<sf::Sound, SND_COUNT> audio_sound;
 
   std::array<const char*, SND_COUNT> snd_filenames {
     "music_1.wav",
@@ -34,7 +38,7 @@ namespace
     "countdown.wav",
   };
 
-  const std::string snd_path {"assets/sounds/"};
+  const std::string snd_path {"assets/snd/"};
 }
 
 bool load_sounds()
@@ -55,8 +59,8 @@ bool load_sounds()
 
   for(auto snd = 0; snd < SND_COUNT; ++snd){
     log_loading(snd_filenames[snd]);
-    audio_samples[snd] = al_load_sample((snd_path + snd_filenames[snd]).c_str());
-    if(!audio_samples[snd]){
+    bool rc = audio_samples[snd].loadFromFile((snd_path + snd_filenames[snd]).c_str());
+    if(!rc){
       log_load_fail(snd_filenames[snd]);
       return false;
     }
@@ -68,23 +72,34 @@ bool load_sounds()
 void unload_sounds()
 {
   log(log_lvl::info, "unloading sounds");
-  for(auto sample : audio_samples){
-    al_destroy_sample(sample);
-  }
+  //for(auto sample : audio_samples){
+  //  al_destroy_sample(sample);
+  //}
 }
 
 snd_play_id play_sound(sound_id snd, float speed, bool loop, float gain)
 {
-  assert(0 <= snd && snd < SND_COUNT);
+  //assert(0 <= snd && snd < SND_COUNT);
+  //ALLEGRO_SAMPLE_ID sample_id;
+  //ALLEGRO_PLAYMODE mode = loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
+  //speed = std::clamp(speed, 0.f, 1.f);
+  //if(!al_play_sample(audio_samples[snd], gain, 0.f, speed, mode, &sample_id)) 
+  //  return {};
+
   ALLEGRO_SAMPLE_ID sample_id;
-  ALLEGRO_PLAYMODE mode = loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
-  speed = std::clamp(speed, 0.f, 1.f);
-  if(!al_play_sample(audio_samples[snd], gain, 0.f, speed, mode, &sample_id)) return {};
+
+  // TODO: check if sound is already playing and stop it.
+  // TODO: set sound buffer on initialization.?
+  audio_sound[snd].setBuffer(audio_samples[snd]);
+  audio_sound[snd].play();
+
   return sample_id;
 }
 
 void stop_sound(snd_play_id id)
 {
-  if(!id.has_value()) return;
-  al_stop_sample(&id.value());
+  if(!id.has_value()) 
+    return;
+  //al_stop_sample(&id.value());
+  audio_sound[id.value()].stop(); 
 }

@@ -61,6 +61,14 @@ void al_draw_rectangle(float x1, float y1, float x2, float y2, ALLEGRO_COLOR col
 {
 }
 
+void al_draw_filled_rectangle(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color)
+{
+}
+
+void al_draw_line(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness)
+{
+}
+
 ALLEGRO_COLOR al_map_rgb(float r, float g, float b)
 {
   return ALLEGRO_COLOR();

@@ -1,5 +1,5 @@
-#include "../world.hh"
-#include "../constants.hh"
+#include "../world.hpp"
+#include "../constants.hpp"
 
 namespace stage::classic_elevators
 {

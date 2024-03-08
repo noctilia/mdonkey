@@ -2,9 +2,9 @@
 #define DONKEY_KONG_1981_LEVELS_HH
 
 #include <array>
-#include "../../assets/cutscenes.hh"
-#include "../types.hh"
-#include "../world.hh"
+#include "../../assets/cutscenes.hpp"
+#include "../types.hpp"
+#include "../world.hpp"
 
 /**
  * Levels:

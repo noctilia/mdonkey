@@ -1,6 +1,8 @@
-#include "../world.hh"
-#include "../constants.hh"
-#include "../../core/rand.hh"
+#include <cassert>  
+
+#include "../world.hpp"
+#include "../constants.hpp"
+#include "../../core/rand.hpp"
 
 namespace stage::classic_factory
 {
