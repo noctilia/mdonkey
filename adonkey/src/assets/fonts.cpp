@@ -21,7 +21,7 @@ bool load_fonts()
   text_color_palette[TEXT_ORANGE] = al_map_rgb(255, 121, 0);
   text_color_palette[TEXT_PINK] = al_map_rgb(255, 33, 85);
 
-  constexpr const char* font_path = "assets/fonts/PressStart2P-Regular.ttf";
+  constexpr const char* font_path = "assets/fnt/PressStart2P-Regular.ttf";
   //game_font = al_load_ttf_font(font_path, 8, ALLEGRO_TTF_MONOCHROME);
   assert(game_font == nullptr); // (game_font == nullptr, "game_font already loaded")
   game_font = new sf::Font();

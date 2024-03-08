@@ -26,7 +26,7 @@
 #include "rand.hpp"
 #include "math.hpp"
 
-
+#include "../stubs/al_stubs.hpp"
 
 namespace global
 {
@@ -109,21 +109,24 @@ int main()
 
   hiscores::reg::initialise();
 
-#if 0
+
   enum class app_state { title, menu, game, hi_score };
-  app_state app_state_;
+  app_state app_state_ = app_state::title;
   const auto change_app_state = [&game, &app_state_](app_state new_state, int new_score = 0)
   {
     switch(new_state){
-      case app_state::title: {title::on_enter(); break;}
-      case app_state::menu: {menu::on_enter(); break;}
-      case app_state::hi_score: {hiscores::reg::on_enter(new_score); break;}
-      case app_state::game: {game::on_enter(*game); break;}
+      case app_state::title:    { title::on_enter(); break;}
+      // todo: implement menu
+      //case app_state::menu:     { menu::on_enter(); break;}
+      case app_state::hi_score: { hiscores::reg::on_enter(new_score); break;}
+      // todo: implement game
+      //case app_state::game:     { game::on_enter(*game); break;}
       default: assert(0);
     }
     app_state_ = new_state;
   };
   change_app_state(app_state::title, 1000);
+
 
   // load config file.
   {
@@ -272,6 +275,7 @@ int main()
     hiscores::log_hiscores();
   }
 
+#if 0
   // initialise core
   {
     const auto require_init = [](bool init_result, const char* system_name) -> void {
