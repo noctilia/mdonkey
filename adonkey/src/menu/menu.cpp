@@ -1,9 +1,9 @@
-#include "menu.hh"
-#include "../hiscores/hiscores.hh"
-#include "../assets/fonts.hh"
-#include "../core/input.hh"
-#include "../core/cutscene.hh"
-#include "../assets/cutscenes.hh"
+#include "menu.hpp"
+#include "../hiscores/hiscores.hpp"
+#include "../assets/fonts.hpp"
+#include "../core/input.hpp"
+#include "../core/cutscene.hpp"
+#include "../assets/cutscenes.hpp"
 
 namespace menu {
   /** The time to wait before switching to the title screen (screen saver sort of thing). */

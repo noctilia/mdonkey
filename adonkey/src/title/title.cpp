@@ -46,8 +46,9 @@ namespace title {
     }
     draw_sprite(donkey_sid, vector2f{8, 64});
     draw_sprite(kong_sid, vector2f{32, 120});
-    draw_sprite(copy_sid, vector2f{90, 216});
-    draw_sprite(SID_KONG_BEAT_CHEST, vector2f{90, 175}, true);
+    //draw_sprite(copy_sid, vector2f{90, 216});
+    //draw_sprite(SID_KONG_BEAT_CHEST, vector2f{90, 175}, true);
+    
     draw_text(100, 216, "1981", txt_color);
     draw_text(16, 226, "NINTENDO OF AMERICA INC.", txt_color);
     draw_text(4, 238, "REMAKE BY IANMURFINXYZ 2021", txt_color);

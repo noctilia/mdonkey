@@ -17,7 +17,8 @@ file(GLOB SRC
   src/menu/*.cpp 
   src/title/*.cpp 
   src/stubs/*.cpp)
-add_executable(${TARGET_NAME} WIN32 ${SRC} "src/wstub.cpp")
+#add_executable(${TARGET_NAME} WIN32 ${SRC} "src/wstub.cpp")
+add_executable(${TARGET_NAME} ${SRC} "src/wstub.cpp")
 
 target_include_directories(${TARGET_NAME} PUBLIC src)
 target_include_directories(${TARGET_NAME} PUBLIC 

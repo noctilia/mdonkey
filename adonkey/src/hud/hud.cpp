@@ -1,10 +1,11 @@
-#include <allegro5/allegro_primitives.h>
+
+#include <SFML/Graphics.hpp>
 #include <sstream>
 #include <iomanip>
-#include "hud.hh"
-#include "../game/constants.hh"
-#include "../assets/fonts.hh"
-#include "../assets/sprites.hh"
+#include "hud.hpp"
+#include "../game/constants.hpp"
+#include "../assets/fonts.hpp"
+#include "../assets/sprites.hpp"
 
 namespace
 {

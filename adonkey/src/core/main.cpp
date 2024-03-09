@@ -68,6 +68,8 @@ irect calculate_world_bitmap_blit_rect(int new_width_px, int new_height_px)
   };
 }
 
+sf::RenderTexture* gworld_bitmap = nullptr;
+
 int main()
 {
   float target_fps_hz = 60.f;
@@ -101,7 +103,9 @@ int main()
   sf::Font debug_font;
   debug_font.loadFromFile("assets/fnt/slkscr.ttf");
 
-  sf::Texture world_bitmap;
+  sf::RenderTexture world_bitmap;
+  gworld_bitmap = &world_bitmap;
+
   sf::Sprite world_sprite;  
 
   irect world_bitmap_blit_rect;   // area of window to draw world_bitmap to.
@@ -378,30 +382,167 @@ int main()
   }
 
 
-  world_sprite.setTexture(world_bitmap);
+  /*world_sprite.setTexture(world_bitmap);
   world_sprite.setPosition(world_bitmap_blit_rect.x, world_bitmap_blit_rect.y);
-  world_sprite.setScale(world_bitmap_blit_rect.w / con::world_width_px, world_bitmap_blit_rect.h / con::world_height_px);
+  world_sprite.setScale(world_bitmap_blit_rect.w / con::world_width_px, world_bitmap_blit_rect.h / con::world_height_px);*/
   
-  
-  while (window.isOpen()) {
+  play_sound(SND_BOOT);
+
+  sf::View view = window.getDefaultView();
+
+  while (window.isOpen() && is_running) {
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         window.close();
+        is_running = false;
       }
+      
       if (event.type == sf::Event::KeyPressed) {
         if (event.key.code == sf::Keyboard::Escape) {
           window.close();
         }
+        if (event.key.code == sf::Keyboard::Tab) {
+          global::is_debug_draw = !global::is_debug_draw;
+          auto debug_state_string = global::is_debug_draw ? "on" : "off";
+          log(log_lvl::info, std::string{ "debug mode " } + debug_state_string);
+        }
+        if (event.key.code == sf::Keyboard::O) {
+          is_paused = !is_paused;
+          auto pause_string = is_paused ? "paused game" : "unpaused game";
+          log(log_lvl::info, pause_string);
+        }
+        if (event.key.code == sf::Keyboard::P) {
+          is_stat_draw = !is_stat_draw;
+          auto stats_string = is_stat_draw ? "enabling" : "disabling";
+          log(log_lvl::info, stats_string + std::string{ " runtime stats output" });
+        }
+        input::record_key_pressed(event.key.code);
+      }
+
+      if (event.type == sf::Event::KeyReleased) {
+        input::record_key_released(event.key.code);
+      }
+
+      if (event.type == sf::Event::Resized) {
+        world_bitmap_blit_rect = calculate_world_bitmap_blit_rect(event.size.width, event.size.height);
+
+        view.setSize({
+                    static_cast<float>(event.size.width),
+                    static_cast<float>(event.size.height)
+          });
+        window.setView(view);
       }
     }
-
-    sf::Time tick_delta_s = clock.restart();
-    real_time_s += tick_delta_s.asSeconds();
-    fps_timer_s += tick_delta_s.asSeconds();
+    
+    float tick_delta_s = clock.restart().asSeconds();
+    real_time_s += tick_delta_s;
+    fps_timer_s += tick_delta_s;
     //++ticks_accumulated;
 
-    window.clear();
-    window.draw(world_sprite);
+
+    constexpr auto max_ticks_per_frame = 5;
+    ticks_done_this_frame = 0;
+    while (ticks_accumulated > 0 && ticks_done_this_frame < max_ticks_per_frame) {
+      if (!is_paused) {
+        switch (app_state_) {
+        case app_state::title:
+          title::update(tick_delta_s);
+          if (title::is_done()) change_app_state(app_state::menu); // TODO: switch to menu not game.
+          break;
+        case app_state::menu:
+          menu::update(tick_delta_s);
+          if (menu::is_playtime()) change_app_state(app_state::game);
+          else if (menu::is_title_time()) change_app_state(app_state::title);
+          break;
+        case app_state::game:
+          game::update(*game, tick_delta_s);
+          if (game::is_done(*game)) {
+            auto final_score = game::get_game_stats(*game).score;
+            if (hiscores::is_hiscore(final_score)) change_app_state(app_state::hi_score, final_score);
+            else change_app_state(app_state::title);
+          }
+          break;
+        case app_state::hi_score:
+          hiscores::reg::update(tick_delta_s);
+          if (hiscores::reg::is_done()) {
+            top_hiscore = hiscores::get_top_hiscore();
+            change_app_state(app_state::title);
+          }
+          break;
+        }
+        game_time_s += tick_delta_s;
+      }
+      hud::update(tick_delta_s);
+      input::update_key_states();
+      need_redraw = true;
+      --ticks_accumulated;
+      ++ticks_done_this_frame;
+      ++fps_tick_counter;
+    }
+
+    if (fps_timer_s > 1.0) {
+      fps = fps_tick_counter / fps_timer_s;
+      fps_timer_s = 0.0;
+      fps_tick_counter = 0;
+    }
+
+    //if (need_redraw)
+    {
+      world_bitmap.clear(sf::Color::Red);
+      //al_set_target_bitmap(world_bitmap);
+      //al_clear_to_color(al_map_rgb(0, 0, 0));
+
+      //world_sprite.setTexture(world_bitmap);
+      //world_sprite.setPosition(world_bitmap_blit_rect.x, world_bitmap_blit_rect.y);
+
+      switch (app_state_) {
+      case app_state::title: { title::draw(); break; }
+      case app_state::menu: { menu::draw(); break; }
+      case app_state::game: { game::draw(*game); break; }
+      case app_state::hi_score: { hiscores::reg::draw(); break; }
+      default: assert(0);
+      }
+      auto stats = app_state_ == app_state::game ? game::get_game_stats(*game) : game_stats{ 0, 0, 0 };
+      hud::draw({ top_hiscore, stats.score, stats.level_number, stats.life_count });
+
+      //al_set_target_backbuffer(display);
+      //al_clear_to_color(al_map_rgb(0, 0, 0));
+      /*
+      al_draw_scaled_bitmap(
+        world_bitmap,
+        0,
+        0,
+        con::world_width_px,
+        con::world_height_px,
+        world_bitmap_blit_rect.x,
+        world_bitmap_blit_rect.y,
+        world_bitmap_blit_rect.w,
+        world_bitmap_blit_rect.h,
+        0
+      );
+      */
+      //world_sprite.
+
+
+      //auto tx = dbg_getsheet(3);
+      //sf::Sprite spr(*tx);
+      //world_bitmap.draw(spr);
+
+      world_bitmap.display();
+      
+      
+      world_sprite.setTexture(world_bitmap.getTexture());
+      world_sprite.setPosition(world_bitmap_blit_rect.x, world_bitmap_blit_rect.y);
+      world_sprite.setScale(world_bitmap_blit_rect.w / con::world_width_px, world_bitmap_blit_rect.h / con::world_height_px);
+
+      window.clear();
+
+      window.draw(world_sprite);
+
+      //window.draw(world_sprite);
+    }
+    /*****************************************************************************************/
+
     window.display();
   }
 
@@ -459,7 +600,9 @@ int main()
         }
       }
       while(!al_event_queue_is_empty(event_queue));
+#endif
 
+#if 0
       // limiting ticks per frame prevents a 'spiral of death'.
       constexpr auto max_ticks_per_frame = 5;
       ticks_done_this_frame = 0;
@@ -500,11 +643,17 @@ int main()
         ++ticks_done_this_frame;
         ++fps_tick_counter;
       }
+#endif
+
+#if 0
       if(fps_timer_s > 1.0){
         fps = fps_tick_counter / fps_timer_s;
         fps_timer_s = 0.0;
         fps_tick_counter = 0;
       }
+#endif
+
+#if 0
       if(need_redraw){
         al_set_target_bitmap(world_bitmap);
         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -531,6 +680,8 @@ int main()
           world_bitmap_blit_rect.h,
           0
         );
+
+#if 0
         if(is_stat_draw){
           // draw the runtime statistics window in bottom-left.
           constexpr auto box_w_px = 200;
@@ -558,6 +709,9 @@ int main()
             ss.str().c_str()
             );
         }
+#endif
+
+#if 0
         if(is_paused){
           // draw the paused icon.
           static auto bg_color = al_map_rgb(255, 0, 0);
@@ -598,7 +752,11 @@ int main()
             fg_color
             );
         }
+#endif
+
+#if 0
         al_flip_display();
+#endif
       }
     }
   }

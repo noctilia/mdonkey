@@ -190,4 +190,7 @@ void draw_sprite(sprite_id sid, vector2f position_px, bool flip_x = false, bool 
 void draw_sprite(sprite_id sid, vector2i position_px, bool flip_x = false, bool flip_y = false);
 void draw_centered_sprite(sprite_id sid, vector2f center_position_px, bool flip_x = false, bool flip_y = false);
 
+
+sprite_sheet dbg_getsheet(int n);
+
 #endif //DONKEY_KONG_1981_SPRITES_HH

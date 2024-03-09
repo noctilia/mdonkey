@@ -11,6 +11,17 @@ ALLEGRO_BITMAP* al_load_bitmap(const char* filename)
 
 int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, float sh, float dx, float dy, int flags)
 {
+  sf::Sprite sprite(*bitmap);
+  sprite.setTextureRect(sf::IntRect(sx, sy, sw, sh));
+  sprite.setPosition(dx, dy);
+  
+  //sprite.setScale(flags ? 1 : -1, 1);
+
+  
+  //sf::Sprite spr(*bitmap);
+  //gworld_bitmap->draw(spr);
+
+  gworld_bitmap->draw(sprite);
   return 0;
 }
 

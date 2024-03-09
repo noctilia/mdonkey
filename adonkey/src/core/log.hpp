@@ -11,12 +11,19 @@ enum class log_lvl
   info
 };
 
-constexpr const char* fmt_fatal {"\e[1;31m"};
-constexpr const char* fmt_error {"\e[1;31m"};
-constexpr const char* fmt_warning {"\e[1;33m"};
-constexpr const char* fmt_info {"\e[1;36m"};
-constexpr const char* fmt_bold {"\e[1m"};
-constexpr const char* fmt_clear {"\e[0m"};
+//constexpr const char* fmt_fatal {"\e[1;31m"};
+//constexpr const char* fmt_error {"\e[1;31m"};
+//constexpr const char* fmt_warning {"\e[1;33m"};
+//constexpr const char* fmt_info {"\e[1;36m"};
+//constexpr const char* fmt_bold {"\e[1m"};
+//constexpr const char* fmt_clear {"\e[0m"};
+
+constexpr const char* fmt_fatal {""};
+constexpr const char* fmt_error {""};
+constexpr const char* fmt_warning {""};
+constexpr const char* fmt_info {""};
+constexpr const char* fmt_bold {""};
+constexpr const char* fmt_clear {""};
 
 void log(log_lvl lvl, const std::string& msg);
 void log(log_lvl lvl, const char* msg);

@@ -355,10 +355,12 @@ namespace
     sprite{SSID_TITLE, {0, 42, 200, 40}},
     // blue title kong
     sprite{SSID_TITLE, {204, 42, 174, 40}},
+
     // red title donkey
     sprite{SSID_TITLE, {0, 0, 200, 40}},
     // red title kong
     sprite{SSID_TITLE, {204, 0, 174, 40}},
+    
     // cyan copy
     sprite{SSID_TITLE, {380, 62, 9, 8}},
     // gold copy
@@ -477,5 +479,10 @@ void draw_centered_sprite(sprite_id sid, vector2f position_px, bool flip_x, bool
     std::floor((position_px.y - sprite_data.first.clip.h * 0.5f) + offset_y),
     flags
   );
+}
+
+sprite_sheet dbg_getsheet(int n)
+{
+  return sprite_sheets[n];
 }
 

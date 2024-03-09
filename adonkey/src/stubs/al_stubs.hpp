@@ -6,7 +6,8 @@
 #define ALLEGRO_FLIP_HORIZONTAL 1
 #define ALLEGRO_FLIP_VERTICAL 2 
 
-
+extern sf::RenderWindow* gwindow;
+extern sf::RenderTexture* gworld_bitmap;
 
 typedef sf::Texture ALLEGRO_BITMAP;
 
