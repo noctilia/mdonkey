@@ -23,28 +23,40 @@ namespace
   constexpr std::array<sprite, SID_COUNT> sprites {
     // mario idle
     sprite{SSID_JUMP_MAN, {2, 10, 14, 16}, {0.f, 0.f}},
+
     // mario run 0
     sprite{SSID_JUMP_MAN, {16, 10, 17, 16}, {0.f, 0.f}},
+    
     // mario run 1
     sprite{SSID_JUMP_MAN, {34, 11, 17, 16}, {0.f, 0.f}},
+    
     // mario climb off 0
     sprite{SSID_JUMP_MAN, {52, 11, 17, 15}, {0.f, 0.f}},
+    
     // mario climb off 1
     sprite{SSID_JUMP_MAN, {68, 14, 19, 11}, {0.f, -1.f}},
+    
     // mario climb off 2
     sprite{SSID_JUMP_MAN, {88, 11, 18, 15}, {0.f, -7.f}},
+    
     // mario climb idle
     sprite{SSID_JUMP_MAN, {106, 11, 16, 15}, {0.f, 0.f}},
+    
     // mario climbing 0
     sprite{SSID_JUMP_MAN, {122, 10, 15, 16}, {0.f, 0.f}},
+    
     // mario jumping
     sprite{SSID_JUMP_MAN, {138, 11, 18, 15}, {0.f, 0.f}},
+    
     // mario stopping
     sprite{SSID_JUMP_MAN, {156, 10, 18, 16}, {0.f, 0.f}},
+    
     // mario dying 0
     sprite{SSID_JUMP_MAN, {175, 11, 18, 15}, {0.f, 0.f}},
+    
     // mario dying 1
     sprite{SSID_JUMP_MAN, {193, 10, 18, 16}, {0.f, 0.f}},
+    
     // mario dying 2
     sprite{SSID_JUMP_MAN, {211, 10, 18, 16}, {0.f, 0.f}},
 
@@ -60,6 +72,7 @@ namespace
     sprite{SSID_JUMP_MAN, {323, 0, 15, 26}, {0.f, -5.f}},
     // mario move run 1 - red hammer down
     sprite{SSID_JUMP_MAN, {340, 11, 32, 15}, {-9.f, 0.f}},
+    
     // mario move idle - yellow hammer up
     sprite{SSID_JUMP_MAN, {374, 0, 12, 26}, {0.f, -5.f}},
     // mario move idle - yellow hammer down
@@ -125,16 +138,22 @@ namespace
     // luigi move run 1 - yellow hammer down
     sprite{SSID_JUMP_MAN, {485, 37, 32, 15}, {8.f, 0.f}},
 
+
     // girder red
     sprite{SSID_WORLD, {0, 8, 8, 8}},
+    
     // girder orange
     sprite{SSID_WORLD, {0, 0, 8, 8}},
+    
     // girder blue
     sprite{SSID_WORLD, {0, 16, 8, 8}},
+    
     // ladder cyan
     sprite{SSID_WORLD, {16, 0, 8, 8}},
+    
     // ladder yellow
     sprite{SSID_WORLD, {16, 8, 8, 8}},
+    
     // ladder white
     sprite{SSID_WORLD, {16, 16, 8, 8}},
 
@@ -146,6 +165,7 @@ namespace
     sprite{SSID_WORLD, {54, 1, 12, 10}},
     // common barrel 3
     sprite{SSID_WORLD, {68, 1, 12, 10}},
+
     // common wild barrel 0
     sprite{SSID_WORLD, {82, 1, 16, 10}},
     // common wild barrel 1
@@ -159,6 +179,7 @@ namespace
     sprite{SSID_WORLD, {54, 13, 12, 10}},
     // oil barrel 3
     sprite{SSID_WORLD, {68, 13, 12, 10}},
+    
     // oil wild barrel 0
     sprite{SSID_WORLD, {82, 13, 16, 10}},
     // oil wild barrel 1
@@ -168,14 +189,18 @@ namespace
     sprite{SSID_WORLD, {119, 3, 16, 16}},
     // hot flame 1
     sprite{SSID_WORLD, {138, 3, 16, 16}},
+    
     // cold flame 0
     sprite{SSID_WORLD, {156, 3, 16, 16}, {1, 0}},
     // cold flame 1
     sprite{SSID_WORLD, {174, 3, 16, 16}, {1, 0}},
+    
     // oil can
     sprite{SSID_WORLD, {191, 3, 16, 16}},
+    
     // rivet
     sprite{SSID_WORLD, {209, 9, 8, 9}},
+    
     // barrel stack
     sprite{SSID_WORLD, {0, 27, 20, 32}},
 
@@ -349,7 +374,7 @@ namespace
   };
 
   /** hard-coded filesystem path to the sprite sheets. */
-  const std::string ss_path {"assets/sprites/"};
+  const std::string ss_path {"assets/spr/"};
 }
 
 bool load_sprite_sheets()
@@ -371,6 +396,8 @@ bool load_sprite_sheets()
   for(auto ssid = 0; ssid < SSID_COUNT; ++ssid){
     log_loading(ss_names[ssid]);
     sprite_sheets[ssid] = al_load_bitmap((ss_path + ss_names[ssid]).c_str());
+
+    // TODO: fix missing texture handling
     if(!sprite_sheets[ssid]){
       log_load_fail(ss_names[ssid]);
       return false;

@@ -68,9 +68,6 @@ irect calculate_world_bitmap_blit_rect(int new_width_px, int new_height_px)
   };
 }
 
-//int main() {}
-
-
 int main()
 {
   float target_fps_hz = 60.f;
@@ -78,7 +75,8 @@ int main()
   ALLEGRO_EVENT_QUEUE* event_queue;
   ALLEGRO_TIMER* game_ticker;*/
 
-  sf::Window* display = nullptr;
+  sf::RenderWindow window;
+
   sf::Event event;
   sf::Clock clock;  
 
@@ -101,6 +99,8 @@ int main()
   //ALLEGRO_BITMAP* world_bitmap;  // world drawn to this 224x256px bitmap, then scale drawn to window.
 
   sf::Font debug_font;
+  debug_font.loadFromFile("assets/fnt/slkscr.ttf");
+
   sf::Texture world_bitmap;
   sf::Sprite world_sprite;  
 
@@ -314,13 +314,17 @@ int main()
 
 #endif
 
-    display = new sf::Window(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Default); 
-    global::window_width_px = display->getSize().x;  
-    global::window_height_px = display->getSize().y;   
+    window.create(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Default);
+
+    
+    global::window_width_px = window.getSize().x;  
+    global::window_height_px = window.getSize().y;   
 
     world_bitmap.create(con::world_width_px, con::world_height_px);  
     world_bitmap_blit_rect = calculate_world_bitmap_blit_rect(global::window_width_px, global::window_height_px);
     
+    
+
 #if 0
     auto old_bitmap_flags = al_get_new_bitmap_flags();
     al_set_new_bitmap_flags(ALLEGRO_NO_PRESERVE_TEXTURE);
@@ -371,6 +375,34 @@ int main()
       //exit(EXIT_FAILURE);
     }
     game = std::move(game::create());
+  }
+
+
+  world_sprite.setTexture(world_bitmap);
+  world_sprite.setPosition(world_bitmap_blit_rect.x, world_bitmap_blit_rect.y);
+  world_sprite.setScale(world_bitmap_blit_rect.w / con::world_width_px, world_bitmap_blit_rect.h / con::world_height_px);
+  
+  
+  while (window.isOpen()) {
+    while (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      }
+      if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Escape) {
+          window.close();
+        }
+      }
+    }
+
+    sf::Time tick_delta_s = clock.restart();
+    real_time_s += tick_delta_s.asSeconds();
+    fps_timer_s += tick_delta_s.asSeconds();
+    //++ticks_accumulated;
+
+    window.clear();
+    window.draw(world_sprite);
+    window.display();
   }
 
 #if 0
@@ -579,6 +611,8 @@ int main()
     unload_fonts();
     unload_sounds();
   }
+
+  //delete display;
 
 #if 0
   // shutdown core
