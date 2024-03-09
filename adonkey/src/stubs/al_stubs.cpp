@@ -85,5 +85,5 @@ void al_draw_line(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, f
 
 ALLEGRO_COLOR al_map_rgb(float r, float g, float b)
 {
-  return ALLEGRO_COLOR();
+  return ALLEGRO_COLOR(r, g, b, 255);
 }

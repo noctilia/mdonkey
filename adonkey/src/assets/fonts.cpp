@@ -48,11 +48,24 @@ void draw_text(int left_px, int bottom_px, const char* text, text_color color)
 {
   // TODO: implement draw_text
   //al_draw_text(game_font, text_color_palette[color], left_px, bottom_px, 0, text);
-
+  sf::Text sf_text;
+  sf_text.setFont(*game_font);
+  sf_text.setCharacterSize(8);
+  sf_text.setString(text);  
+  sf_text.setFillColor(sf::Color(text_color_palette[color].r, text_color_palette[color].g, text_color_palette[color].b, text_color_palette[color].a));
+  sf_text.setPosition(left_px, bottom_px);
+  gworld_bitmap->draw(sf_text);
 }
 
 void draw_text(int left_px, int bottom_px, std::string text, text_color color)
 {
   // TODO: implement draw_text
   //al_draw_text(game_font, text_color_palette[color], left_px, bottom_px, 0, text.c_str());
+  sf::Text sf_text;
+  sf_text.setFont(*game_font);
+  sf_text.setCharacterSize(8);
+  sf_text.setString(text);
+  sf_text.setFillColor(sf::Color(text_color_palette[color].r, text_color_palette[color].g, text_color_palette[color].b, text_color_palette[color].a));
+  sf_text.setPosition(left_px, bottom_px);
+  gworld_bitmap->draw(sf_text);
 }

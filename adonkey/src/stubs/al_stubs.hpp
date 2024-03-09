@@ -34,11 +34,11 @@ int al_get_config_value_int(const ALLEGRO_CONFIG* config, const char* section, c
 int al_get_config_value (ALLEGRO_CONFIG const* config, char const* section, char const* key, char const* def);
 int al_set_config_value (ALLEGRO_CONFIG* config, char const* section, char const* key, char const* value);  
 
-typedef struct ALLEGRO_COLOR ALLEGRO_COLOR;
-struct ALLEGRO_COLOR
-{
-  float r, g, b, a;
-};
+typedef sf::Color ALLEGRO_COLOR;
+//struct ALLEGRO_COLOR
+//{
+//  float r, g, b, a;
+//};
 
 
 void al_draw_rectangle(float x1, float y1, float x2, float y2, ALLEGRO_COLOR color, float thickness);

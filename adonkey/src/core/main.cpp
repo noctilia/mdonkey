@@ -488,7 +488,7 @@ int main()
 
     //if (need_redraw)
     {
-      world_bitmap.clear(sf::Color::Red);
+      world_bitmap.clear(sf::Color{64, 64, 64});
       //al_set_target_bitmap(world_bitmap);
       //al_clear_to_color(al_map_rgb(0, 0, 0));
 
