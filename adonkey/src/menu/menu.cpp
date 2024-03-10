@@ -24,11 +24,11 @@ namespace menu {
   {
     clock_s += dt_s;
 
-    if(input::is_action_triggered(input::ACTION_MENU_ENTER))
+    if (input::is_action_triggered(input::ACTION_MENU_ENTER))
       is_play_triggered = true;
 
     cutscene_player.update(dt_s);
-    if(cutscene_player.is_done()){
+    if (cutscene_player.is_done()) {
       cutscene_player.initialise(cutscenes::menu_barrel_jump);
       cutscene_player.update(0.001f);
     }

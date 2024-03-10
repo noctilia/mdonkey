@@ -666,12 +666,14 @@ namespace cutscenes
     classic_kong_fall_moving_frames,
   };
 
+  // todo: do a better simulaion of the barrel jump
   const std::vector<static_frame> menu_barrel_jump_static_frames {
     {SID_MARIO_RUN_0, 0, 0.1, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_IDLE, 0.1, 0.2, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_RUN_1, 0.2, 0.3, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_RUN_0, 0.3, 0.4, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_IDLE, 0.4, 0.5, {100, 96}, 2, ANIM_FRAME_FLIP_X},
+    // in between 0.5 .. 1.5 mario is jumping
     {SID_MARIO_RUN_0, 1.5, 1.6, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_IDLE, 1.6, 1.7, {100, 96}, 2, ANIM_FRAME_FLIP_X},
     {SID_MARIO_RUN_1, 1.7, 1.8, {100, 96}, 2, ANIM_FRAME_FLIP_X},
@@ -682,11 +684,15 @@ namespace cutscenes
     {SID_COMMON_BARREL_0, 0, 0.2, {160, 102}, 2, ANIM_FRAME_FLIP_X,  {148, 102}},
     {SID_COMMON_BARREL_1, 0.2, 0.4, {148, 102}, 2, ANIM_FRAME_FLIP_X,  {136, 102}},
     {SID_COMMON_BARREL_2, 0.4, 0.6, {136, 102}, 2, ANIM_FRAME_FLIP_X,  {124, 102}},
+    
     {SID_MARIO_JUMPING, 0.5, 1, {100, 96}, 2, ANIM_FRAME_FLIP_X,  {100, 80}},
+
     {SID_COMMON_BARREL_3, 0.6, 0.8, {124, 102}, 2, ANIM_FRAME_FLIP_X,  {112, 102}},
     {SID_COMMON_BARREL_0, 0.8, 1, {112, 102}, 2, ANIM_FRAME_FLIP_X,  {100, 102}},
     {SID_COMMON_BARREL_1, 1, 1.2, {100, 102}, 2, ANIM_FRAME_FLIP_X,  {88, 102}},
+    
     {SID_MARIO_JUMPING, 1, 1.5, {100, 80}, 2, ANIM_FRAME_FLIP_X,  {100, 96}},
+    
     {SID_COMMON_BARREL_2, 1.2, 1.4, {88, 102}, 2, ANIM_FRAME_FLIP_X,  {76, 102}},
     {SID_COMMON_BARREL_3, 1.4, 1.6, {76, 102}, 2, ANIM_FRAME_FLIP_X,  {64, 102}},
     {SID_COMMON_BARREL_0, 1.6, 1.8, {64, 102}, 2, ANIM_FRAME_FLIP_X,  {52, 102}},

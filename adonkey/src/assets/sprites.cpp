@@ -310,10 +310,14 @@ namespace
     sprite{SSID_KONG, {380, 4, 43, 32}},
     // kong climb
     sprite{SSID_KONG, {90, 2, 33, 36}},
+    
     // kong climb pauline 0
-    sprite{SSID_KONG, {125, 2, 38, 36}},
+    //sprite{SSID_KONG, {125, 2, 38, 36}},
+    sprite{SSID_KONG, {584, 0, 38, 36}},  // new aligned
+
     // kong climb pauline 1
-    sprite{SSID_KONG, {165, 4, 43, 32}},
+    //sprite{SSID_KONG, {165, 4, 43, 32}},
+      sprite{ SSID_KONG, {632, 0, 43, 32} },  // new aligned
 
     // kong stun 0
     sprite{SSID_KONG, {338, 1, 40, 38}},

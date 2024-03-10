@@ -114,17 +114,16 @@ int main()
   hiscores::reg::initialise();
 
 
-  enum class app_state { title, menu, game, hi_score };
+  enum class app_state { title, menu, game, hi_score, debug };
   app_state app_state_ = app_state::title;
   const auto change_app_state = [&game, &app_state_](app_state new_state, int new_score = 0)
   {
     switch(new_state){
       case app_state::title:    { title::on_enter(); break;}
-      // todo: implement menu
       case app_state::menu:     { menu::on_enter(); break;}
       case app_state::hi_score: { hiscores::reg::on_enter(new_score); break;}
-      // todo: implement game
-      //case app_state::game:     { game::on_enter(*game); break;}
+      case app_state::game:     { game::on_enter(*game); break;}
+      case app_state::debug:    { break;  }
       default: assert(0);
     }
     app_state_ = new_state;
@@ -447,19 +446,24 @@ int main()
         switch (app_state_) {
         case app_state::title:
           title::update(tick_delta_s);
-          if (title::is_done()) change_app_state(app_state::menu); // TODO: switch to menu not game.
+          if (title::is_done()) 
+            change_app_state(app_state::menu);
           break;
         case app_state::menu:
           menu::update(tick_delta_s);
-          if (menu::is_playtime()) change_app_state(app_state::game);
-          else if (menu::is_title_time()) change_app_state(app_state::title);
+          if (menu::is_playtime()) 
+            change_app_state(app_state::game);
+          else if (menu::is_title_time()) 
+            change_app_state(app_state::title);
           break;
         case app_state::game:
           game::update(*game, tick_delta_s);
           if (game::is_done(*game)) {
             auto final_score = game::get_game_stats(*game).score;
-            if (hiscores::is_hiscore(final_score)) change_app_state(app_state::hi_score, final_score);
-            else change_app_state(app_state::title);
+            if (hiscores::is_hiscore(final_score)) 
+              change_app_state(app_state::hi_score, final_score);
+            else 
+              change_app_state(app_state::title);
           }
           break;
         case app_state::hi_score:

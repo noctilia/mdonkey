@@ -100,16 +100,18 @@ snd_play_id play_sound(sound_id snd, float speed, bool loop, float gain)
   if (audio_sound[snd]) {
     audio_sound[snd]->setBuffer(*audio_samples[snd]);
     audio_sound[snd]->play();
+    return sample_id;
   }
-  return sample_id;
+   return {}; 
 }
 
 void stop_sound(snd_play_id id)
 {
-  if(!id.has_value()) 
+  // todo: implement stop sound
+ /* if(!id.has_value()) 
     return;
-  //al_stop_sample(&id.value());
+  al_stop_sample(&id.value());
   if (audio_sound[id.value()]) {
     audio_sound[id.value()]->stop();
-  }
+  }*/
 }
