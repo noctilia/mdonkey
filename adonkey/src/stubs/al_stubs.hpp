@@ -12,7 +12,7 @@ extern sf::RenderTexture* gworld_bitmap;
 typedef sf::Texture ALLEGRO_BITMAP;
 
 ALLEGRO_BITMAP* al_load_bitmap(const char* filename); 
-int al_draw_bitmap(ALLEGRO_BITMAP* bitmap, float dx, float dy, int flags);  
+//int al_draw_bitmap(ALLEGRO_BITMAP* bitmap, float dx, float dy, int flags);  
 int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, float sh, float dx, float dy, int flags); 
 void al_destroy_bitmap(ALLEGRO_BITMAP* bitmap);
 

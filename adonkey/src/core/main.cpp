@@ -121,7 +121,7 @@ int main()
     switch(new_state){
       case app_state::title:    { title::on_enter(); break;}
       // todo: implement menu
-      //case app_state::menu:     { menu::on_enter(); break;}
+      case app_state::menu:     { menu::on_enter(); break;}
       case app_state::hi_score: { hiscores::reg::on_enter(new_score); break;}
       // todo: implement game
       //case app_state::game:     { game::on_enter(*game); break;}
@@ -437,7 +437,7 @@ int main()
     float tick_delta_s = clock.restart().asSeconds();
     real_time_s += tick_delta_s;
     fps_timer_s += tick_delta_s;
-    //++ticks_accumulated;
+    ++ticks_accumulated;
 
 
     constexpr auto max_ticks_per_frame = 5;

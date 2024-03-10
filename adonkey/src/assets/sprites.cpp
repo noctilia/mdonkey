@@ -22,13 +22,16 @@ namespace
   /** hard-coded metadata of all sprites. */
   constexpr std::array<sprite, SID_COUNT> sprites {
     // mario idle
-    sprite{SSID_JUMP_MAN, {2, 10, 14, 16}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {2, 10, 14, 16}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {0, 16, 16, 16}, {0.f, 0.f}}, // new aligned
 
     // mario run 0
-    sprite{SSID_JUMP_MAN, {16, 10, 17, 16}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {16, 10, 17, 16}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {24, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario run 1
-    sprite{SSID_JUMP_MAN, {34, 11, 17, 16}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {34, 11, 17, 16}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {48, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climb off 0
     sprite{SSID_JUMP_MAN, {52, 11, 17, 15}, {0.f, 0.f}},
@@ -46,7 +49,8 @@ namespace
     sprite{SSID_JUMP_MAN, {122, 10, 15, 16}, {0.f, 0.f}},
     
     // mario jumping
-    sprite{SSID_JUMP_MAN, {138, 11, 18, 15}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {138, 11, 18, 15}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {312, 17, 18, 15}, {0.f, 0.f}}, // new aligned
     
     // mario stopping
     sprite{SSID_JUMP_MAN, {156, 10, 18, 16}, {0.f, 0.f}},
@@ -293,8 +297,11 @@ namespace
 
     // kong frowny
     sprite{SSID_KONG, {0, 2, 40, 32}},
-    // kong beat chest
-    sprite{SSID_KONG, {42, 2, 46, 32}},
+
+    // kong beat chest 113
+    //sprite{SSID_KONG, {42, 2, 46, 32}},
+    sprite{ SSID_KONG, {203, 8, 46, 32} },  // new
+
     // kong smiley
     sprite{SSID_KONG, {295, 4, 40, 32}},
     // kong with barrel
@@ -351,15 +358,20 @@ namespace
     // score 800
     sprite{SSID_WORLD, {239, 2, 15, 7}},
 
-    // blue title donkey
-    sprite{SSID_TITLE, {0, 42, 200, 40}},
+    // blue title donkey  
+    // sprite{SSID_TITLE, {0, 42, 200, 40}},   
+    sprite{SSID_TITLE, {0, 48, 200, 40}},   // new aligned
+    
     // blue title kong
-    sprite{SSID_TITLE, {204, 42, 174, 40}},
+    //sprite{SSID_TITLE, {204, 42, 174, 40}},
+    sprite{ SSID_TITLE, {208, 48, 174, 40} },  // new aligned
 
     // red title donkey
     sprite{SSID_TITLE, {0, 0, 200, 40}},
+
     // red title kong
-    sprite{SSID_TITLE, {204, 0, 174, 40}},
+    //sprite{SSID_TITLE, {204, 0, 174, 40}},
+    sprite{ SSID_TITLE, {208, 0, 174, 40} },  // new aligned
     
     // cyan copy
     sprite{SSID_TITLE, {380, 62, 9, 8}},

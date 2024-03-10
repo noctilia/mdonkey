@@ -48,7 +48,15 @@ namespace title {
     draw_sprite(kong_sid, vector2f{32, 120});
     draw_sprite(copy_sid, vector2f{90, 216});
     draw_sprite(SID_KONG_BEAT_CHEST, vector2f{90, 175}, true);
-    
+
+    //draw_sprite (SID_MARIO_IDLE, vector2f{8, 175}, true);
+    //draw_sprite(SID_MARIO_IDLE, vector2f{ 4*8, 175 }, false);
+   
+    draw_sprite(SID_MARIO_RUN_0, vector2f{ 4 * 8, 175 + 16 * 0}, false);
+    draw_sprite(SID_MARIO_IDLE,  vector2f{ 4 * 8, 175 + 16 * 1 }, false);
+    draw_sprite(SID_MARIO_RUN_1, vector2f{ 4 * 8, 175 + 16 * 2}, false);
+
+
     draw_text(100, 216, "1981", txt_color);
     draw_text(16, 226, "NINTENDO OF AMERICA INC.", txt_color);
     draw_text(4, 238, "REMAKE BY IANMURFINXYZ 2021", txt_color);
@@ -56,6 +64,8 @@ namespace title {
 
   bool is_done()
   {
-    return clock_s > title_duration_s;
+    // todo: return clock_s > title_duration_s;
+   return clock_s > title_duration_s;
+   // return false;
   }
 }

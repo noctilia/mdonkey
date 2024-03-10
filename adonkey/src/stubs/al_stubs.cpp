@@ -9,17 +9,18 @@ ALLEGRO_BITMAP* al_load_bitmap(const char* filename)
   return texture;
 }
 
-int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, float sh, float dx, float dy, int flags)
+int al_draw_bitmap_region(ALLEGRO_BITMAP* bitmap, float sx, float sy, float sw, float sh, float x, float y, int flags)
 {
   sf::Sprite sprite(*bitmap);
-  sprite.setTextureRect(sf::IntRect(sx, sy, sw, sh));
-  sprite.setPosition(dx, dy);
-  
-  //sprite.setScale(flags ? 1 : -1, 1);
 
-  
-  //sf::Sprite spr(*bitmap);
-  //gworld_bitmap->draw(spr);
+  // todo: do a better flipping here
+  float scaleX = flags & ALLEGRO_FLIP_HORIZONTAL ? -1.0f : 1.0f;
+  float scaleY = flags & ALLEGRO_FLIP_VERTICAL ? -1.0f : 1.0f;
+
+  sprite.setTextureRect(sf::IntRect(sx, sy, sw, sh));
+  sprite.setPosition(x + sw/2, y + sh /2);
+  sprite.setOrigin(sw / 2, sh / 2);
+  sprite.setScale(scaleX, scaleY);
 
   gworld_bitmap->draw(sprite);
   return 0;
