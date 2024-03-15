@@ -52,9 +52,10 @@ namespace title {
     //draw_sprite (SID_MARIO_IDLE, vector2f{8, 175}, true);
     //draw_sprite(SID_MARIO_IDLE, vector2f{ 4*8, 175 }, false);
    
-    /*draw_sprite(SID_MARIO_RUN_0, vector2f{ 4 * 8, 175 + 16 * 0}, false);
-    draw_sprite(SID_MARIO_IDLE,  vector2f{ 4 * 8, 175 + 16 * 1 }, false);
-    draw_sprite(SID_MARIO_RUN_1, vector2f{ 4 * 8, 175 + 16 * 2}, false);*/
+    draw_sprite(SID_MARIO_RUN_0, vector2f{ 4 * 8, 100 + 16 * 0}, false);
+    draw_sprite(SID_MARIO_IDLE,  vector2f{ 4 * 8, 100 + 16 * 1 }, false);
+    draw_sprite(SID_MARIO_RUN_1, vector2f{ 4 * 8, 100 + 16 * 2}, false);
+    draw_sprite(SID_MARIO_JUMPING,  vector2f{ 4 * 8, 100 + 16 * 3 }, false);
 
 
     draw_text(100, 216, "1981", txt_color);
@@ -66,6 +67,6 @@ namespace title {
   {
     // todo: return clock_s > title_duration_s;
    return clock_s > title_duration_s;
-   // return false;
+   //return false;
   }
 }

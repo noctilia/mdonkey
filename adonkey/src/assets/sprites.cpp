@@ -50,7 +50,7 @@ namespace
     
     // mario jumping
     //sprite{SSID_JUMP_MAN, {138, 11, 18, 15}, {0.f, 0.f}},
-    sprite{SSID_JUMP_MAN, {312, 17, 18, 15}, {0.f, 0.f}}, // new aligned
+    sprite{SSID_JUMP_MAN, {312, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario stopping
     sprite{SSID_JUMP_MAN, {156, 10, 18, 16}, {0.f, 0.f}},

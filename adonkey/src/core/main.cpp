@@ -283,13 +283,13 @@ int main()
   {
 #if 0
     const auto require_init = [](bool init_result, const char* system_name) -> void {
-      if(!init_result){
-        std::string msg{"failed to initialise "};
+      if (!init_result) {
+        std::string msg{ "failed to initialise " };
         msg += system_name;
         log(log_lvl::fatal, msg);
         exit(EXIT_FAILURE);
       }
-    };
+      };
 
     log(log_lvl::info, "initialising core.");
 
@@ -305,9 +305,9 @@ int main()
 #endif
 
 #if 0
-    if(is_fullscreen) 
+    if (is_fullscreen)
       al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
-    else 
+    else
       al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 
     display = al_create_display(global::window_width_px, global::window_height_px);
@@ -317,9 +317,13 @@ int main()
 
 #endif
 
-    window.create(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Default);
-
-    
+    if (is_fullscreen) {
+      window.create(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Fullscreen);
+    }
+    else {
+      window.create(sf::VideoMode(global::window_width_px, global::window_height_px), "Donkey Kong", sf::Style::Default);
+    }
+      
     global::window_width_px = window.getSize().x;  
     global::window_height_px = window.getSize().y;   
 
