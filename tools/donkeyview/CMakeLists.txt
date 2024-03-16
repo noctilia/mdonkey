@@ -1,26 +1,13 @@
 cmake_minimum_required(VERSION 3.5.1)
 
-project(adonkey VERSION 0.0.0 DESCRIPTION "adonkey")
-set(TARGET_NAME adonkey)
+project(donkeyview VERSION 0.0.0 DESCRIPTION "donkeyview")
+set(TARGET_NAME ${PROJECT_NAME})
 
 option(BUILD_UNIT_TESTS "Build unit tests" ON)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/core ${CMAKE_CURRENT_SOURCE_DIR}/src/game)
-file(GLOB SRC 
-  src/*.cpp 
-  src/assets/*.cpp 
-  src/debug/*.cpp 
-  src/core/*.cpp 
-  src/game/*.cpp 
-  src/game/stages/*.cpp 
-  src/hiscores/*.cpp
-  src/hud/*.cpp 
-  src/menu/*.cpp 
-  src/title/*.cpp 
-  src/stubs/*.cpp
-)
-#add_executable(${TARGET_NAME} WIN32 ${SRC} "src/wstub.cpp")
-add_executable(${TARGET_NAME} ${SRC} "src/wstub.cpp")
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/stubs)
+file(GLOB SRC src/*.cpp src/*.rc)
+add_executable(${TARGET_NAME} WIN32 ${SRC})
 
 target_include_directories(${TARGET_NAME} PUBLIC src)
 target_include_directories(${TARGET_NAME} PUBLIC 

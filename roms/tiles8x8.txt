@@ -1,0 +1,49 @@
+# 8x8 tiles
+00    -> char 0
+01    -> char 1
+02    -> char 2
+03    -> char 3
+04    -> char 4
+05    -> char 5
+06    -> char 6
+07    -> char 7
+08    -> char 8
+09    -> char 9
+0a    -> char ' '
+0b    -> char ' '
+0c    -> char ' '
+0d    -> char ' '
+0e    -> char ' '
+0f    -> char ' '
+10    -> char ' '
+11    -> char A
+12    -> char B
+13    -> char C
+..
+1b    -> char K
+..
+20    -> char P
+..
+2a    -> char Z
+2b    -> char '.'
+2c    -> hline1 (center)
+2d    -> hline2 (up) small
+2e    -> char ':'
+2f    -> hline2 (up) full
+30    -> char '('
+31    -> char ')'
+32    -> char 'I'   röhmisch 1
+33    -> char 'II'  röhmisch 2
+34    -> char '='   
+35    -> char '-' 
+36    -> !!   big points
+37    -> !!   small points
+38    -> !    big points
+39    -> !    small points
+  
+  
+  
+c0    -> ladder
+
+
+

@@ -34,16 +34,20 @@ namespace
     sprite{SSID_JUMP_MAN, {48, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climb off 0
-    sprite{SSID_JUMP_MAN, {52, 11, 17, 15}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {52, 11, 17, 15}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {72, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climb off 1
-    sprite{SSID_JUMP_MAN, {68, 14, 19, 11}, {0.f, -1.f}},
+    //sprite{SSID_JUMP_MAN, {68, 14, 19, 11}, {0.f, -1.f}},
+    sprite{SSID_JUMP_MAN, {96, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climb off 2
-    sprite{SSID_JUMP_MAN, {88, 11, 18, 15}, {0.f, -7.f}},
+    //sprite{SSID_JUMP_MAN, {88, 11, 18, 15}, {0.f, -7.f}},
+    sprite{SSID_JUMP_MAN, {120, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climb idle
-    sprite{SSID_JUMP_MAN, {106, 11, 16, 15}, {0.f, 0.f}},
+    //sprite{SSID_JUMP_MAN, {106, 11, 16, 15}, {0.f, 0.f}},
+    sprite{SSID_JUMP_MAN, {144, 16, 16, 16}, {0.f, 0.f}}, // new aligned
     
     // mario climbing 0
     sprite{SSID_JUMP_MAN, {122, 10, 15, 16}, {0.f, 0.f}},

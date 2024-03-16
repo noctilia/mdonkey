@@ -20,6 +20,7 @@
 #include "../hud/hud.hpp"
 #include "../title/title.hpp"
 #include "../menu/menu.hpp"
+#include "../debug/debug.hpp"
 #include "../hiscores/hiscores.hpp"
 #include "../game/game.hpp"
 
@@ -123,7 +124,7 @@ int main()
       case app_state::menu:     { menu::on_enter(); break;}
       case app_state::hi_score: { hiscores::reg::on_enter(new_score); break;}
       case app_state::game:     { game::on_enter(*game); break;}
-      case app_state::debug:    { break;  }
+      case app_state::debug:    { debug::on_enter(); break; }
       default: assert(0);
     }
     app_state_ = new_state;
@@ -451,6 +452,12 @@ int main()
         case app_state::title:
           title::update(tick_delta_s);
           if (title::is_done()) 
+            //change_app_state(app_state::menu);
+            change_app_state(app_state::debug);
+          break;
+        case app_state::debug:
+          debug::update(tick_delta_s);
+          if (debug::is_done())
             change_app_state(app_state::menu);
           break;
         case app_state::menu:
@@ -505,6 +512,7 @@ int main()
 
       switch (app_state_) {
       case app_state::title: { title::draw(); break; }
+      case app_state::debug: { debug::draw(); break; }
       case app_state::menu: { menu::draw(); break; }
       case app_state::game: { game::draw(*game); break; }
       case app_state::hi_score: { hiscores::reg::draw(); break; }

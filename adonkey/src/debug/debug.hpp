@@ -1,6 +1,5 @@
 #pragma once
-
-namespace title {
+namespace debug {
   void on_enter();
   void update(float dt_s);
   void draw();

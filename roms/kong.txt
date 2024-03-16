@@ -1,0 +1,120 @@
+ROMS
+[0x0000..0x0fff]  c_5f_b.bin
+[0x1000..0x1fff]  5g.cpu
+[0x2000..0x2fff]  5h.cpu
+[0x3000..0x3fff]  c_5k_b.bin
+[0x4000..0x4fff]  ??? zero
+[0x5000..0x5fff]  ??? zero
+[0x6000..0x6fff]  RAM
+
+
+[0x7000..0x73ff]  Sprites
+[0x7400..0x77f]   Video RAM
+
+
+Ports:
+7c00        in0                 
+  #0    right player1
+  #1    left player1
+  #2    up player1
+  #3    down player1
+  #4    jump player1
+  #5    ?
+  #6    reset player1
+  #7    ?
+7c80        in1
+  #0    right player2
+  #1    left player2
+  #2    up player2
+  #3    down player2
+  #4    jump player2
+  #5    ?
+  #6    reset player2
+  #7    ?
+
+7d00        in2 (start1,start2)
+7d80        dsw1 (coins)
+
+
+7800-780f   P8257 control register
+            00 ch-0 dma address   16-bit
+            01 ch-0 terminal count 16-bit 
+            02 ch-1 dma address   16-bit
+            03 ch-1 terminal count 16-bit 
+            04 ch-2 dma address   16-bit
+            05 ch-2 terminal count 16-bit 
+            06 ch-3 dma address   16-bit
+            07 ch-3 terminal count 16-bit 
+            08 mode set (write), status read
+
+
+7c00        sound 00..0f
+7c80        gfx bank (dkong jr only)
+7d00      digital sound trigger - walk
+7d01      digital sound trigger - jump
+7d02      digital sound trigger - boom (gorilla stomps foot)
+7d03      digital sound trigger - coin input/spring
+7d04      digital sound trigger - gorilla fall
+7d05      digital sound trigger - barrel jump/prize
+7d06      ?
+7d07      ?
+7d80      digital sound trigger - dead
+7d82      flip screen
+7d83      ?
+7d84      interrupt enable
+7d85      0/1 toggle
+7d86-7d87 palette bank selector (only bit 0 is significant: 7d86 = bit 0 7d87 = bit 1)
+
+5d.cpu
+c_5k_b.bin
+v_5k_b.bin
+
+
+
+[c_5f_b.bin - rom]
+0x0000    3E 00 32 84 7D C3 66 02 3A 07 60 0F D0 33 33 C9
+...
+0x0fff    F4 3D CD FA 11 21 00 3E 11 FC 69 01 04 00 ED B0
+
+[5g.cpu - rom]
+0x1000    21 0C 3E CD A6 11 21 1B 10 11 07 67 01 1C 08 CD
+...
+0x1fff    01 04 FF DD 35 03 DD 66 03 DD 6E 05 7C E6 07 FE
+
+[5h.cpu - rom]
+0x2000    03 CA 5F 21 2D 2D 2D CD 33 23 2C 2C 2C 7D DD 77
+...
+0x2fff    7D 0F 0F 0F E6 1F 6F 7C 2F E6 F8 5F AF 67 CB 13
+
+[c_5k_b.bin - rom]
+0x3000    17 CB 13 17 C6 74 57 19 C9 57 0F DA 22 30 0E 93
+...
+0x3f00                                                           CONGRATULATION ! ; text section
+0x3fff    00 7F 7F 0E 1C 0E 7F 7F 00 00 41 7F 7F 41 00 00
+
+
+# run
+0x0000
+
+RAM        0 1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+
+0x6000                         
+          
+0x6100    00 00 00 00 00 00 00 00 00 37 00 00 00 00 00 00
+0x60b0    c0 c0
+0x60c0    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff             
+0x60d0    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+0x60e0    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+0x60f0    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
+0x6900
+
+; video screen? top right to bottom right --> see tiles8x8.txt
+0x7440  
+
+0x7900
+
+
+
+
+0x141
+
