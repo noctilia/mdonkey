@@ -111,13 +111,12 @@ public:
           r = r >> bitspercolor;
 
           int x = x0 + (7 - i);
-          //int x = x0 + j;
           int y = y0 + (7 - j);
           if (c != 0) {
             image.setPixel(x, y, sf::Color(255, 255, 255, 255));
           }
           else {
-            image.setPixel(x, y, sf::Color(255, 0, 0, 255));
+            image.setPixel(x, y, sf::Color(0, 0, 0, 0));
           }
           p += bitspercolor;
           if (p >= 8) {
