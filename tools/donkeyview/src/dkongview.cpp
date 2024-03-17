@@ -67,20 +67,83 @@ public:
     std::streampos length = fi.tellg();
     fi.seekg(0, std::ios::beg);
 
-    m_data.resize(length);
-    fi.read(reinterpret_cast<char*>(m_data.data()), length);
+    _data.resize(length);
+    fi.read(reinterpret_cast<char*>(_data.data()), length);
     fi.close();
 
     return false;
   }
 
-  void extract_charset8x8()
+  void save_charset8x8(const std::string& path, const std::vector<std::uint8_t>& data)
   {
+    int char_x = 8;
+    int char_y = 8;
+
+    int num_bytes_per_char = 8;  
+
+    sf::Image image;
+    image.create(16*8, 16*8, sf::Color(0, 255, 0));
+
+    int k = 0;
+    int x0 = 0;
+    int y0 = 0;
+
+    int n = 0;
+    int r = 0;
+    // 8x8 bit charset --> 8 Bytes per char
+    // filesize = 2048 bytes --> 256 chars
+    for (int m = 0; m < 256; m++) {
+      if (k >= data.size())
+        break;
+
+      int bitspercolor = 1;
+      int mask = 0x1;
+      for (int s = 0; s < bitspercolor; s++)
+        mask |= 1 << s;
+
+      int p = 0;
+      int r = data[k];
+      for (int i = 0; i < 8; i++)
+      {
+        for (int j = 0; j < 8; j++)
+        {
+          int c = r & mask;
+          r = r >> bitspercolor;
+
+          int x = x0 + (7 - i);
+          //int x = x0 + j;
+          int y = y0 + (7 - j);
+          if (c != 0) {
+            image.setPixel(x, y, sf::Color(255, 255, 255, 255));
+          }
+          else {
+            image.setPixel(x, y, sf::Color(255, 0, 0, 255));
+          }
+          p += bitspercolor;
+          if (p >= 8) {
+            p = 0;
+            k++;
+            if (k >= data.size())
+              break;
+            r = data[k];
+          }
+
+        }
+      }
+      n++;
+      x0 += 8;
+      if (!(n % 16)) {
+        y0 += 8;
+        x0 = 0;
+      }
+    }
+
+    image.saveToFile(path);
   }
 
   bool init() {
     float scale = 4.0f;
-    pixbuf.create(256, 256, sf::Color(0, 255, 0));
+    _pixbuf.create(256, 256, sf::Color(0, 255, 0));
 
     int k = 0;
     int x0 = 0;
@@ -91,7 +154,7 @@ public:
     // 8x8 bit charset --> 8 Bytes per char
     // filesize = 2048 bytes --> 256 chars
     for (int m = 0; m < 256; m++) {
-        if (k >= m_data.size())
+        if (k >= _data.size())
           break;
 
         int bitspercolor = 1;
@@ -100,25 +163,30 @@ public:
           mask |= 1 << s;
 
         int p = 0;
-        int r = m_data[k];
+        int r = _data[k];
         for (int i = 0; i < 8; i++)
         {
           for (int j = 0; j < 8; j++)
           {
             int c = r & mask;
             r = r >> bitspercolor;
-            if (c != 0)
-              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(255, 255, 255, 255));
-            else
-              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(255, 0, 0, 255));
-          
+
+            int x = x0 + (7 - i);
+            //int x = x0 + j;
+            int y = y0 + (7-j);
+            if (c != 0) {            
+              _pixbuf.setPixel(x, y, sf::Color(255, 255, 255, 255));
+            }            
+            else {
+              _pixbuf.setPixel(x, y, sf::Color(255, 0, 0, 255));
+            }
             p += bitspercolor;
             if (p >= 8) {
               p = 0;
               k++;
-              if (k >= m_data.size())
+              if (k >= _data.size())
                 break;
-              r = m_data[k];
+              r = _data[k];
             }
             
           }
@@ -131,13 +199,15 @@ public:
         }
     } 
 
-    texture.create(pixbuf.getSize().x, pixbuf.getSize().y);
-    texture.update(pixbuf);
+    save_charset8x8("charset8x8.png", _data);
+
+    texture.create(_pixbuf.getSize().x, _pixbuf.getSize().y);
+    texture.update(_pixbuf);
     sprite.setTexture(texture);
     
     sprite2.setTexture(texture);
     sprite2.setScale(scale, scale);
-    sprite2.setPosition(pixbuf.getSize().x, 0);
+    sprite2.setPosition(_pixbuf.getSize().x, 0);
     return true;
   }
 
@@ -148,11 +218,11 @@ public:
   } 
 
 private:
-  sf::Image pixbuf;
+  sf::Image _pixbuf;
   sf::Texture texture;
   sf::Sprite sprite;
   sf::Sprite sprite2;
-  std::vector<std::uint8_t> m_data;
+  std::vector<std::uint8_t> _data;
 };
 
 int main(int argc, char** argv)
