@@ -23,19 +23,19 @@ NMI Mask            0x7D84              0x7D84
 Palette Bank        0x7D86              0x7D87
 
 ------------------------------------------------------------------------
-0x0000-0x3FFF	16384	ROM	
-0x6000-0x6BFF	3072	RAM	
-0x7000-0x73FF	1024	RAM, Shared	sprite_ram (/* sprite set 1 */)
-0x7400-0x77FF	1024	RAM Write, Shared	dkong_videoram_w, video_ram
-0x7800-0x780F	16	Device Read/Write	dma8257, i8257_device, read, write (/* P8257 control registers */)
-0x7C00	      1	Read Port, Write Latch 8-bit	IN0, ls175.3d (/* IN0, sound CPU intf */)
-0x7C80	      1	Read Port, Write	IN1, radarscp_grid_color_w (/* IN1 */)
-0x7D00-0x7D07	8	Device Write	ls259.6h, latch8_device, bit0_w (/* Sound signals */)
-0x7D00	      1	Read	dkong_in2_r (/* IN2 */)
-0x7D80	      1	Read Port, Write	DSW0, dkong_audio_irq_w (/* DSW0 */)
-0x7D81	      1	Write	radarscp_grid_enable_w
-0x7D82	      1	Write	dkong_flipscreen_w
-0x7D83	      1	Write	dkong_spritebank_w (/* 2 PSL Signal */)
-0x7D84	      1	Write	nmi_mask_w
-0x7D85	      1	Write	p8257_drq_w (/* P8257 ==> /DRQ0 /DRQ1 */)
-0x7D86-0x7D87	2	Write	dkong_palettebank_w
+0x0000-0x3FFF	  16384	ROM	
+0x6000-0x6BFF	   3072	RAM	
+0x7000-0x73FF	   1024	RAM, Shared	sprite_ram (/* sprite set 1 */)
+0x7400-0x77FF	   1024	RAM Write, Shared	dkong_videoram_w, video_ram
+0x7800-0x780F	     16 Device Read/Write	dma8257, i8257_device, read, write (/* P8257 control registers */)
+0x7C00	            1	Read Port, Write Latch 8-bit	IN0, ls175.3d (/* IN0, sound CPU intf */)
+0x7C80	            1	Read Port, Write	IN1, radarscp_grid_color_w (/* IN1 */)
+0x7D00-0x7D07	      8	Device Write	ls259.6h, latch8_device, bit0_w (/* Sound signals */)
+0x7D00	            1	Read	dkong_in2_r (/* IN2 */)
+0x7D80	            1	Read Port, Write	DSW0, dkong_audio_irq_w (/* DSW0 */)
+0x7D81	            1	Write	radarscp_grid_enable_w
+0x7D82	            1	Write	dkong_flipscreen_w
+0x7D83	            1	Write	dkong_spritebank_w (/* 2 PSL Signal */)
+0x7D84	            1	Write	nmi_mask_w
+0x7D85	            1	Write	p8257_drq_w (/* P8257 ==> /DRQ0 /DRQ1 */)
+0x7D86-0x7D87	      2	Write	dkong_palettebank_w
