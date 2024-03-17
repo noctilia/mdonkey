@@ -11,6 +11,60 @@ Main RAM            0x6000              0x6BFF
 0x6229              number of lives
 
 Sprite Ram          0x7000              0x73FF
+
+                                        col     -> [flipy][unused 6..4][color 3..0]  
+                                        sprite  -> [flipx][sprite nr 6..0]                            
+                    Sprite: xpos sprite col  ypos
+                            11   18     11   30      barrel
+                            11   00     82   30      mario idle right  blue
+                            11   01     a1   30      mario run 0
+                            11   02     a1   30      mario run 1
+                            11   03     a1   30      mario climp 0
+                            11   04     a1   30      mario climp 1
+                            11   05     a1   30      mario climp 2
+                            11   06     a1   30      mario climp idle
+                            11   07     a1   30      none
+                            11   08     a1   30      mario idle hammer up
+                            11   09     a1   30      mario idle hammer down
+                            11   0A     a1   30      mario run hammer up
+                            11   0B     a1   30      mario run hammer down
+                            11   0C     a1   30      mario run hammer up
+                            11   0D     a1   30      mario run hammer down
+                            11   0E     a1   30      mario jump
+                            11   0F     a1   30      mario braking
+                            11   10     81   30      pauline head
+                            11   11     81   30      pauline body 0
+                            11   12     81   30      pauline body 1
+                            11   13     81   30      pauline body 2                           
+                            11   14     8b   30      pauline captured
+                            11   15     8b   30      barrel roll 0 (marker right top)
+                            11   16     8b   30      barrel horizontal dark middle
+                            11   17     8b   30      barrel horizontal light middle
+                            11   18     8b   30      barrel vertical dark middle
+                            11   19     8c   39      barrel roll 0 (skull left bottom)
+                            
+                            11   39     84   30      kong effect falling
+                            
+                            11   3B     81   30      falling spring open 
+                            11   3c     81   30      falling spring closed
+                            11   3d     81   30      flame red 0
+                            11   3d     80   30      flame blue 0
+                            11   3e     81   30      flame red 1
+                            11   3e     80   30      flame blue 1
+                            
+                            11   c9     8c   10      oil can  sprite 49, flipX 80 -> c9
+                            17   F6     89   30      heart pink
+                            17   F7     89   30      heart pink broken
+                            
+                            6f   10     09   23      6f 12 0a 33 47
+                            
+                            
+                    70b8    1e 18 0b 4b    barrel    
+                    70bc    14 18 0b 4b    barrel
+                    70b0    1e 18 0b 3b    barrel
+                    70b4    14 18 0b 3b    barrel 
+                            
+            
 Tile Ram            0x7400              0x77FF
 8257 DMA Registers  0x7800              0x780F
 Interface 0         0x7C00              0x7C00
