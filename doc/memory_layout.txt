@@ -1,6 +1,15 @@
 Name                Start Address       End Address
-Main ROM            0x0000              0x3FFF
+Main ROM            0x0000              0x3FFF                  
+                    0x0000              0x0fff    c_5f_b.bin    
+                    0x1000              0x1fff    5g.cpu
+                    0x2000              0x2fff    5g.cpu
+                    0x3000              0x3fff    c_5k_b.bin
+0x36b4              String "HIGH SCORE"                    
+                    
 Main RAM            0x6000              0x6BFF
+
+0x6229              number of lives
+
 Sprite Ram          0x7000              0x73FF
 Tile Ram            0x7400              0x77FF
 8257 DMA Registers  0x7800              0x780F
@@ -12,8 +21,6 @@ Sprite Bank         0x7D83              0x7D83
 NMI Mask            0x7D84              0x7D84
 8257 DRQ            0x7D85              0x7D85
 Palette Bank        0x7D86              0x7D87
-
-
 
 ------------------------------------------------------------------------
 0x0000-0x3FFF	16384	ROM	

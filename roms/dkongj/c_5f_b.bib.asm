@@ -165,7 +165,8 @@
 11b: c9           ret
 
 ; function xxx clear 7d00 6080
-11c: 06 08        ld   b,$08          ; clear 8 bytes at $7d00 and $6080
+; clear 8 bytes at $7d00 and $6080
+11c: 06 08        ld   b,$08          
 11e: af           xor  a
 11f: 21 00 7d     ld   hl,$7D00
 122: 11 80 60     ld   de,$6080
@@ -173,16 +174,18 @@
 126: 12           ld   (de),a
 127: 2c           inc  l
 128: 1c           inc  e
-129: 10 fa        djnz $0125          ; clear 4 bytes at 
+129: 10 fa        djnz $0125          
 
+; clear 4 bytes at $6088
 12b: 06 04        ld   b,$04
 12d: 12           ld   (de),a
 12e: 1c           inc  e
 12f: 10 fc        djnz $012D
-
+; clear 1 byte at $7D80 (audio), $7C00 (IN0 port)
 131: 32 80 7d     ld   ($7D80),a
 134: 32 00 7c     ld   ($7C00),a
 137: c9           ret
+; -------------------------------------
 138: 53           ld   d,e
 139: 00           nop
 13a: 69           ld   l,c
@@ -354,6 +357,8 @@
 260: 01 aa 00     ld   bc,$00AA
 263: ed b0        ldir
 265: c9           ret
+
+; clear ram at $6000
 266: 06 10        ld   b,$10
 268: 21 00 60     ld   hl,$6000
 26b: af           xor  a
@@ -363,6 +368,8 @@
 26f: 0d           dec  c
 270: 20 fb        jr   nz,$026D
 272: 10 f8        djnz $026C
+; clear sprite ram $7000 
+; a = 0, b = 4, c = 0 -> 0x400
 274: 06 04        ld   b,$04
 276: 21 00 70     ld   hl,$7000
 279: 4f           ld   c,a
@@ -371,6 +378,8 @@
 27c: 0d           dec  c
 27d: 20 fb        jr   nz,$027A
 27f: 10 f8        djnz $0279
+; set sprite ram $7400..77ff to $10
+; a = $10, b = 4, c = 0 -> 0x400
 281: 06 04        ld   b,$04
 283: 3e 10        ld   a,$10
 285: 21 00 74     ld   hl,$7400
@@ -380,39 +389,56 @@
 28c: 0d           dec  c
 28d: 20 fb        jr   nz,$028A
 28f: 10 f7        djnz $0288
+; set main ram region $60c0..$60ff to $ff, size $40
+; a = $ff, b = $40
 291: 21 c0 60     ld   hl,$60C0
 294: 06 40        ld   b,$40
 296: 3e ff        ld   a,$FF
 298: 77           ld   (hl),a
 299: 23           inc  hl
 29a: 10 fc        djnz $0298
+; a = $c0, set variable to $c0
 29c: 3e c0        ld   a,$C0
 29e: 32 b0 60     ld   ($60B0),a
 2a1: 32 b1 60     ld   ($60B1),a
+; a = 0, 
+; 7d83 sprite bank  -> 0
+; 7d86 palette bank -> 0
+; 7d87 palette bank -> 0
 2a4: af           xor  a
 2a5: 32 83 7d     ld   ($7D83),a
 2a8: 32 86 7d     ld   ($7D86),a
 2ab: 32 87 7d     ld   ($7D87),a
+; a = 1
+; 7d82 flip screen  -> 1
 2ae: 3c           inc  a
 2af: 32 82 7d     ld   ($7D82),a
+; switch sp = $6c00
 2b2: 31 00 6c     ld   sp,$6C00
+; init0
 2b5: cd 1c 01     call $011C
+; a = 1 nmi = 1
 2b8: 3e 01        ld   a,$01
 2ba: 32 84 7d     ld   ($7D84),a
+; ???
+;loop until $6383 change, timer, delay?
 2bd: 26 60        ld   h,$60
 2bf: 3a b1 60     ld   a,($60B1)
 2c2: 6f           ld   l,a
 2c3: 7e           ld   a,(hl)
 2c4: 87           add  a,a
 2c5: 30 1c        jr   nc,$02E3
+; ??? draw numer of player, draw lives
 2c7: cd 15 03     call $0315
 2ca: cd 50 03     call $0350
+;
 2cd: 21 19 60     ld   hl,$6019
 2d0: 34           inc  (hl)
 2d1: 21 83 63     ld   hl,$6383
 2d4: 3a 1a 60     ld   a,($601A)
 2d7: be           cp   (hl)
 2d8: 28 e3        jr   z,$02BD
+; 
 2da: 77           ld   (hl),a
 2db: cd 7f 03     call $037F
 2de: cd a2 03     call $03A2
@@ -764,17 +790,21 @@
 57c: eb           ex   de,hl
 57d: 11 e0 ff     ld   de,$FFE0
 580: 01 04 03     ld   bc,$0304
+; write high score points 007650
 583: 7e           ld   a,(hl)
 584: 0f           rrca
 585: 0f           rrca
 586: 0f           rrca
 587: 0f           rrca
+; one digit
 588: cd 93 05     call $0593
 58b: 7e           ld   a,(hl)
+; second digit
 58c: cd 93 05     call $0593
 58f: 2b           dec  hl
 590: 10 f1        djnz $0583
 592: c9           ret
+
 593: e6 0f        and  $0F
 595: dd 77 00     ld   (ix+$00),a
 598: dd 19        add  ix,de
@@ -837,8 +867,10 @@
 5fc: 01 e0 ff     ld   bc,$FFE0
 5ff: eb           ex   de,hl
 600: 1a           ld   a,(de)
-601: fe 3f        cp   $3F
-603: ca 26 00     jp   z,$0026
+601: fe 3f        cp   $3F  ; string end reached?
+603: ca 26 00     jp   z,$0026  ; yes jump to $0026
+; print HIGH  see $36b4:  $18 $19 $17 $18 $10  $23 $13 $1f $22 $15 $3F
+;                         H   I   G   H   Spc  S   C   O   R   E   StrEnd
 606: 77           ld   (hl),a
 607: f1           pop  af
 608: 30 02        jr   nc,$060C
@@ -947,24 +979,35 @@
 6d2: 36 ff        ld   (hl),$FF
 6d4: 19           add  hl,de
 6d5: 10 fb        djnz $06D2
+; write 'L' to screen
 6d7: 21 03 75     ld   hl,$7503
 6da: 36 1c        ld   (hl),$1C
+; write '=' to screen
 6dc: 21 e3 74     ld   hl,$74E3
 6df: 36 34        ld   (hl),$34
+; load number lives var at $6229
 6e1: 3a 29 62     ld   a,($6229)
+; >= 100?
 6e4: fe 64        cp   $64
 6e6: 38 05        jr   c,$06ED
+; limit to 99
 6e8: 3e 63        ld   a,$63
+; save number lives var at $6229
 6ea: 32 29 62     ld   ($6229),a
+; hex to number
 6ed: 01 0a ff     ld   bc,$FF0A
 6f0: 04           inc  b
 6f1: 91           sub  c
 6f2: d2 f0 06     jp   nc,$06F0
 6f5: 81           add  a,c
+; write lives '03' to screen 
+; a =  1-digit
 6f6: 32 a3 74     ld   ($74A3),a
+; a = 10-digit
 6f9: 78           ld   a,b
 6fa: 32 c3 74     ld   ($74C3),a
 6fd: c9           ret
+;
 6fe: 3a 0a 60     ld   a,($600A)
 701: ef           rst  $28
 702: 86           add  a,(hl)

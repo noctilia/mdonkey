@@ -80,6 +80,7 @@ public:
     int char_y = 8;
 
     int num_bytes_per_char = 8;  
+    int num_of_chars = data.size() / num_bytes_per_char;
 
     sf::Image image;
     image.create(16*8, 16*8, sf::Color(0, 255, 0));
@@ -90,16 +91,19 @@ public:
 
     int n = 0;
     int r = 0;
+
+    int bitspercolor = 1;
+    int mask = 0x1;
+    for (int s = 0; s < bitspercolor; s++)
+    {
+      mask |= 1 << s; 
+    }
+
     // 8x8 bit charset --> 8 Bytes per char
     // filesize = 2048 bytes --> 256 chars
-    for (int m = 0; m < 256; m++) {
+    for (int m = 0; m < num_of_chars; m++) {
       if (k >= data.size())
         break;
-
-      int bitspercolor = 1;
-      int mask = 0x1;
-      for (int s = 0; s < bitspercolor; s++)
-        mask |= 1 << s;
 
       int p = 0;
       int r = data[k];
@@ -108,7 +112,7 @@ public:
         for (int j = 0; j < 8; j++)
         {
           int c = r & mask;
-          r = r >> bitspercolor;
+          r >>= bitspercolor;
 
           int x = x0 + (7 - i);
           int y = y0 + (7 - j);
@@ -121,8 +125,7 @@ public:
           p += bitspercolor;
           if (p >= 8) {
             p = 0;
-            k++;
-            if (k >= data.size())
+            if (++k >= data.size())
               break;
             r = data[k];
           }
