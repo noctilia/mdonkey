@@ -46,6 +46,7 @@ void run_viewer(sf::RenderTexture* texture)
 
 }
 
+
 class KongSprite
 {
 public:
@@ -73,15 +74,19 @@ public:
     return false;
   }
 
-  bool init() {
-    float scale = 2.0f;
-    pixbuf.create(256, 256, sf::Color(0, 0, 0));
+  void extract_charset8x8()
+  {
+  }
 
+  bool init() {
+    float scale = 4.0f;
+    pixbuf.create(256, 256, sf::Color(0, 255, 0));
 
     int k = 0;
     int x0 = 0;
     int y0 = 0;
     
+    int n = 0;  
     int r = 0;
     // 8x8 bit charset --> 8 Bytes per char
     // filesize = 2048 bytes --> 256 chars
@@ -105,20 +110,23 @@ public:
             if (c != 0)
               pixbuf.setPixel(x0 + j, y0 + i, sf::Color(255, 255, 255, 255));
             else
-              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(0, 0, 0, 255));
+              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(255, 0, 0, 255));
           
             p += bitspercolor;
             if (p >= 8) {
               p = 0;
               k++;
+              if (k >= m_data.size())
+                break;
               r = m_data[k];
             }
             
           }
         }
-        x0 += 16;
-        if (x0 >= 256) {
-          y0 += 16;
+        n++;
+        x0 += 8;
+        if (!(n % 16)) {
+          y0 += 8;
           x0 = 0;
         }
     } 
@@ -126,20 +134,24 @@ public:
     texture.create(pixbuf.getSize().x, pixbuf.getSize().y);
     texture.update(pixbuf);
     sprite.setTexture(texture);
-    sprite.setScale(scale, scale);  
-
+    
+    sprite2.setTexture(texture);
+    sprite2.setScale(scale, scale);
+    sprite2.setPosition(pixbuf.getSize().x, 0);
     return true;
   }
 
   void draw(sf::RenderTexture* texture)
   {
     texture->draw(sprite);
+    texture->draw(sprite2);
   } 
 
 private:
   sf::Image pixbuf;
   sf::Texture texture;
   sf::Sprite sprite;
+  sf::Sprite sprite2;
   std::vector<std::uint8_t> m_data;
 };
 
