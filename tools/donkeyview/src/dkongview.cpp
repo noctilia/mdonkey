@@ -75,27 +75,53 @@ public:
 
   bool init() {
     float scale = 2.0f;
-    pixbuf.create(224, 256, sf::Color(0, 0, 0));
+    pixbuf.create(256, 256, sf::Color(0, 0, 0));
 
 
     int k = 0;
-
+    int x0 = 0;
+    int y0 = 0;
     
-    for (int y = 0; y < 256; y++) {
-      for (int x = 0; x < 224; x++) {
-
-        if (++k >= m_data.size())
+    int r = 0;
+    // 8x8 bit charset --> 8 Bytes per char
+    // filesize = 2048 bytes --> 256 chars
+    for (int m = 0; m < 256; m++) {
+        if (k >= m_data.size())
           break;
 
+        int bitspercolor = 1;
+        int mask = 0x1;
+        for (int s = 0; s < bitspercolor; s++)
+          mask |= 1 << s;
 
-        int index = (y * 224) + x;
-        int r = m_data[index];
-        int g = m_data[index];
-        int b = m_data[index];
-        int a = 0xff;
-        pixbuf.setPixel(x, y, sf::Color(r, g, b, a));
-      }
-    }
+        int p = 0;
+        int r = m_data[k];
+        for (int i = 0; i < 8; i++)
+        {
+          for (int j = 0; j < 8; j++)
+          {
+            int c = r & mask;
+            r = r >> bitspercolor;
+            if (c != 0)
+              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(255, 255, 255, 255));
+            else
+              pixbuf.setPixel(x0 + j, y0 + i, sf::Color(0, 0, 0, 255));
+          
+            p += bitspercolor;
+            if (p >= 8) {
+              p = 0;
+              k++;
+              r = m_data[k];
+            }
+            
+          }
+        }
+        x0 += 16;
+        if (x0 >= 256) {
+          y0 += 16;
+          x0 = 0;
+        }
+    } 
 
     texture.create(pixbuf.getSize().x, pixbuf.getSize().y);
     texture.update(pixbuf);
@@ -148,6 +174,10 @@ int main(int argc, char** argv)
   sf::View view = window.getDefaultView();
 
   KongSprite kong_sprite("assets/roms/v_5k_b.bin"); 
+  //KongSprite kong_sprite("assets/roms/c_5k_b.bin");
+  //KongSprite kong_sprite("assets/roms/5g.cpu");
+  //KongSprite kong_sprite("assets/roms/5h.cpu");
+  //KongSprite kong_sprite("assets/roms/c_5f_b.bin");
  
   bool is_running = true;
   while (window.isOpen() && is_running) {
