@@ -2,7 +2,7 @@ Name                Start Address       End Address
 Main ROM            0x0000              0x3FFF                  
                     0x0000              0x0fff    c_5f_b.bin    
                     0x1000              0x1fff    5g.cpu
-                    0x2000              0x2fff    5g.cpu
+                    0x2000              0x2fff    5h.cpu
                     0x3000              0x3fff    c_5k_b.bin
 0x36b4              String "HIGH SCORE"                    
                     
@@ -12,9 +12,9 @@ Main RAM            0x6000              0x6BFF
 
 Sprite Ram          0x7000              0x73FF
 
-                                        col     -> [flipy][unused 6..4][color 3..0]  
-                                        sprite  -> [flipx][sprite nr 6..0]                            
-                    Sprite: xpos sprite col  ypos
+                                        col  -> [flipy][unused 6..4][color 3..0]  
+                                        spr  -> [flipx][sprite nr 6..0]                            
+                    Sprite: xpos spr    col  ypos
                             11   18     11   30      barrel
                             11   00     82   30      mario idle right  blue
                             11   01     a1   30      mario run 0
@@ -32,7 +32,7 @@ Sprite Ram          0x7000              0x73FF
                             11   0D     a1   30      mario run hammer down
                             11   0E     a1   30      mario jump
                             11   0F     a1   30      mario braking
-                            11   10     81   30      pauline head
+                            11   10     81   30      pauline head  6f 10 09 23
                             11   11     81   30      pauline body 0
                             11   12     81   30      pauline body 1
                             11   13     81   30      pauline body 2                           
@@ -56,8 +56,7 @@ Sprite Ram          0x7000              0x73FF
                             17   F6     89   30      heart pink
                             17   F7     89   30      heart pink broken
                             
-                            6f   10     09   23      6f 12 0a 33 47
-                            
+                            6f   10     09   23      6f 12 0a 33 47               
                             
                     70b8    1e 18 0b 4b    barrel    
                     70bc    14 18 0b 4b    barrel

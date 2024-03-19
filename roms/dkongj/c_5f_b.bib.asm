@@ -1,32 +1,37 @@
 ; reset
 ; a = 0, nmi = 0
+;---------------------------------------------------
 000: 3e 00        ld   a,$00
 002: 32 84 7d     ld   ($7D84),a
-005: c3 66 02     jp   $0266
-;
+005: c3 66 02     jp   $0266    ; goto init ram, tile ram, sprite ram
+;---------------------------------------------------
 008: 3a 07 60     ld   a,($6007)
 00b: 0f           rrca
 00c: d0           ret  nc
 00d: 33           inc  sp
 00e: 33           inc  sp
 00f: c9           ret
+;---------------------------------------------------
 010: 3a 00 62     ld   a,($6200)
 013: 0f           rrca
 014: d8           ret  c
 015: 33           inc  sp
 016: 33           inc  sp
 017: c9           ret
+;---------------------------------------------------
 018: 21 09 60     ld   hl,$6009
 01b: 35           dec  (hl)
 01c: c8           ret  z
 01d: 33           inc  sp
 01e: 33           inc  sp
 01f: c9           ret
+;---------------------------------------------------
 020: 21 08 60     ld   hl,$6008
 023: 35           dec  (hl)
 024: 28 f2        jr   z,$0018
 026: e1           pop  hl
 027: c9           ret
+;---------------------------------------------------
 028: 87           add  a,a
 029: e1           pop  hl
 02a: 5f           ld   e,a
@@ -47,6 +52,7 @@
 040: 19           add  hl,de
 041: 10 fa        djnz $003D
 043: c9           ret
+;---------------------------------------------------
 044: 21 27 62     ld   hl,$6227
 047: 46           ld   b,(hl)
 048: 0f           rrca
@@ -54,10 +60,12 @@
 04b: d8           ret  c
 04c: e1           pop  hl
 04d: c9           ret
+;---------------------------------------------------
 04e: 11 08 69     ld   de,$6908
 051: 01 28 00     ld   bc,$0028
 054: ed b0        ldir
 056: c9           ret
+;---------------------------------------------------
 057: 3a 18 60     ld   a,($6018)
 05a: 21 1a 60     ld   hl,$601A
 05d: 86           add  a,(hl)
@@ -65,7 +73,7 @@
 061: 86           add  a,(hl)
 062: 32 18 60     ld   ($6018),a
 065: c9           ret
-
+;---------------------------------------------------
 ; main vblank or irq?
 066: f5           push af
 067: c5           push bc
@@ -131,11 +139,13 @@
 0db: 32 84 7d     ld   ($7D84),a
 0de: f1           pop  af
 0df: c9           ret
+;---------------------------------------------------
 0e0: 21 80 60     ld   hl,$6080
 0e3: 11 00 7d     ld   de,$7D00
 0e6: 3a 07 60     ld   a,($6007)
 0e9: a7           and  a
 0ea: c0           ret  nz
+;---------------------------------------------------
 0eb: 06 08        ld   b,$08
 0ed: 7e           ld   a,(hl)
 0ee: a7           and  a
@@ -167,8 +177,8 @@
 118: 32 80 7d     ld   ($7D80),a
 11b: c9           ret
 
-; function xxx clear 7d00 6080
-; clear 8 bytes at $7d00 and $6080
+; function init_sound? clear 7d00 sound signals, 6080 
+; clear 8 bytes at $7d00??? and $6080
 11c: 06 08        ld   b,$08          
 11e: af           xor  a
 11f: 21 00 7d     ld   hl,$7D00
@@ -361,7 +371,8 @@
 263: ed b0        ldir
 265: c9           ret
 
-; clear ram at $6000
+; clear ram at $6000 ($1000 bytes --> region is only $BFF)
+; a = 0, b = $10, c = 0 -> $100 * $10 = 0x1000
 266: 06 10        ld   b,$10
 268: 21 00 60     ld   hl,$6000
 26b: af           xor  a
@@ -371,8 +382,8 @@
 26f: 0d           dec  c
 270: 20 fb        jr   nz,$026D
 272: 10 f8        djnz $026C
-; clear sprite ram $7000 
-; a = 0, b = 4, c = 0 -> 0x400
+; clear sprite ram $7000 ($300 bytes)
+; a = 0, b = 4, c = 0 -> $400
 274: 06 04        ld   b,$04
 276: 21 00 70     ld   hl,$7000
 279: 4f           ld   c,a
@@ -381,7 +392,7 @@
 27c: 0d           dec  c
 27d: 20 fb        jr   nz,$027A
 27f: 10 f8        djnz $0279
-; set sprite ram $7400..77ff to $10
+; set tile ram $7400..77ff to $10 -> clear tile screen with spaces ' ' = $10 
 ; a = $10, b = 4, c = 0 -> 0x400
 281: 06 04        ld   b,$04
 283: 3e 10        ld   a,$10
@@ -400,7 +411,7 @@
 298: 77           ld   (hl),a
 299: 23           inc  hl
 29a: 10 fc        djnz $0298
-; a = $c0, set variable to $c0
+; a = $c0, set variable1? variable2? to $c0 (192)
 29c: 3e c0        ld   a,$C0
 29e: 32 b0 60     ld   ($60B0),a
 2a1: 32 b1 60     ld   ($60B1),a
@@ -416,7 +427,7 @@
 ; 7d82 flip screen  -> 1
 2ae: 3c           inc  a
 2af: 32 82 7d     ld   ($7D82),a
-; switch sp = $6c00
+; switch stackpointer sp = $6c00
 2b2: 31 00 6c     ld   sp,$6C00
 ; init0
 2b5: cd 1c 01     call $011C
@@ -425,14 +436,19 @@
 2ba: 32 84 7d     ld   ($7D84),a
 ; ???
 ;loop until $6383 change, timer, delay?
+; h = 60, a = ($60B1) (c0) -> hl = 60c0
 2bd: 26 60        ld   h,$60
 2bf: 3a b1 60     ld   a,($60B1)
 2c2: 6f           ld   l,a
+; hl = 60c0
 2c3: 7e           ld   a,(hl)
+; a = ff -> a*2 
 2c4: 87           add  a,a
-2c5: 30 1c        jr   nc,$02E3
-; ??? draw numer of player, draw lives
-2c7: cd 15 03     call $0315
+; a = fe -> carry=1
+2c5: 30 1c        jr   nc,$02E3   ; jump if carry=0
+; draw numer of player 1UP to tile map  
+2c7: cd 15 03     call $0315  
+; draw lives to tile map L=00
 2ca: cd 50 03     call $0350
 ;
 2cd: 21 19 60     ld   hl,$6019
@@ -440,12 +456,21 @@
 2d1: 21 83 63     ld   hl,$6383
 2d4: 3a 1a 60     ld   a,($601A)
 2d7: be           cp   (hl)
-2d8: 28 e3        jr   z,$02BD
+2d8: 28 e3        jr   z,$02BD ; wait sound play?
 ; 
 2da: 77           ld   (hl),a
+;---------------------------------------------
+; display 
+;              insert coin
+;             player    coin
+;               1        1
+;               2        2  
 2db: cd 7f 03     call $037F
 2de: cd a2 03     call $03A2
+; draw 
+;              CREDIT 00
 2e1: 18 da        jr   $02BD
+; draw hig score table
 2e3: e6 1f        and  $1F
 2e5: 5f           ld   e,a
 2e6: 16 00        ld   d,$00
