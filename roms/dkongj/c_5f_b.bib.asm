@@ -61,6 +61,7 @@
 04c: e1           pop  hl
 04d: c9           ret
 ;---------------------------------------------------
+; copy to static sprite ram
 04e: 11 08 69     ld   de,$6908
 051: 01 28 00     ld   bc,$0028
 054: ed b0        ldir
@@ -1249,8 +1250,8 @@ init_vram:
 85f: 0d           dec  c                     ; c=c-1
 860: c2 57 08     jp   nz,$0857              ; jp nz next c  -> cloop1
 
-; function: init ram 6900..6a7f (6a80) with $10
-; $6900
+; function: clear sprite init ram 6900..6a7f (6a80) with $10
+; $6900 - local sprite ram 
 863: 21 00 69     ld   hl,$6900              ; load base vram hl=$6900    ???
 866: 0e 02        ld   c,$02                 ; 2 * 0xc0 bytes = $180 bytes
 ; cloop3
@@ -1877,6 +1878,7 @@ d6a: 23           inc  hl
 d6b: 34           inc  (hl)
 d6c: 21 5c 38     ld   hl,$385C
 d6f: cd 4e 00     call $004E
+; copy 3885 to 6900 8 bytes (static sprites)
 d72: 11 00 69     ld   de,$6900
 d75: 01 08 00     ld   bc,$0008
 d78: ed b0        ldir

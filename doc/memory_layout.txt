@@ -7,16 +7,22 @@ Main ROM            0x0000              0x3FFF
 0x36b4              String "HIGH SCORE"                    
                     
 Main RAM            0x6000              0x6BFF
-
+                    0x6900              sprite local ram 
+                    
 0x6229              number of lives
 
 Sprite Ram          0x7000              0x73FF
-
-                                        col  -> [flipy][unused 6..4][color 3..0]  
-                                        spr  -> [flipx][sprite nr 6..0]                            
+                           
+                          [xpos][col][spr][ypos]    x,y are inverted
+                             |     |    |    |
+                             |     |    |    +----> y-pos 0..255 
+                             |     |    +---------> [flipx][sprite nr 0..7f]                            
+                             |     +--------------> [flipy][unused 6..4][color 3..0]
+                             +--------------------> x-pos 0..255     
+                                        
                     Sprite: xpos spr    col  ypos
                             11   18     11   30      barrel
-                            11   00     82   30      mario idle right  blue
+                            11   00     02   30      mario idle left blue
                             11   01     a1   30      mario run 0
                             11   02     a1   30      mario run 1
                             11   03     a1   30      mario climp 0
@@ -42,7 +48,13 @@ Sprite Ram          0x7000              0x73FF
                             11   17     8b   30      barrel horizontal light middle
                             11   18     8b   30      barrel vertical dark middle
                             11   19     8c   39      barrel roll 0 (skull left bottom)
-                            
+                                 
+                                 23 
+                                 25 
+                                 27                  kong feet right
+                                 28
+                                 29                  kong arm left
+                                 
                             11   39     84   30      kong effect falling
                             
                             11   3B     81   30      falling spring open 
@@ -53,8 +65,10 @@ Sprite Ram          0x7000              0x73FF
                             11   3e     80   30      flame blue 1
                             
                             11   c9     8c   10      oil can  sprite 49, flipX 80 -> c9
-                            17   F6     89   30      heart pink
-                            17   F7     89   30      heart pink broken
+                            
+                                 a7                  kong feet left 
+                            17   f6     89   30      heart pink
+                            17   f7     89   30      heart pink broken
                             
                             6f   10     09   23      6f 12 0a 33 47               
                             
