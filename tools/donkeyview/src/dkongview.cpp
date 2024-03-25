@@ -74,7 +74,7 @@ public:
     return false;
   }
 
-  void save_charset8x8(const std::string& path, const std::vector<std::uint8_t>& data)
+  void load_charset8x8(const std::string& path, const std::vector<std::uint8_t>& data, sf::Image& image)
   {
     int char_x = 8;
     int char_y = 8;
@@ -82,8 +82,8 @@ public:
     int num_bytes_per_char = 8;  
     int num_of_chars = data.size() / num_bytes_per_char;
 
-    sf::Image image;
-    image.create(16*8, 16*8, sf::Color(0, 255, 0));
+    //sf::Image image;
+    image.create(16*8*2, 16*8*2, sf::Color(0, 255, 0));
 
     int k = 0;
     int x0 = 0;
@@ -145,63 +145,63 @@ public:
   
   bool init() {
     float scale = 4.0f;
-    _pixbuf.create(256, 256, sf::Color(0, 255, 0));
+    //_pixbuf.create(256, 256, sf::Color(0, 255, 0));
 
-    int k = 0;
-    int x0 = 0;
-    int y0 = 0;
-    
-    int n = 0;  
-    int r = 0;
-    // 8x8 bit charset --> 8 Bytes per char
-    // filesize = 2048 bytes --> 256 chars
-    for (int m = 0; m < 256; m++) {
-        if (k >= _data.size())
-          break;
+    //int k = 0;
+    //int x0 = 0;
+    //int y0 = 0;
+    //
+    //int n = 0;  
+    //int r = 0;
+    //// 8x8 bit charset --> 8 Bytes per char
+    //// filesize = 2048 bytes --> 256 chars
+    //for (int m = 0; m < 256; m++) {
+    //    if (k >= _data.size())
+    //      break;
 
-        int bitspercolor = 1;
-        int mask = 0x1;
-        for (int s = 0; s < bitspercolor; s++)
-          mask |= 1 << s;
+    //    int bitspercolor = 1;
+    //    int mask = 0x1;
+    //    for (int s = 0; s < bitspercolor; s++)
+    //      mask |= 1 << s;
 
-        int p = 0;
-        int r = _data[k];
-        for (int i = 0; i < 8; i++)
-        {
-          for (int j = 0; j < 8; j++)
-          {
-            int c = r & mask;
-            r = r >> bitspercolor;
+    //    int p = 0;
+    //    int r = _data[k];
+    //    for (int i = 0; i < 8; i++)
+    //    {
+    //      for (int j = 0; j < 8; j++)
+    //      {
+    //        int c = r & mask;
+    //        r = r >> bitspercolor;
 
-            int x = x0 + (7 - i);
-            //int x = x0 + j;
-            int y = y0 + (7-j);
-            if (c != 0) {            
-              _pixbuf.setPixel(x, y, sf::Color(255, 255, 255, 255));
-            }            
-            else {
-              _pixbuf.setPixel(x, y, sf::Color(255, 0, 0, 255));
-            }
-            p += bitspercolor;
-            if (p >= 8) {
-              p = 0;
-              k++;
-              if (k >= _data.size())
-                break;
-              r = _data[k];
-            }
-            
-          }
-        }
-        n++;
-        x0 += 8;
-        if (!(n % 16)) {
-          y0 += 8;
-          x0 = 0;
-        }
-    } 
+    //        int x = x0 + (7 - i);
+    //        //int x = x0 + j;
+    //        int y = y0 + (7-j);
+    //        if (c != 0) {            
+    //          _pixbuf.setPixel(x, y, sf::Color(255, 255, 255, 255));
+    //        }            
+    //        else {
+    //          _pixbuf.setPixel(x, y, sf::Color(255, 0, 0, 255));
+    //        }
+    //        p += bitspercolor;
+    //        if (p >= 8) {
+    //          p = 0;
+    //          k++;
+    //          if (k >= _data.size())
+    //            break;
+    //          r = _data[k];
+    //        }
+    //        
+    //      }
+    //    }
+    //    n++;
+    //    x0 += 8;
+    //    if (!(n % 16)) {
+    //      y0 += 8;
+    //      x0 = 0;
+    //    }
+    //} 
 
-    save_charset8x8("charset8x8.png", _data);
+    load_charset8x8("charset8x8.png", _data, _pixbuf);
 
     texture.create(_pixbuf.getSize().x, _pixbuf.getSize().y);
     texture.update(_pixbuf);
