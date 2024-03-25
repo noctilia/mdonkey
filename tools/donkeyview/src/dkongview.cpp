@@ -18,7 +18,7 @@
 #include <windows.h>  
 #endif
 
-void fatal_error(const char* format, ...)
+static void fatal_error(const char* format, ...)
 {
   va_list arg_ptr;
   va_start(arg_ptr, format);
@@ -47,10 +47,10 @@ void run_viewer(sf::RenderTexture* texture)
 }
 
 
-class KongSprite
+class KongTileset
 {
 public:
-  KongSprite(const std::string& path)
+  KongTileset(const std::string& path)
   {
     load(path);
     init();
@@ -142,7 +142,7 @@ public:
 
     image.saveToFile(path);
   }
-
+  
   bool init() {
     float scale = 4.0f;
     _pixbuf.create(256, 256, sf::Color(0, 255, 0));
@@ -213,11 +213,78 @@ public:
     return true;
   }
 
-  void draw(sf::RenderTexture* texture)
+  void draw(sf::RenderTexture* texture) const
   {
     texture->draw(sprite);
     texture->draw(sprite2);
   } 
+
+private:
+  sf::Image _pixbuf;
+  sf::Texture texture;
+  sf::Sprite sprite;
+  sf::Sprite sprite2;
+  std::vector<std::uint8_t> _data;
+  std::vector<std::uint8_t> _sprite_data;
+};
+
+class KongSpriteset
+{
+public:
+  KongSpriteset(const std::vector<std::string>& vpath)
+  {
+    load(vpath);
+    init();
+  }
+
+  bool load(const std::vector<std::string>& vpath)
+  {
+    _data.resize(0);
+    for (auto& p : vpath) 
+    {
+      std::ifstream fi(p);
+      if (!fi.is_open()) {
+        return false;
+      }
+
+      fi.seekg(0, std::ios::end);
+      std::streampos length = fi.tellg();
+      fi.seekg(0, std::ios::beg);
+
+      auto ofs = _data.size();
+      _data.resize(ofs + length);
+      fi.read(reinterpret_cast<char*>(_data.data() + ofs), length);
+      fi.close();
+    }
+
+    return false;
+  }
+
+  void save_spriteset16x16(const std::string& path, const std::vector<std::uint8_t>& data, int pagesize = 0x800)
+  {
+
+  }
+
+  bool init() {
+    float scale = 4.0f;
+
+    save_spriteset16x16("spriteset16x16.png", _data);
+
+    texture.create(_pixbuf.getSize().x, _pixbuf.getSize().y);
+    texture.update(_pixbuf);
+    sprite.setTexture(texture);
+
+    sprite2.setTexture(texture);
+    sprite2.setScale(scale, scale);
+    sprite2.setPosition(_pixbuf.getSize().x, 0);
+    return true;
+  }
+
+  void draw(sf::RenderTexture* texture) const
+  {
+    texture->draw(sprite);
+    texture->draw(sprite2);
+  }
 
 private:
   sf::Image _pixbuf;
@@ -257,12 +324,9 @@ int main(int argc, char** argv)
 
   sf::View view = window.getDefaultView();
 
-  KongSprite kong_sprite("assets/roms/v_5k_b.bin"); 
-  //KongSprite kong_sprite("assets/roms/c_5k_b.bin");
-  //KongSprite kong_sprite("assets/roms/5g.cpu");
-  //KongSprite kong_sprite("assets/roms/5h.cpu");
-  //KongSprite kong_sprite("assets/roms/c_5f_b.bin");
- 
+  KongTileset kong_tiles("assets/roms/v_5k_b.bin"); 
+  KongSpriteset kong_sprites({ "assets/roms/l_4m_b.bin", "assets/roms/l_4n_b.bin", "assets/roms/l_4r_b.bin", "assets/roms/l_4s_b.bin" });
+  
   bool is_running = true;
   while (window.isOpen() && is_running) {
     while (window.pollEvent(event)) {
@@ -298,18 +362,13 @@ int main(int argc, char** argv)
 
     world_bitmap.clear(sf::Color{ 64, 64, 64 });
 
-    kong_sprite.draw(&world_bitmap);
+    kong_tiles.draw(&world_bitmap);
     world_bitmap.display();
 
     world_sprite.setTexture(world_bitmap.getTexture());
     world_sprite.setPosition(0, 0);
-
     
-
     window.clear();
-
-    
-
     window.draw(world_sprite);
 
     window.display();
