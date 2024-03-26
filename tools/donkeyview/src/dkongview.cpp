@@ -211,11 +211,10 @@ public:
 
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
-        int offset = 0x800;
-
+        n += 2 * 16 * 16;
         int s = 16 * 16;
-        int c0 = readbit(n, data);
-        int c1 = readbit(n, data);
+        int c0 = readbit(n, data + 0x0);
+        int c1 = readbit(n, data + 0x0);
 
         int m = (c1 << 1) + c0;
         return m;
