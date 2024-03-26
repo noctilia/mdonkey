@@ -145,71 +145,15 @@ public:
   
   bool init() {
     float scale = 4.0f;
-    //_pixbuf.create(256, 256, sf::Color(0, 255, 0));
+    load_charset8x8("charset8x8.png", _data, _image);
 
-    //int k = 0;
-    //int x0 = 0;
-    //int y0 = 0;
-    //
-    //int n = 0;  
-    //int r = 0;
-    //// 8x8 bit charset --> 8 Bytes per char
-    //// filesize = 2048 bytes --> 256 chars
-    //for (int m = 0; m < 256; m++) {
-    //    if (k >= _data.size())
-    //      break;
-
-    //    int bitspercolor = 1;
-    //    int mask = 0x1;
-    //    for (int s = 0; s < bitspercolor; s++)
-    //      mask |= 1 << s;
-
-    //    int p = 0;
-    //    int r = _data[k];
-    //    for (int i = 0; i < 8; i++)
-    //    {
-    //      for (int j = 0; j < 8; j++)
-    //      {
-    //        int c = r & mask;
-    //        r = r >> bitspercolor;
-
-    //        int x = x0 + (7 - i);
-    //        //int x = x0 + j;
-    //        int y = y0 + (7-j);
-    //        if (c != 0) {            
-    //          _pixbuf.setPixel(x, y, sf::Color(255, 255, 255, 255));
-    //        }            
-    //        else {
-    //          _pixbuf.setPixel(x, y, sf::Color(255, 0, 0, 255));
-    //        }
-    //        p += bitspercolor;
-    //        if (p >= 8) {
-    //          p = 0;
-    //          k++;
-    //          if (k >= _data.size())
-    //            break;
-    //          r = _data[k];
-    //        }
-    //        
-    //      }
-    //    }
-    //    n++;
-    //    x0 += 8;
-    //    if (!(n % 16)) {
-    //      y0 += 8;
-    //      x0 = 0;
-    //    }
-    //} 
-
-    load_charset8x8("charset8x8.png", _data, _pixbuf);
-
-    texture.create(_pixbuf.getSize().x, _pixbuf.getSize().y);
-    texture.update(_pixbuf);
+    texture.create(_image.getSize().x, _image.getSize().y);
+    texture.update(_image);
     sprite.setTexture(texture);
     
     sprite2.setTexture(texture);
     sprite2.setScale(scale, scale);
-    sprite2.setPosition(_pixbuf.getSize().x, 0);
+    sprite2.setPosition(_image.getSize().x, 0);
     return true;
   }
 
@@ -220,7 +164,7 @@ public:
   } 
 
 private:
-  sf::Image _pixbuf;
+  sf::Image _image;
   sf::Texture texture;
   sf::Sprite sprite;
   sf::Sprite sprite2;
@@ -260,23 +204,50 @@ public:
     return false;
   }
 
-  void save_spriteset16x16(const std::string& path, const std::vector<std::uint8_t>& data, int pagesize = 0x800)
+  void load_spriteset16x16(const std::string& path, const std::vector<std::uint8_t>& data, sf::Image& image, int pagesize = 0x800)
   {
+    int sx = 16;
+    int sy = 16;
+
+    auto readbit = [](int n, const std::uint8_t* data) -> int
+      {
+        const std::uint8_t* ptr = &data[n / 8];
+        return *ptr & (1 << (n % 8)) ? 1 : 0;
+      };
+
+    auto readcolor = [&](int n, const std::uint8_t* data) -> int
+      {
+        int offset = 0x800;
+        int m = (readbit(n, data) << 1) + readbit(n, data + 0x800);
+        return m;
+      };
+
+    /*auto a0 = readbit(0, data.data());
+    auto a1 = readbit(1, data.data());
+    auto a2 = readbit(2, data.data());
+    auto a3 = readbit(3, data.data());
+
+
+    auto c0 = readbit(16, data.data());
+    auto c1 = readbit(17, data.data());
+    auto c2 = readbit(18, data.data());*/
+
+    auto k0 = readcolor(0, data.data());
 
   }
 
   bool init() {
     float scale = 4.0f;
 
-    save_spriteset16x16("spriteset16x16.png", _data);
+    load_spriteset16x16("spriteset16x16.png", _data, _image);
 
-    texture.create(_pixbuf.getSize().x, _pixbuf.getSize().y);
-    texture.update(_pixbuf);
+    texture.create(_image.getSize().x, _image.getSize().y);
+    texture.update(_image);
     sprite.setTexture(texture);
 
     sprite2.setTexture(texture);
     sprite2.setScale(scale, scale);
-    sprite2.setPosition(_pixbuf.getSize().x, 0);
+    sprite2.setPosition(_image.getSize().x, 0);
     return true;
   }
 
@@ -287,7 +258,7 @@ public:
   }
 
 private:
-  sf::Image _pixbuf;
+  sf::Image _image;
   sf::Texture texture;
   sf::Sprite sprite;
   sf::Sprite sprite2;
@@ -325,7 +296,12 @@ int main(int argc, char** argv)
   sf::View view = window.getDefaultView();
 
   KongTileset kong_tiles("assets/roms/v_5k_b.bin"); 
-  KongSpriteset kong_sprites({ "assets/roms/l_4m_b.bin", "assets/roms/l_4n_b.bin", "assets/roms/l_4r_b.bin", "assets/roms/l_4s_b.bin" });
+  KongSpriteset kong_sprites(
+    { "assets/roms/l_4m_b.bin", 
+      "assets/roms/l_4n_b.bin", 
+      "assets/roms/l_4r_b.bin", 
+      "assets/roms/l_4s_b.bin" 
+    });
   
   bool is_running = true;
   while (window.isOpen() && is_running) {
@@ -363,6 +339,8 @@ int main(int argc, char** argv)
     world_bitmap.clear(sf::Color{ 64, 64, 64 });
 
     kong_tiles.draw(&world_bitmap);
+    kong_sprites.draw(&world_bitmap);
+
     world_bitmap.display();
 
     world_sprite.setTexture(world_bitmap.getTexture());
