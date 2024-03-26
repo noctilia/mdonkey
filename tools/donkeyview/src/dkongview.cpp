@@ -41,12 +41,6 @@ namespace global
 sf::RenderTexture* gworld_bitmap = nullptr;
 
 
-void run_viewer(sf::RenderTexture* texture)
-{
-
-}
-
-
 class KongTileset
 {
 public:
@@ -218,7 +212,12 @@ public:
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
         int offset = 0x800;
-        int m = (readbit(n, data) << 1) + readbit(n, data + 0x800);
+
+        int s = 16 * 16;
+        int c0 = readbit(n, data);
+        int c1 = readbit(n, data);
+
+        int m = (c1 << 1) + c0;
         return m;
       };
 
@@ -232,7 +231,25 @@ public:
     auto c1 = readbit(17, data.data());
     auto c2 = readbit(18, data.data());*/
 
-    auto k0 = readcolor(0, data.data());
+    image.create(16 * 16, 16 * 16, sf::Color(0, 0, 0, 0));
+
+    for (int i = 0; i < 16; i++)
+    {
+      for (int j = 0; j < 16; j++)
+      {
+        auto c = readcolor(16 * i + j, data.data());
+        
+        std::vector<sf::Color> colors =
+        {
+          sf::Color(255,   0,   0, 255),
+          sf::Color(  0, 255,   0, 255),
+          sf::Color(  0,   0, 255, 255),
+          sf::Color(255, 255,   0, 255)
+        };
+        image.setPixel(j, i, colors[c]);
+      }
+    }
+    
 
   }
 
@@ -338,7 +355,7 @@ int main(int argc, char** argv)
 
     world_bitmap.clear(sf::Color{ 64, 64, 64 });
 
-    kong_tiles.draw(&world_bitmap);
+    //kong_tiles.draw(&world_bitmap);
     kong_sprites.draw(&world_bitmap);
 
     world_bitmap.display();
