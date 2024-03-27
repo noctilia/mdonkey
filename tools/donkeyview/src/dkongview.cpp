@@ -211,10 +211,10 @@ public:
 
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
-        //n += 2 * 16 * 16;
+        //n += 3 * 16 * 16;
         int s = 16 * 16;
-        int c0 = readbit(n * 2, data + 32);
-        int c1 = 0;// readbit(n, data + 4096);
+        int c0 = readbit((n * 1) + 0, data);
+        int c1 = 0; readbit((n * 8) + 1, data);
 
         int m = (c1 << 1) + c0;
         return m;
