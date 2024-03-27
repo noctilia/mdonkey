@@ -106,3 +106,66 @@ Palette Bank        0x7D86              0x7D87
 0x7D84	            1	Write	nmi_mask_w
 0x7D85	            1	Write	p8257_drq_w (/* P8257 ==> /DRQ0 /DRQ1 */)
 0x7D86-0x7D87	      2	Write	dkong_palettebank_w
+
+
+-------------------------------------------------------------------------
+/*************************************
+ *
+ *  Graphics definitions
+ *
+ *************************************/
+
+static const gfx_layout spritelayout =
+{
+	16,16,                                  /* 16*16 sprites */
+	RGN_FRAC(1,4),                          /* 128 sprites */
+	2,                                      /* 2 bits per pixel */
+	{ RGN_FRAC(1,2), RGN_FRAC(0,2) },       /* the two bitplanes are separated */
+	{ STEP8(0,1), STEP8(RGN_FRAC(1,4),1) }, /* the two halves of the sprite are separated */
+	{ STEP16(0,8) },
+	16*8                                    /* every sprite takes 16 consecutive bytes */
+};
+
+static GFXDECODE_START( gfx_dkong )
+	GFXDECODE_ENTRY( "gfx1", 0x0000, gfx_8x8x2_planar,   0, 64 )
+	GFXDECODE_ENTRY( "gfx2", 0x0000, spritelayout,       0, 64 )
+GFXDECODE_END
+
+
+# digfx.h
+
+struct gfx_layout
+{
+	u32 xoffs(int x) const { return (extxoffs != nullptr) ? extxoffs[x] : xoffset[x]; }
+	u32 yoffs(int y) const { return (extyoffs != nullptr) ? extyoffs[y] : yoffset[y]; }
+
+	u16             width;              // pixel width of each element
+	u16             height;             // pixel height of each element
+	u32             total;              // total number of elements, or RGN_FRAC()
+	u16             planes;             // number of bitplanes
+	u32             planeoffset[MAX_GFX_PLANES]; // bit offset of each bitplane
+	u32             xoffset[MAX_GFX_SIZE]; // bit offset of each horizontal pixel
+	u32             yoffset[MAX_GFX_SIZE]; // bit offset of each vertical pixel
+	u32             charincrement;      // distance between two consecutive elements (in bits)
+	const u32 *     extxoffs;           // extended X offset array for really big layouts
+	const u32 *     extyoffs;           // extended Y offset array for really big layouts
+};
+
+struct gfx_decode_entry
+{
+	const char *    memory_region;      // memory region where the data resides
+	u32             start;              // offset of beginning of data to decode
+	const gfx_layout *gfxlayout;        // pointer to gfx_layout describing the layout; nullptr marks the end of the array
+	u16             color_codes_start;  // offset in the color lookup table where color codes start
+	u16             total_color_codes;  // total number of color codes
+	u32             flags;              // flags and optional scaling factors
+};
+
+
+RGN_FRAC
+STEP8
+STEP16
+
+
+
+
