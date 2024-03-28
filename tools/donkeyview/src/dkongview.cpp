@@ -36,7 +36,7 @@ constexpr u16 MAX_GFX_SIZE = 32;
 #define STEP4(START,STEP)       STEP2(START,STEP),STEP2((START)+2*(STEP),STEP)
 #define STEP8(START,STEP)       STEP4(START,STEP),STEP4((START)+4*(STEP),STEP)
 #define STEP16(START,STEP)      STEP8(START,STEP),STEP8((START)+8*(STEP),STEP)
-                                
+
 
 struct gfx_layout
 {
@@ -111,7 +111,7 @@ public:
   }
 
   bool load(const std::string& path)
-  { 
+  {
     std::ifstream fi(path);
     if (!fi.is_open()) {
       return false;
@@ -133,11 +133,11 @@ public:
     int char_x = 8;
     int char_y = 8;
 
-    int num_bytes_per_char = 8;  
+    int num_bytes_per_char = 8;
     int num_of_chars = data.size() / num_bytes_per_char;
 
     //sf::Image image;
-    image.create(16*8*2, 16*8*2, sf::Color(0, 255, 0));
+    image.create(16 * 8 * 2, 16 * 8 * 2, sf::Color(0, 255, 0));
 
     int k = 0;
     int x0 = 0;
@@ -150,7 +150,7 @@ public:
     int mask = 0x1;
     for (int s = 0; s < bitspercolor; s++)
     {
-      mask |= 1 << s; 
+      mask |= 1 << s;
     }
 
     // 8x8 bit charset --> 8 Bytes per char
@@ -196,7 +196,7 @@ public:
 
     image.saveToFile(path);
   }
-  
+
   bool init() {
     float scale = 4.0f;
     load_charset8x8("charset8x8.png", _data, _image);
@@ -204,7 +204,7 @@ public:
     texture.create(_image.getSize().x, _image.getSize().y);
     texture.update(_image);
     sprite.setTexture(texture);
-    
+
     sprite2.setTexture(texture);
     sprite2.setScale(scale, scale);
     sprite2.setPosition(_image.getSize().x, 0);
@@ -215,7 +215,7 @@ public:
   {
     texture->draw(sprite);
     texture->draw(sprite2);
-  } 
+  }
 
 private:
   sf::Image _image;
@@ -238,7 +238,7 @@ public:
   bool load(const std::vector<std::string>& vpath)
   {
     _data.resize(0);
-    for (auto& p : vpath) 
+    for (auto& p : vpath)
     {
       std::ifstream fi(p);
       if (!fi.is_open()) {
@@ -279,7 +279,7 @@ public:
         int m = 0;
         m = c1 + c0 ? 1 : 0;
         m = (c1 << 1) + c0;
-        
+
         return m;
       };
 
@@ -295,35 +295,68 @@ public:
 
     //image.create(16 * 16, 16 * 16, sf::Color(0, 0, 0, 0));
 
-    image.create(256, 256*16, sf::Color(0, 0, 0, 0));
+    image.create(256, 256 * 16, sf::Color(0, 0, 0, 0));
 
-    auto tile = [&](int k, int x, int y) {
+    auto tile = [&](int k, int x, int y, int palette) {
       for (int i = 0; i < 8; i++)
       {
         for (int j = 0; j < 8; j++)
         {
           auto c = readcolor(k++, data.data());
-          std::vector<sf::Color> colors =
+
+          std::vector< std::vector<sf::Color>> palette_colors =
           {
-            sf::Color(10,   10,   10, 255),    
-            sf::Color(245, 187,   159, 255),    // crema    
+          { // mario body 
+            sf::Color(10,   10,   10, 255),
+            sf::Color(245, 187,   159, 255),    // crema face 
             sf::Color(255,   0, 0, 255),        // red
             sf::Color(3, 1,   220, 255),        // blue
+          },
+          {// pauline head
+            sf::Color(10,   10,  10, 255),
+            sf::Color(254, 252, 255, 255),     // white face
+            sf::Color(238, 117,  17, 255),     // orange
+            sf::Color(240,  87, 232, 255),     // pink cloath
+          },
+          { // pauline body
+            sf::Color( 10,  10,  10, 255),
+            sf::Color(  3,   1, 220, 255),     // blue feet
+            sf::Color(254, 252, 255, 255),     // white
+            sf::Color(240,  87, 232, 255),     // pink cloath 
+          },
+          { // barrel 
+            sf::Color(101,  10,  10, 255),
+            sf::Color(  3,   3, 255, 255),     // blue 
+            sf::Color(238, 117,  17, 255),     // brown
+            sf::Color(245, 187, 159, 255),     // light brown
+          }
           };
-          image.setPixel(x + j, y + i, colors[c]);
+          auto pal = k % 0x100;
+          image.setPixel(x + j, y + i, palette_colors[palette][c]);
         }
       }
-    };
+      };
 
-   int m = 32;
-   for (int k = 0; k < 256 * 8; k++)
-   {
+    int m = 32;
+    for (int k = 0; k < 128; k++)
+    {
       //tile( k * (8*8), (k % m) * 16, (k / m) * 16);
      //tile(k * (8 * 8), 0, k * 8);
 
-     tile(k * (8 * 8), (k % m) * 8, (k / m) * 8);
-   }
-     image.saveToFile(path);  
+     //tile(k * (8 * 8), (k % m) * 8, (k / m) * 8);
+
+      int palette = 0;
+      if (k >= 32)
+        palette = 1;
+      if (k >= 34)
+        palette = 2;
+      if (k >= 42)
+        palette = 3;
+
+      tile((0x100 + k) * (8 * 8), 0, k * 8, palette);
+      tile(k * (8 * 8), 8, k * 8, palette);
+    }
+    image.saveToFile(path);
   }
 
   bool init() {
@@ -365,17 +398,17 @@ int main(int argc, char** argv)
 #define p(s) std::cout << #s << " = " << s << std::endl;  
   p(spritelayout.width);
   p(spritelayout.height);
-  p(spritelayout.total);  
-  p(spritelayout.planes); 
+  p(spritelayout.total);
+  p(spritelayout.planes);
   p(spritelayout.planeoffset[0]);
-  p(spritelayout.planeoffset[1]); 
-  p(spritelayout.xoffset[0]); 
-  p(spritelayout.xoffset[1]); 
-  p(spritelayout.yoffset[0]); 
-  p(spritelayout.yoffset[1]); 
-  p(spritelayout.charincrement);  
-  p(spritelayout.extxoffs); 
-  p(spritelayout.extyoffs); 
+  p(spritelayout.planeoffset[1]);
+  p(spritelayout.xoffset[0]);
+  p(spritelayout.xoffset[1]);
+  p(spritelayout.yoffset[0]);
+  p(spritelayout.yoffset[1]);
+  p(spritelayout.charincrement);
+  p(spritelayout.extxoffs);
+  p(spritelayout.extyoffs);
 
   float target_fps_hz = 60.f;
   sf::RenderWindow window;
@@ -400,14 +433,14 @@ int main(int argc, char** argv)
 
   sf::View view = window.getDefaultView();
 
-  KongTileset kong_tiles("assets/roms/v_5k_b.bin"); 
+  KongTileset kong_tiles("assets/roms/v_5k_b.bin");
   KongSpriteset kong_sprites(
-    { "assets/roms/l_4m_b.bin", 
-      "assets/roms/l_4n_b.bin", 
-      "assets/roms/l_4r_b.bin", 
-      "assets/roms/l_4s_b.bin" 
+    { "assets/roms/l_4m_b.bin",
+      "assets/roms/l_4n_b.bin",
+      "assets/roms/l_4r_b.bin",
+      "assets/roms/l_4s_b.bin"
     });
-  
+
   bool is_running = true;
   while (window.isOpen() && is_running) {
     while (window.pollEvent(event)) {
@@ -450,7 +483,7 @@ int main(int argc, char** argv)
 
     world_sprite.setTexture(world_bitmap.getTexture());
     world_sprite.setPosition(0, 0);
-    
+
     window.clear();
     window.draw(world_sprite);
 
