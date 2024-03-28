@@ -18,6 +18,66 @@
 #include <windows.h>  
 #endif
 
+#define RGN_FRAC(num,den)       (0x80000000 | (((num) & 0x0f) << 27) | (((den) & 0x0f) << 23))
+#define IS_FRAC(offset)         ((offset) & 0x80000000)
+#define FRAC_NUM(offset)        (((offset) >> 27) & 0x0f)
+#define FRAC_DEN(offset)        (((offset) >> 23) & 0x0f)
+#define FRAC_OFFSET(offset)     ((offset) & 0x007fffff)
+
+typedef uint32_t u32;
+typedef uint16_t u16;
+typedef uint8_t u8;
+
+constexpr u8 MAX_GFX_ELEMENTS = 32;
+constexpr u16 MAX_GFX_PLANES = 8;
+constexpr u16 MAX_GFX_SIZE = 32;
+
+#define STEP2(START,STEP)       (START),(START)+(STEP)
+#define STEP4(START,STEP)       STEP2(START,STEP),STEP2((START)+2*(STEP),STEP)
+#define STEP8(START,STEP)       STEP4(START,STEP),STEP4((START)+4*(STEP),STEP)
+#define STEP16(START,STEP)      STEP8(START,STEP),STEP8((START)+8*(STEP),STEP)
+                                
+
+struct gfx_layout
+{
+  u32 xoffs(int x) const { return (extxoffs != nullptr) ? extxoffs[x] : xoffset[x]; }
+  u32 yoffs(int y) const { return (extyoffs != nullptr) ? extyoffs[y] : yoffset[y]; }
+
+  u16             width;              // pixel width of each element
+  u16             height;             // pixel height of each element
+  u32             total;              // total number of elements, or RGN_FRAC()
+  u16             planes;             // number of bitplanes
+  u32             planeoffset[MAX_GFX_PLANES]; // bit offset of each bitplane
+  u32             xoffset[MAX_GFX_SIZE]; // bit offset of each horizontal pixel
+  u32             yoffset[MAX_GFX_SIZE]; // bit offset of each vertical pixel
+  u32             charincrement;      // distance between two consecutive elements (in bits)
+  const u32* extxoffs;           // extended X offset array for really big layouts
+  const u32* extyoffs;           // extended Y offset array for really big layouts
+};
+
+struct gfx_decode_entry
+{
+  const char* memory_region;      // memory region where the data resides
+  u32             start;              // offset of beginning of data to decode
+  const gfx_layout* gfxlayout;        // pointer to gfx_layout describing the layout; nullptr marks the end of the array
+  u16             color_codes_start;  // offset in the color lookup table where color codes start
+  u16             total_color_codes;  // total number of color codes
+  u32             flags;              // flags and optional scaling factors
+};
+
+static const gfx_layout spritelayout =
+{
+  16,16,                                  /* 16*16 sprites */
+  RGN_FRAC(1,4),                          /* 128 sprites */
+  2,                                      /* 2 bits per pixel */
+  { RGN_FRAC(1,2), RGN_FRAC(0,2) },       /* the two bitplanes are separated */
+  { STEP8(0,1), STEP8(RGN_FRAC(1,4),1) }, /* the two halves of the sprite are separated */
+  { STEP16(0,8) },
+  16 * 8                                    /* every sprite takes 16 consecutive bytes */
+};
+
+
+
 static void fatal_error(const char* format, ...)
 {
   va_list arg_ptr;
@@ -212,11 +272,14 @@ public:
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
         //n += 3 * 16 * 16;
-        int s = 16 * 16;
-        int c0 = readbit((n * 1) + 0, data);
-        int c1 = 0; readbit((n * 8) + 1, data);
+        //int s = 16 * 16;
+        int c0 = readbit((n), data);
+        int c1 = readbit((n), data + 0x1000);
 
-        int m = (c1 << 1) + c0;
+        int m = 0;
+        m = c1 + c0 ? 1 : 0;
+        m = (c1 << 1) + c0;
+        
         return m;
       };
 
@@ -230,40 +293,51 @@ public:
     auto c1 = readbit(17, data.data());
     auto c2 = readbit(18, data.data());*/
 
-    image.create(16 * 16, 16 * 16, sf::Color(0, 0, 0, 0));
+    //image.create(16 * 16, 16 * 16, sf::Color(0, 0, 0, 0));
 
-    for (int i = 0; i < 16; i++)
-    {
-      for (int j = 0; j < 16; j++)
+    image.create(256, 256*16, sf::Color(0, 0, 0, 0));
+
+    auto tile = [&](int k, int x, int y) {
+      for (int i = 0; i < 8; i++)
       {
-        auto c = readcolor(16 * i + j, data.data());
-        
-        std::vector<sf::Color> colors =
+        for (int j = 0; j < 8; j++)
         {
-          sf::Color(255,   0,   0, 255),
-          sf::Color(  0, 255,   0, 255),
-          sf::Color(  0,   0, 255, 255),
-          sf::Color(255, 255,   0, 255)
-        };
-        image.setPixel(j, i, colors[c]);
+          auto c = readcolor(k++, data.data());
+          std::vector<sf::Color> colors =
+          {
+            sf::Color(10,   10,   10, 255),    
+            sf::Color(245, 187,   159, 255),    // crema    
+            sf::Color(255,   0, 0, 255),        // red
+            sf::Color(3, 1,   220, 255),        // blue
+          };
+          image.setPixel(x + j, y + i, colors[c]);
+        }
       }
-    }
-    
+    };
 
+   int m = 32;
+   for (int k = 0; k < 256 * 8; k++)
+   {
+      //tile( k * (8*8), (k % m) * 16, (k / m) * 16);
+     //tile(k * (8 * 8), 0, k * 8);
+
+     tile(k * (8 * 8), (k % m) * 8, (k / m) * 8);
+   }
+     image.saveToFile(path);  
   }
 
   bool init() {
-    float scale = 4.0f;
+    float scale = 8.0f;
 
     load_spriteset16x16("spriteset16x16.png", _data, _image);
 
-    texture.create(_image.getSize().x, _image.getSize().y);
-    texture.update(_image);
-    sprite.setTexture(texture);
+    //texture.create(_image.getSize().x, _image.getSize().y);
+    //texture.update(_image);
+    //sprite.setTexture(texture);
 
-    sprite2.setTexture(texture);
-    sprite2.setScale(scale, scale);
-    sprite2.setPosition(_image.getSize().x, 0);
+    //sprite2.setTexture(texture);
+    //sprite2.setScale(scale, scale);
+    //sprite2.setPosition(_image.getSize().x, 0);
     return true;
   }
 
@@ -287,6 +361,21 @@ int main(int argc, char** argv)
   ::AllocConsole();
   freopen("CONOUT$", "w", stdout);
 #endif
+
+#define p(s) std::cout << #s << " = " << s << std::endl;  
+  p(spritelayout.width);
+  p(spritelayout.height);
+  p(spritelayout.total);  
+  p(spritelayout.planes); 
+  p(spritelayout.planeoffset[0]);
+  p(spritelayout.planeoffset[1]); 
+  p(spritelayout.xoffset[0]); 
+  p(spritelayout.xoffset[1]); 
+  p(spritelayout.yoffset[0]); 
+  p(spritelayout.yoffset[1]); 
+  p(spritelayout.charincrement);  
+  p(spritelayout.extxoffs); 
+  p(spritelayout.extyoffs); 
 
   float target_fps_hz = 60.f;
   sf::RenderWindow window;
