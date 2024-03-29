@@ -13,6 +13,7 @@
 #include <vector>   
 #include <cstdarg>  
 #include <cstdio> 
+#include <format>
 
 #ifdef WIN32
 #include <windows.h>  
@@ -198,7 +199,7 @@ public:
   }
 
   bool init() {
-    float scale = 4.0f;
+    float scale = 2.0f;
     load_charset8x8("charset8x8.png", _data, _image);
 
     texture.create(_image.getSize().x, _image.getSize().y);
@@ -266,15 +267,21 @@ public:
     auto readbit = [](int n, const std::uint8_t* data) -> int
       {
         const std::uint8_t* ptr = &data[n / 8];
+
+        auto offset = ptr - data;
+        
+
         return *ptr & (1 << (n % 8)) ? 1 : 0;
       };
 
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
-        //n += 3 * 16 * 16;
-        //int s = 16 * 16;
-        int c0 = readbit((n), data);
-        int c1 = readbit((n), data + 0x1000);
+        int offset = 0;
+
+        std::cout << std::format("{:x} : {}", n / 8, n / 8) << std::endl;
+
+        int c0 = readbit((n), data + offset);
+        int c1 = readbit((n), data + offset + 0x1000);
 
         int m = 0;
         m = c1 + c0 ? 1 : 0;
@@ -283,19 +290,7 @@ public:
         return m;
       };
 
-    /*auto a0 = readbit(0, data.data());
-    auto a1 = readbit(1, data.data());
-    auto a2 = readbit(2, data.data());
-    auto a3 = readbit(3, data.data());
-
-
-    auto c0 = readbit(16, data.data());
-    auto c1 = readbit(17, data.data());
-    auto c2 = readbit(18, data.data());*/
-
-    //image.create(16 * 16, 16 * 16, sf::Color(0, 0, 0, 0));
-
-    image.create(256, 256 * 16, sf::Color(0, 0, 0, 0));
+    image.create(256*4, 256 * 4, sf::Color(0, 0, 0, 0));
 
     auto tile = [&](int k, int x, int y, int palette) {
       for (int i = 0; i < 8; i++)
@@ -303,6 +298,7 @@ public:
         for (int j = 0; j < 8; j++)
         {
           auto c = readcolor(k++, data.data());
+          
 
           std::vector< std::vector<sf::Color>> palette_colors =
           {
@@ -331,14 +327,15 @@ public:
             sf::Color(245, 187, 159, 255),     // light brown
           }
           };
-          auto pal = k % 0x100;
           image.setPixel(x + j, y + i, palette_colors[palette][c]);
         }
       }
       };
 
     int m = 32;
-    for (int k = 0; k < 128; k++)
+    int x = 0;
+    int y = 0;
+    for (int k = 0; k < 2*256; k+=2)
     {
       //tile( k * (8*8), (k % m) * 16, (k / m) * 16);
      //tile(k * (8 * 8), 0, k * 8);
@@ -353,23 +350,36 @@ public:
       if (k >= 42)
         palette = 3;
 
-      tile((0x100 + k) * (8 * 8), 0, k * 8, palette);
-      tile(k * (8 * 8), 8, k * 8, palette);
+      tile((0x100 + k) * (8 * 8), x, y, palette);
+      tile((0x000 + k) * (8 * 8), x + 8, y, palette);
+
+      tile((0x100 + k+1)* (8 * 8), x, y + 8, palette);
+      tile((0x000 + k+1)* (8 * 8), x +8, y + 8, palette);
+
+     x += 16;
+     if (x >= 256)
+     {
+       x = 0;
+       y += 16;   
+     }  
+     
+      //tile((0x100 + k) * (8 * 8), 0, k * 8, palette);
+      //tile(k * (8 * 8), 8, k * 8, palette);
     }
     image.saveToFile(path);
   }
 
   bool init() {
-    float scale = 8.0f;
+    float scale = 4.0f;
 
     load_spriteset16x16("spriteset16x16.png", _data, _image);
 
-    //texture.create(_image.getSize().x, _image.getSize().y);
-    //texture.update(_image);
-    //sprite.setTexture(texture);
+    texture.create(_image.getSize().x, _image.getSize().y);
+    texture.update(_image);
+    sprite.setTexture(texture);
 
-    //sprite2.setTexture(texture);
-    //sprite2.setScale(scale, scale);
+    sprite2.setTexture(texture);
+    sprite2.setScale(scale, scale);
     //sprite2.setPosition(_image.getSize().x, 0);
     return true;
   }
