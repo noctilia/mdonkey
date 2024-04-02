@@ -292,13 +292,12 @@ public:
 
     image.create(256*4, 256 * 4, sf::Color(0, 0, 0, 0));
 
-    auto tile = [&](int k, int x, int y, int palette) {
+    auto tile = [&](int k, int x, int y, int palette, int offset) {
       for (int i = 0; i < 8; i++)
       {
         for (int j = 0; j < 8; j++)
         {
-          auto c = readcolor(k++, data.data());
-          
+          auto c = readcolor(k++, data.data() + offset);      
 
           std::vector< std::vector<sf::Color>> palette_colors =
           {
@@ -335,7 +334,7 @@ public:
     int m = 32;
     int x = 0;
     int y = 0;
-    for (int k = 0; k < 2*256; k+=2)
+    for (int k = 0; k < 256; k+=2)
     {
       //tile( k * (8*8), (k % m) * 16, (k / m) * 16);
      //tile(k * (8 * 8), 0, k * 8);
@@ -350,11 +349,22 @@ public:
       if (k >= 42)
         palette = 3;
 
-      tile((0x100 + k) * (8 * 8), x, y, palette);
-      tile((0x000 + k) * (8 * 8), x + 8, y, palette);
+      int offset = 0;
 
-      tile((0x100 + k+1)* (8 * 8), x, y + 8, palette);
-      tile((0x000 + k+1)* (8 * 8), x +8, y + 8, palette);
+      int bitn = k;
+      int n = k * 8;
+      //if (n >= 0x800) 
+      {
+        offset = 0x00;  
+        //bitn -= 0x100;
+      }
+
+      
+      tile((0x100 + bitn) * (8 * 8), x,     y, palette, offset);
+      tile((0x000 + bitn) * (8 * 8), x + 8, y, palette, offset);
+
+      tile((0x100 + bitn + 1)* (8 * 8), x,     y + 8, palette, offset);
+      tile((0x000 + bitn + 1)* (8 * 8), x + 8, y + 8, palette, offset);
 
      x += 16;
      if (x >= 256)
