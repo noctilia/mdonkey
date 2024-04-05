@@ -239,9 +239,10 @@ public:
   bool load(const std::vector<std::string>& vpath)
   {
     _data.resize(0);
+    unsigned char* data = _data.data();
     for (auto& p : vpath)
     {
-      std::ifstream fi(p);
+      std::ifstream fi(p, std::ios::binary);
       if (!fi.is_open()) {
         return false;
       }
@@ -252,7 +253,8 @@ public:
 
       auto ofs = _data.size();
       _data.resize(ofs + length);
-      fi.read(reinterpret_cast<char*>(_data.data() + ofs), length);
+      data = _data.data();
+      fi.read(reinterpret_cast<char*>(data + ofs), length);
       fi.close();
     }
 
@@ -278,7 +280,7 @@ public:
       {
         int offset = 0;
 
-        std::cout << std::format("{:x} : {}", n / 8, n / 8) << std::endl;
+        //std::cout << std::format("{:x} : {}", n / 8, n / 8) << std::endl;
 
         int c0 = readbit((n), data + offset);
         int c1 = readbit((n), data + offset + 0x1000);
@@ -301,30 +303,122 @@ public:
 
           std::vector< std::vector<sf::Color>> palette_colors =
           {
-          { // mario body 
+          { // 0 mario body 
             sf::Color(10,   10,   10, 255),
             sf::Color(245, 187,   159, 255),    // crema face 
             sf::Color(255,   0, 0, 255),        // red
             sf::Color(3, 1,   220, 255),        // blue
           },
-          {// pauline head
+          {// 1 pauline head
             sf::Color(10,   10,  10, 255),
             sf::Color(254, 252, 255, 255),     // white face
             sf::Color(238, 117,  17, 255),     // orange
             sf::Color(240,  87, 232, 255),     // pink cloath
           },
-          { // pauline body
+          { // 2 pauline body
             sf::Color( 10,  10,  10, 255),
             sf::Color(  3,   1, 220, 255),     // blue feet
             sf::Color(254, 252, 255, 255),     // white
             sf::Color(240,  87, 232, 255),     // pink cloath 
           },
-          { // barrel 
-            sf::Color(101,  10,  10, 255),
+          { // 3 barrel 
+            sf::Color(10,   10,   10, 255),
             sf::Color(  3,   3, 255, 255),     // blue 
             sf::Color(238, 117,  17, 255),     // brown
             sf::Color(245, 187, 159, 255),     // light brown
+          },
+          { // 4 hammer
+            sf::Color(10,   10,   10, 255),
+            sf::Color(171,   5,   7, 255),     // brown
+            sf::Color(245, 187, 159, 255),     // light brown
+            sf::Color(245, 252, 255, 255),     // white
+          },
+          { // 5 kong head 1
+            sf::Color(10,   10,   10, 255),
+            sf::Color(171,   5,   7, 255),     // brown
+            sf::Color(245, 187, 159, 255),     // orange brown
+            sf::Color(245, 252, 255, 255),     // white eyes
+          },
+          { // 6 kong body
+            sf::Color(10,   10,   10, 255),
+            sf::Color(171,   5,   7, 255),     // brown
+            sf::Color(245, 187, 159, 255),     // light brown
+            sf::Color(238, 117,  17, 255),     // orange brown 
+          },
+          { // 7 yellow stars
+            sf::Color(10,  10,  10, 255),
+            sf::Color(244,  186, 21, 255),     // yellow 
+            sf::Color(0,  255, 255, 255),      // blue 
+            sf::Color(255, 0,   0, 255),       // blue 
+          },
+          { // 8 spring
+            sf::Color(10,   10,  10, 255),
+            sf::Color(158, 157, 255, 255),     // light blue 
+            sf::Color(19,  243, 255, 255),     // cyan
+            sf::Color(232,   7, 9, 255),       // red 
+          },          
+          { // 9 flame blue --> same sprite as flame red
+            sf::Color(10,  10,  10, 255),
+            sf::Color(158, 157, 255, 255),     // light blue 
+            sf::Color(19,  243, 255, 255),     // cyan
+            sf::Color(232,   7, 9, 255),       // red 
+          },
+          { // 10 flame red
+            sf::Color(10,  10,  10, 255),
+            sf::Color(244, 186, 21, 255),     // yellow face
+            sf::Color(232,  7,  9, 255),      // red head
+            sf::Color(254, 252, 255, 255),    // white face 
+          },
+          { // 11 fire spike
+            sf::Color(10,  10,  10, 255),
+            sf::Color(244, 186, 21, 255),     // yellow face
+            sf::Color(232,   7, 9, 255),     // red 
+            sf::Color(254, 252, 255, 255),    // white face 
+          },
+          { // 12 t-träger
+            sf::Color(10,  10,  10, 255),
+            sf::Color(236, 49, 147, 255),      // violet light
+            sf::Color(142, 3, 5, 255),         // violet dark
+            sf::Color(255, 0,   0, 255),       // red 
+          },
+          { // 13 chest
+            sf::Color(10,  10,  10, 255),
+            sf::Color(244, 186, 21, 255),       // yellow
+            sf::Color(232,   7, 9, 255),     // red 
+            sf::Color(0, 0,   0, 255),        // black
+          },
+          { // 14 ladder
+            sf::Color(10,  10,  10, 255),
+            sf::Color(0,  255, 255, 255),      // cyan not used
+            sf::Color(0,  255, 255, 255),      // cyan not used
+            sf::Color(254, 252, 255, 255),    // white face 
+          },
+          { // 15 oil barrel 
+            sf::Color(10,  10,  10, 255),
+            sf::Color(254, 252, 255, 255),    // white face 
+            sf::Color(19,  243, 255, 255),     // cyan
+            sf::Color(3,   3, 255, 255),     // blue 
+          },
+          { // 16 cake
+            sf::Color(10,  10,  10, 255),
+            sf::Color(214, 158, 159, 255),     // face color
+            sf::Color(245, 187, 159, 255),     // light brown
+            sf::Color(3,   3, 255, 255),     // blue 
+          },
+          { // 17 
+            sf::Color(101,  10,  10, 255),
+            sf::Color(0,   0, 255, 255),       // blue 
+            sf::Color(0,  255, 255, 255),      // cyan
+            sf::Color(255, 0,   0, 255),       // red 
+          },
+          { // 18
+            sf::Color(101,  10,  10, 255),
+            sf::Color(0,   0, 255, 255),       // blue 
+            sf::Color(0,  255, 255, 255),      // cyan
+            sf::Color(255, 0,   0, 255),       // red 
           }
+
+
           };
           image.setPixel(x + j, y + i, palette_colors[palette][c]);
         }
@@ -336,18 +430,58 @@ public:
     int y = 0;
     for (int k = 0; k < 256; k+=2)
     {
-      //tile( k * (8*8), (k % m) * 16, (k / m) * 16);
-     //tile(k * (8 * 8), 0, k * 8);
-
-     //tile(k * (8 * 8), (k % m) * 8, (k / m) * 8);
-
+      // mario
       int palette = 0;
-      if (k >= 32)
-        palette = 1;
+
+      if (k >= 32) 
+        palette = 1; // pauline head
       if (k >= 34)
-        palette = 2;
+        palette = 2; // pauline body  
       if (k >= 42)
-        palette = 3;
+        palette = 3;  // barrel
+      if (k >= 60) 
+        palette = 4;  // hammer --> hammer has two palettes brown and yellow
+      if (k >= 64)
+        palette = 5;  // kong head
+      if (k >= 74)
+        palette = 6;  // kong body
+      if (k >= 114)
+        palette = 7;  // yellow stars
+      if (k >= 116)
+        palette = 8;  // spring
+      if (k >= 122) 
+        palette = 10; // flame red --> flame has two palettes red and blue
+      if (k >= 128)
+        palette = 11; // fire spike
+      if (k >= 136)   
+        palette = 12; // t-träger 
+      if (k >= 138) 
+        palette = 13; // chest
+      if (k >= 140) 
+        palette = 14; // ladder 
+      if (k >= 146) 
+        palette = 15; // oil barrel 
+      if (k >= 150) 
+        palette = 16; // cake 
+      if (k >= 154) 
+        palette = 10; // flame red --> flame has two palettes red and blue
+      if (k >= 158)  
+        palette = 8;  // spring
+
+      if (k >= 192)   // bubble/star
+        palette = 15; // oil barrel
+           
+      if (k >= 228)   // square ???
+        palette = 17; // ??? 
+
+      if (k >= 230)   // pocket, umbrella, heart
+        palette = 2;
+
+      if (k >= 240)   // 
+        palette = 0;  // mario
+
+      if (k >= 246)   // digits
+        palette = 10;  // flame red 
 
       int offset = 0;
 
