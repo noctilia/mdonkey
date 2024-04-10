@@ -105,34 +105,63 @@ sf::RenderTexture* gworld_bitmap = nullptr;
 class KongTileset
 {
 public:
-  KongTileset(const std::string& path)
+  KongTileset(const std::vector<std::string>& vpath)
   {
-    load(path);
+    load(vpath);
     init();
   }
 
-  bool load(const std::string& path)
+  bool load(const std::vector<std::string>& vpath)
   {
-    std::ifstream fi(path);
-    if (!fi.is_open()) {
-      return false;
+    unsigned char* data = _data.data();
+    for (auto& p : vpath)
+    {
+      std::ifstream fi(p, std::ios::binary);
+      if (!fi.is_open()) {
+        return false;
+      }
+
+      fi.seekg(0, std::ios::end);
+      std::streampos length = fi.tellg();
+      fi.seekg(0, std::ios::beg);
+
+      auto ofs = _data.size();
+      _data.resize(ofs + length);
+      data = _data.data();
+      fi.read(reinterpret_cast<char*>(data + ofs), length);
+      fi.close();
     }
 
-    fi.seekg(0, std::ios::end);
-    std::streampos length = fi.tellg();
-    fi.seekg(0, std::ios::beg);
-
-    _data.resize(length);
-    fi.read(reinterpret_cast<char*>(_data.data()), length);
-    fi.close();
-
-    return false;
+    return true;
   }
+
+  
 
   void load_charset8x8(const std::string& path, const std::vector<std::uint8_t>& data, sf::Image& image)
   {
     int char_x = 8;
     int char_y = 8;
+
+    auto readbit = [](int n, const std::uint8_t* data) -> int
+      {
+        const std::uint8_t* ptr = &data[n / 8];
+        return *ptr & (1 << (n % 8)) ? 1 : 0;
+      };
+
+    auto readcolor = [&](int n, const std::uint8_t* data) -> int
+      {
+        int offset = 0;
+        //std::cout << std::format("{:x} : {}", n / 8, n / 8) << std::endl;
+
+        int c0 = readbit((n), data + offset);
+        int c1 = readbit((n), data + offset + 0x800);
+
+        int m = 0;
+        m = c1 + c0 ? 1 : 0;
+        m = (c1 << 1) + c0;
+
+        return m;
+      };
 
     int num_bytes_per_char = 8;
     int num_of_chars = data.size() / num_bytes_per_char;
@@ -144,9 +173,6 @@ public:
     int x0 = 0;
     int y0 = 0;
 
-    int n = 0;
-    int r = 0;
-
     int bitspercolor = 1;
     int mask = 0x1;
     for (int s = 0; s < bitspercolor; s++)
@@ -156,33 +182,50 @@ public:
 
     // 8x8 bit charset --> 8 Bytes per char
     // filesize = 2048 bytes --> 256 chars
+    int u = 0;
+    int n = 0;  
     for (int m = 0; m < num_of_chars; m++) {
-      if (k >= data.size())
+      if (k >= data.size() / 2)
         break;
 
       int p = 0;
-      int r = data[k];
+      int r0 = data[k];
+      int r1 = data[k + 0x800];
+      //int r2 = data[k + 0x100];
       for (int i = 0; i < 8; i++)
       {
         for (int j = 0; j < 8; j++)
         {
-          int c = r & mask;
-          r >>= bitspercolor;
+          int c0 = r0 & mask;
+          int c1 = r1 & mask;
+          r0 >>= bitspercolor;
+          r1 >>= bitspercolor;
 
           int x = x0 + (7 - i);
           int y = y0 + (7 - j);
-          if (c != 0) {
-            image.setPixel(x, y, sf::Color(255, 255, 255, 255));
-          }
-          else {
-            image.setPixel(x, y, sf::Color(0, 0, 0, 0));
-          }
+
+          std::vector<sf::Color> palette_colors =
+          {
+            sf::Color(0, 0, 0, 255),
+            sf::Color(255, 0, 0, 255),
+            sf::Color(0, 255, 0, 255),
+            sf::Color(255, 255, 0, 255)
+          };  
+
+          int m = readcolor(u++, data.data());
+
+          if (m == 2)
+            m = 2;  
+          //int c = (c1 << 1) + c0;
+          image.setPixel(x, y, palette_colors[m]);
+
           p += bitspercolor;
           if (p >= 8) {
             p = 0;
-            if (++k >= data.size())
+            if (++k >= 0x800)
               break;
-            r = data[k];
+            r0 = data[k];
+            r1 = data[k + 0x800];
           }
 
         }
@@ -238,7 +281,6 @@ public:
 
   bool load(const std::vector<std::string>& vpath)
   {
-    _data.resize(0);
     unsigned char* data = _data.data();
     for (auto& p : vpath)
     {
@@ -258,7 +300,7 @@ public:
       fi.close();
     }
 
-    return false;
+    return true;
   }
 
   void load_spriteset16x16(const std::string& path, const std::vector<std::uint8_t>& data, sf::Image& image, int pagesize = 0x800)
@@ -269,17 +311,12 @@ public:
     auto readbit = [](int n, const std::uint8_t* data) -> int
       {
         const std::uint8_t* ptr = &data[n / 8];
-
-        auto offset = ptr - data;
-        
-
         return *ptr & (1 << (n % 8)) ? 1 : 0;
       };
 
     auto readcolor = [&](int n, const std::uint8_t* data) -> int
       {
         int offset = 0;
-
         //std::cout << std::format("{:x} : {}", n / 8, n / 8) << std::endl;
 
         int c0 = readbit((n), data + offset);
@@ -587,7 +624,11 @@ int main(int argc, char** argv)
 
   sf::View view = window.getDefaultView();
 
-  KongTileset kong_tiles("assets/roms/v_5k_b.bin");
+  KongTileset kong_tiles(
+    { "assets/roms/v_5k_b.bin",
+      "assets/roms/v_3pt.bin",
+    });
+
   KongSpriteset kong_sprites(
     { "assets/roms/l_4m_b.bin",
       "assets/roms/l_4n_b.bin",
@@ -630,8 +671,8 @@ int main(int argc, char** argv)
 
     world_bitmap.clear(sf::Color{ 64, 64, 64 });
 
-    //kong_tiles.draw(&world_bitmap);
-    kong_sprites.draw(&world_bitmap);
+    kong_tiles.draw(&world_bitmap);
+    //kong_sprites.draw(&world_bitmap);
 
     world_bitmap.display();
 

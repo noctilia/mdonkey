@@ -64,3 +64,31 @@ Sprite RAM:
      73D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
      73E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
      73F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+
+
+  // How High Tilemap
+
+  Palette each tile or line?
+
+
+
+  
+  Kong:  palette brown 
+            53 52 51 50    // right0 side
+            10 10 10 10    
+            57 56 55 54    // right1 side 
+            10 10 10 10    
+            5b 5a 59 58    // mid side 
+            10 10 10 10
+            5f 5e 5d 5c    // mid side 
+            10 10 10 10 
+            63 62 61 60    // left1 side
+            10 10 10 10
+            67 66 65 64    // left0 side 
+
+  // level 1 palette bank 02
+  line0 red/cyan/lightblue/black
+  line1 ??/orange/brown/black
+  line2 ??/orange/brown/black
+  line3 ??/light face/brown/black
+  line4 ??/light violett, violett/black
