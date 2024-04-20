@@ -214,8 +214,8 @@ public:
 
           int m = readcolor(u++, data.data());
 
-          if (m == 2)
-            m = 2;  
+          if (m == 1)
+            m = 1;  
           //int c = (c1 << 1) + c0;
           image.setPixel(x, y, palette_colors[m]);
 
