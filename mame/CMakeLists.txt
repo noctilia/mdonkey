@@ -14,6 +14,8 @@ file(GLOB SRC
   src/*.c
   src/*.cpp
   src/ladybug/*.c
+  src/cclimber/*.c
+  src/ckong/*.c
   src/osd/*.cpp
   src/z80/*.c
 )
@@ -52,5 +54,5 @@ install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/
     DESTINATION ${CMAKE_INSTALL_PREFIX}/${BUILD_TYPE}/${TARGET_NAME}/
     FILES_MATCHING 
-    PATTERN "*.*"
+    PATTERN "*"
 )
