@@ -10,9 +10,9 @@ namespace Gfx {
   }
 
   void setPalette(int col, int r, int g, int b) {
-    g_palette[col * 3 + 0] = r;
-    g_palette[col * 3 + 1] = g;
-    g_palette[col * 3 + 2] = b;
+    g_palette[col * 3 + 0] = r << 2;
+    g_palette[col * 3 + 1] = g << 2;
+    g_palette[col * 3 + 2] = b << 2;
   }
 
   void getPalette(int col, int* r, int* g, int* b) {

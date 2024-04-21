@@ -14,7 +14,7 @@
 /****************************************************************************/
 /* #define DEBUG      */              /* Compile debugging version          */
 /* #define X86_ASM    */              /* Compile optimised GCC/x86 version  */
-#define LSB_FIRST              /* Compile for low-endian CPU         */
+//#define LSB_FIRST              /* Compile for low-endian CPU         */
 //#define __64BIT__               /* Compile for 64 bit machines        */
 /* #define __128BIT__ */              /* Compile for 128 bit machines       */
 

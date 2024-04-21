@@ -5,6 +5,8 @@ set(TARGET_NAME mame)
 
 option(BUILD_UNIT_TESTS "Build unit tests" ON)
 
+ADD_DEFINITIONS(-DLSB_FIRST)
+
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/crush)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/ladybug)
 
