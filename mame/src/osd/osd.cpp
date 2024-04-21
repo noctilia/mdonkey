@@ -280,4 +280,46 @@ extern "C" {
   {
   }
 
+
+  int osd_joy_pressed(int joycode)
+  {
+    return 0;
+  }
+
+  void osd_joystick_press(int joycode)
+  {
+    switch (joycode)
+    {
+    case OSD_JOY_LEFT:
+      osd_joy_left = 1;
+      break;
+    case OSD_JOY_RIGHT:
+      osd_joy_right = 1;
+      break;
+    case OSD_JOY_UP:
+      osd_joy_up = 1;
+      break;
+    case OSD_JOY_DOWN:
+      osd_joy_down = 1;
+      break;
+    case OSD_JOY_FIRE1:
+      osd_joy_b1 = 1;
+      break;
+    case OSD_JOY_FIRE2:
+      osd_joy_b2 = 1;
+      break;
+    case OSD_JOY_FIRE3:
+      osd_joy_b3 = 1;
+      break;
+    case OSD_JOY_FIRE4:
+      osd_joy_b4 = 1;
+      break;
+    case OSD_JOY_FIRE:
+      osd_joy_b1 = 1;
+      osd_joy_b2 = 1;
+      osd_joy_b3 = 1;
+      osd_joy_b4 = 1;
+      break;
+    }
+  }
 } // extern "C"	

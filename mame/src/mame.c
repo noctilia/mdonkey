@@ -3,7 +3,7 @@
 #include "machine.h"
 #include "osdepend.h"
 
-#define DEFAULT_NAME "ckong"
+#define DEFAULT_NAME "dkong"
 
 
 FILE *errorlog;

@@ -8,28 +8,15 @@
 
 ***************************************************************************/
 
-//#include <pc.h>
-//#include <sys/farptr.h>
+#include <pc.h>
+#include <sys/farptr.h>
 #include <stdio.h>
 #include <string.h>
-//#include <go32.h>
-//#include <allegro.h>
+#include <go32.h>
+#include <allegro.h>
 #include "osdepend.h"
-#include "TwkUser._c"
-//#include <audio.h>
-typedef struct RGB
-{
-  unsigned char r,g,b;
-} RGB;
-
-RGB palette[256];
-
-static void set_color(int color, RGB* col)
-{
-  palette[color].r = col->r;
-  palette[color].g = col->g;
-  palette[color].b = col->b;
-}	
+#include "TwkUser.c"
+#include <audio.h>
 
 
 #define SCREEN_WIDTH 640
@@ -45,15 +32,12 @@ int noscanlines;
 int use_joystick;
 
 
-int osd_joy_up, osd_joy_down, osd_joy_left, osd_joy_right;
-int osd_joy_b1, osd_joy_b2, osd_joy_b3, osd_joy_b4;
-
 /* audio related stuff */
-#define NUMVOICES 4
+#define NUMVOICES 6
 #define SAMPLE_RATE 44100
 #define SAMPLE_BUFFER_LENGTH 50000
-//HAC hVoice[NUMVOICES];
-//LPAUDIOWAVE lpWave[NUMVOICES];
+HAC hVoice[NUMVOICES];
+LPAUDIOWAVE lpWave[NUMVOICES];
 
 
 /* put here anything you need to do when the program is started. Return 0 if */
@@ -79,14 +63,13 @@ int osd_init(int argc,char **argv)
 			use_joystick = 0;
 	}
 
-#if 0
 	if (use_joystick)
 	{
 		/* Try to install Allegro joystick handler */
 		if (initialise_joystick())
 			use_joystick = 0; /* joystick not found */
 	}
-	
+
 	if (play_sound)
 	{
 	    AUDIOINFO info;
@@ -141,7 +124,6 @@ int osd_init(int argc,char **argv)
 	allegro_init();
 	install_keyboard();		/* Allegro keyboard handler */
 	first_free_pen = 0;
-#endif
 
 	return 0;
 }
@@ -151,21 +133,22 @@ int osd_init(int argc,char **argv)
 /* put here cleanup routines to be executed when the program is terminated. */
 void osd_exit(void)
 {
-	//if (play_sound)
-	//{
-	//	int n;
+	if (play_sound)
+	{
+		int n;
 
 
-	//	/* stop and release voices */
-	//	for (n = 0; n < NUMVOICES; n++)
-	//	{
-	//		AStopVoice(hVoice[n]);
-	//		ADestroyAudioVoice(hVoice[n]);
-	//		ADestroyAudioData(lpWave[n]);
-	//		free(lpWave[n]);
-	//	}
-	//	ACloseVoices();
-	//}
+		/* stop and release voices */
+		for (n = 0; n < NUMVOICES; n++)
+		{
+			AStopVoice(hVoice[n]);
+			ADestroyAudioVoice(hVoice[n]);
+			ADestroyAudioData(lpWave[n]);
+			free(lpWave[n]);
+		}
+		ACloseVoices();
+		ACloseAudio();
+	}
 }
 
 
@@ -192,7 +175,7 @@ struct osd_bitmap *osd_create_bitmap(int width,int height)
 		for (i = 0;i < height;i++)
 			bitmap->line[i] = &bm[i * width];
 
-		bitmap->_private = bm;
+		bitmap->private = bm;
 	}
 
 	return bitmap;
@@ -204,7 +187,7 @@ void osd_free_bitmap(struct osd_bitmap *bitmap)
 {
 	if (bitmap)
 	{
-		free(bitmap->_private);
+		free(bitmap->private);
 		free(bitmap);
 	}
 }
@@ -213,15 +196,15 @@ void osd_free_bitmap(struct osd_bitmap *bitmap)
 
 Register scr224x288[] =
 {
-	{ 0x3c2, 0x00, 0xa7},{ 0x3d4, 0x00, 0x71},{ 0x3d4, 0x01, 0x37},
-	{ 0x3d4, 0x02, 0x64},{ 0x3d4, 0x03, 0x92},{ 0x3d4, 0x04, 0x4f},
-	{ 0x3d4, 0x05, 0x98},{ 0x3d4, 0x06, 0x46},{ 0x3d4, 0x07, 0x1f},
-	{ 0x3d4, 0x08, 0x00},{ 0x3d4, 0x09, 0x40},{ 0x3d4, 0x10, 0x31},
-	{ 0x3d4, 0x11, 0x80},{ 0x3d4, 0x12, 0x1f},{ 0x3d4, 0x13, 0x1c},
-	{ 0x3d4, 0x14, 0x40},{ 0x3d4, 0x15, 0x2f},{ 0x3d4, 0x16, 0x44},
-	{ 0x3d4, 0x17, 0xe3},{ 0x3c4, 0x01, 0x01},{ 0x3c4, 0x02, 0x0f},
-	{ 0x3c4, 0x04, 0x0e},{ 0x3ce, 0x05, 0x40},{ 0x3ce, 0x06, 0x05},
-	{ 0x3c0, 0x10, 0x41},{ 0x3c0, 0x13, 0x00}
+	{ 0x3c2, 0x00, 0xe3},{ 0x3d4, 0x00, 0x5f},{ 0x3d4, 0x01, 0x37},
+	{ 0x3d4, 0x02, 0x38},{ 0x3d4, 0x03, 0x82},{ 0x3d4, 0x04, 0x4a},
+	{ 0x3d4, 0x05, 0x9a},{ 0x3d4, 0x06, 0x43},{ 0x3d4, 0x07, 0x1f},
+	{ 0x3d4, 0x08, 0x00},{ 0x3d4, 0x09, 0x60},{ 0x3d4, 0x10, 0x2a},
+	{ 0x3d4, 0x11, 0xac},{ 0x3d4, 0x12, 0x1f},{ 0x3d4, 0x13, 0x1c},
+	{ 0x3d4, 0x14, 0x40},{ 0x3d4, 0x15, 0x27},{ 0x3d4, 0x16, 0x3a},
+	{ 0x3d4, 0x17, 0xa3},{ 0x3c4, 0x01, 0x01},{ 0x3c4, 0x04, 0x0e},
+	{ 0x3ce, 0x05, 0x40},{ 0x3ce, 0x06, 0x05},{ 0x3c0, 0x10, 0x41},
+	{ 0x3c0, 0x13, 0x00}
 };
 
 Register scr256x256[] =
@@ -240,10 +223,10 @@ Register scr256x256[] =
 Register scr256x256scanlines[] =
 {
 	{ 0x3c2, 0x00, 0xe3},{ 0x3d4, 0x00, 0x5f},{ 0x3d4, 0x01, 0x3f},
-	{ 0x3d4, 0x02, 0x40},{ 0x3d4, 0x03, 0x82},{ 0x3d4, 0x04, 0x4A},
-	{ 0x3d4, 0x05, 0x9A},{ 0x3d4, 0x06, 0x23},{ 0x3d4, 0x07, 0x1f},
+	{ 0x3d4, 0x02, 0x40},{ 0x3d4, 0x03, 0x82},{ 0x3d4, 0x04, 0x4a},
+	{ 0x3d4, 0x05, 0x9a},{ 0x3d4, 0x06, 0x23},{ 0x3d4, 0x07, 0x1d},
 	{ 0x3d4, 0x08, 0x00},{ 0x3d4, 0x09, 0x60},{ 0x3d4, 0x10, 0x0a},
-	{ 0x3d4, 0x11, 0xac},{ 0x3d4, 0x12, 0x00},{ 0x3d4, 0x13, 0x20},
+	{ 0x3d4, 0x11, 0xac},{ 0x3d4, 0x12, 0xff},{ 0x3d4, 0x13, 0x20},
 	{ 0x3d4, 0x14, 0x40},{ 0x3d4, 0x15, 0x07},{ 0x3d4, 0x16, 0x1a},
 	{ 0x3d4, 0x17, 0xa3},{ 0x3c4, 0x01, 0x01},{ 0x3c4, 0x04, 0x0e},
 	{ 0x3ce, 0x05, 0x40},{ 0x3ce, 0x06, 0x05},{ 0x3c0, 0x10, 0x41},
@@ -257,7 +240,6 @@ Register scr256x256scanlines[] =
 /* provided. Return a osd_bitmap pointer or 0 in case of error. */
 struct osd_bitmap *osd_create_display(int width,int height)
 {
-#if 0
 	if (!(width == 224 && height == 288) &&
 			!(width == 256 && height == 256))
 		use_vesa = 1;
@@ -284,7 +266,7 @@ struct osd_bitmap *osd_create_display(int width,int height)
 				outRegArray(scr256x256scanlines,sizeof(scr256x256)/sizeof(Register));
 		}
 	}
-#endif
+
 	bitmap = osd_create_bitmap(width,height);
 
 	return bitmap;
@@ -295,7 +277,7 @@ struct osd_bitmap *osd_create_display(int width,int height)
 /* shut up the display */
 void osd_close_display(void)
 {
-	//set_gfx_mode(GFX_TEXT,80,25,0,0);
+	set_gfx_mode(GFX_TEXT,80,25,0,0);
 	osd_free_bitmap(bitmap);
 }
 
@@ -309,7 +291,6 @@ int osd_obtain_pen(unsigned char red, unsigned char green, unsigned char blue)
 	rgb.r = red >> 2;
 	rgb.g = green >> 2;
 	rgb.b = blue >> 2;
-	
 	set_color(first_free_pen,&rgb);
 
 	return first_free_pen++;
@@ -322,156 +303,156 @@ int osd_obtain_pen(unsigned char red, unsigned char green, unsigned char blue)
 /* when the user presses F5. This is not required for porting. */
 void osd_update_display(void)
 {
-	//if (use_vesa)
-	//{
-	//	int y;
-	//	int width4 = bitmap->width / 4;
-	//	unsigned long *lb = (unsigned long *)bitmap->private;
+	if (use_vesa)
+	{
+		int y;
+		int width4 = bitmap->width / 4;
+		unsigned long *lb = (unsigned long *)bitmap->private;
 
 
-	//	for (y = 0;y < bitmap->height;y++)
-	//	{
-	//		unsigned long address;
+		for (y = 0;y < bitmap->height;y++)
+		{
+			unsigned long address;
 
 
-	//		address = bmp_write_line(screen,y + (SCREEN_HEIGHT - bitmap->height) / 2)
-	//				+ (SCREEN_WIDTH - bitmap->width) / 2;
-	//		_dosmemputl(lb,width4,address);
-	//		lb += width4;
-	//	}
-	//}
-	//else
-	//{
-	//	/* copy the bitmap to screen memory */
-	//	_dosmemputl(bitmap->private,bitmap->width * bitmap->height / 4,0xa0000);
-	//}
+			address = bmp_write_line(screen,y + (SCREEN_HEIGHT - bitmap->height) / 2)
+					+ (SCREEN_WIDTH - bitmap->width) / 2;
+			_dosmemputl(lb,width4,address);
+			lb += width4;
+		}
+	}
+	else
+	{
+		/* copy the bitmap to screen memory */
+		_dosmemputl(bitmap->private,bitmap->width * bitmap->height / 4,0xa0000);
+	}
 
-	///* if the user pressed F12, save a snapshot of the screen. */
-	//if (osd_key_pressed(OSD_KEY_F12))
-	//{
-	//	BITMAP *bmp;
-	//	PALETTE pal;
-	//	char name[13];
-	//	FILE *f;
-	//	static int snapno;
-	//	int y;
+	/* if the user pressed F12, save a snapshot of the screen. */
+	if (osd_key_pressed(OSD_KEY_F12))
+	{
+		BITMAP *bmp;
+		PALETTE pal;
+		char name[13];
+		FILE *f;
+		static int snapno;
+		int y;
 
 
-	//	do
-	//	{
-	//		sprintf(name,"snap%04d.pcx",snapno);
-	//		/* avoid overwriting of existing files */
-	//		if ((f = fopen(name,"rb")) != 0)
-	//		{
-	//			fclose(f);
-	//			snapno++;
-	//		}
-	//	} while (f != 0);
+		do
+		{
+			sprintf(name,"snap%04d.pcx",snapno);
+			/* avoid overwriting of existing files */
+			if ((f = fopen(name,"rb")) != 0)
+			{
+				fclose(f);
+				snapno++;
+			}
+		} while (f != 0);
 
-	//	get_palette(pal);
-	//	bmp = create_bitmap(bitmap->width,bitmap->height);
-	//	for (y = 0;y < bitmap->height;y++)
-	//		memcpy(bmp->line[y],bitmap->line[y],bitmap->width);
-	//	save_pcx(name,bmp,pal);
-	//	destroy_bitmap(bmp);
-	//	snapno++;
+		get_palette(pal);
+		bmp = create_bitmap(bitmap->width,bitmap->height);
+		for (y = 0;y < bitmap->height;y++)
+			memcpy(bmp->line[y],bitmap->line[y],bitmap->width);
+		save_pcx(name,bmp,pal);
+		destroy_bitmap(bmp);
+		snapno++;
 
-	//	/* wait for the user to release F12 */
-	//	while (osd_key_pressed(OSD_KEY_F12));
-	//}
+		/* wait for the user to release F12 */
+		while (osd_key_pressed(OSD_KEY_F12));
+	}
 }
 
 
 
 void osd_update_audio(void)
 {
-	//AUpdateAudio();
+	AUpdateAudio();
 }
 
 
 
 void osd_play_sample(int channel,unsigned char *data,int len,int freq,int volume,int loop)
 {
-	//if (play_sound == 0 || channel >= NUMVOICES) return;
+	if (play_sound == 0 || channel >= NUMVOICES) return;
 
-	//memcpy(lpWave[channel]->lpData,data,len);
-	//if (loop) lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO | AUDIO_FORMAT_LOOP;
-	//else lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
-	//lpWave[channel]->dwLoopStart = 0;
-	//lpWave[channel]->dwLoopEnd = len;
-	//lpWave[channel]->dwLength = len;
-	///* upload the data to the audio DRAM local memory */
-	//AWriteAudioData(lpWave[channel],0,len);
-	//APlayVoice(hVoice[channel],lpWave[channel]);
-	//ASetVoiceFrequency(hVoice[channel],freq);
-	//ASetVoiceVolume(hVoice[channel],volume/4);
+	memcpy(lpWave[channel]->lpData,data,len);
+	if (loop) lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO | AUDIO_FORMAT_LOOP;
+	else lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
+	lpWave[channel]->dwLoopStart = 0;
+	lpWave[channel]->dwLoopEnd = len;
+	lpWave[channel]->dwLength = len;
+	/* upload the data to the audio DRAM local memory */
+	AWriteAudioData(lpWave[channel],0,len);
+	APlayVoice(hVoice[channel],lpWave[channel]);
+	ASetVoiceFrequency(hVoice[channel],freq);
+	ASetVoiceVolume(hVoice[channel],volume/4);
 }
 
 
 
 void osd_play_streamed_sample(int channel,unsigned char *data,int len,int freq,int volume)
 {
-//	static int playing = 0;
-//	static int c;
-//
-//
-//	if (play_sound == 0 || channel >= NUMVOICES) return;
-//
-//	/* check if the waveform is large enough for double buffering */
-////	if (2*sizeof(aBuffer) > lpWave->dwLength) {
-//
-//	if (!playing)
-//	{
-//		memcpy(lpWave[channel]->lpData,data,len);
-//		lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO | AUDIO_FORMAT_LOOP;
-//		lpWave[channel]->dwLoopStart = 0;
-//		lpWave[channel]->dwLoopEnd = 3*len;
-//		lpWave[channel]->dwLength = 3*len;
-//		/* upload the data to the audio DRAM local memory */
-//		AWriteAudioData(lpWave[channel],0,len);
-//		APlayVoice(hVoice[channel],lpWave[channel]);
-//		ASetVoiceFrequency(hVoice[channel],freq);
-//		ASetVoiceVolume(hVoice[channel],volume/4);
-//		playing = 1;
-//		c = 1;
-//	}
-//	else
-//	{
-//		DWORD pos;
-//
-//
-//		for(;;)
-//		{
-//			AGetVoicePosition(hVoice[channel],&pos);
-//			if (c == 0 && pos > len) break;
-//			if (c == 1 && (pos < len || pos > 2*len)) break;
-//			if (c == 2 && pos < 2*len) break;
-//			osd_update_audio();
-//		}
-//		memcpy(&lpWave[channel]->lpData[len * c],data,len);
-//		AWriteAudioData(lpWave[channel],len*c,len);
-//		c++;
-//		if (c == 3) c = 0;
-//	}
+	static int playing = 0;
+	static int c;
+
+
+	if (play_sound == 0 || channel >= NUMVOICES) return;
+
+	/* check if the waveform is large enough for double buffering */
+//	if (2*sizeof(aBuffer) > lpWave->dwLength) {
+
+	if (!playing)
+	{
+		memcpy(lpWave[channel]->lpData,data,len);
+		lpWave[channel]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO | AUDIO_FORMAT_LOOP;
+		lpWave[channel]->dwLoopStart = 0;
+		lpWave[channel]->dwLoopEnd = 3*len;
+		lpWave[channel]->dwLength = 3*len;
+		/* upload the data to the audio DRAM local memory */
+		AWriteAudioData(lpWave[channel],0,len);
+		APlayVoice(hVoice[channel],lpWave[channel]);
+		ASetVoiceFrequency(hVoice[channel],freq);
+		ASetVoiceVolume(hVoice[channel],volume/4);
+		playing = 1;
+		c = 1;
+	}
+	else
+	{
+		DWORD pos;
+
+
+		for(;;)
+		{
+			AGetVoicePosition(hVoice[channel],&pos);
+			if (c == 0 && pos > len) break;
+			if (c == 1 && (pos < len || pos > 2*len)) break;
+			if (c == 2 && pos < 2*len) break;
+			osd_update_audio();
+		}
+		memcpy(&lpWave[channel]->lpData[len * c],data,len);
+		AWriteAudioData(lpWave[channel],len*c,len);
+		c++;
+		if (c == 3) c = 0;
+	}
 }
 
 
 
 void osd_adjust_sample(int channel,int freq,int volume)
 {
-	/*if (play_sound == 0 || channel >= NUMVOICES) return;
+	if (play_sound == 0 || channel >= NUMVOICES) return;
 
 	ASetVoiceFrequency(hVoice[channel],freq);
-	ASetVoiceVolume(hVoice[channel],volume/4);*/
+	ASetVoiceVolume(hVoice[channel],volume/4);
 }
 
 
 
 void osd_stop_sample(int channel)
 {
-	/*if (play_sound == 0 || channel >= NUMVOICES) return;
+	if (play_sound == 0 || channel >= NUMVOICES) return;
 
-	AStopVoice(hVoice[channel]);*/
+	AStopVoice(hVoice[channel]);
 }
 
 
@@ -480,8 +461,7 @@ void osd_stop_sample(int channel)
 /* defined in osdepend.h. Return 0 if the key is not pressed, nonzero otherwise. */
 int osd_key_pressed(int keycode)
 {
-	//return key[keycode];
-	return 0;
+	return key[keycode];
 }
 
 
@@ -489,29 +469,71 @@ int osd_key_pressed(int keycode)
 /* wait for a key press and return the keycode */
 int osd_read_key(void)
 {
-	/*clear_keybuf();
-	return readkey() >> 8;*/
-	return 0;
+	clear_keybuf();
+	return readkey() >> 8;
 }
 
 
 
+int joy_b3, joy_b4;
+
 void osd_poll_joystick(void)
 {
-	/*if (use_joystick == 1)
+	if (use_joystick == 1)
 	{
 		unsigned char joystatus;
 
 
 		poll_joystick();
 		joystatus = inportb(0x201);
-		osd_joy_up = joy_up;
-		osd_joy_down = joy_down;
-		osd_joy_left = joy_left;
-		osd_joy_right = joy_right;
-		osd_joy_b1 = joy_b1;
-		osd_joy_b2 = joy_b2;
-		osd_joy_b3 = ((joystatus & 0x40) == 0);
-		osd_joy_b4 = ((joystatus & 0x80) == 0);
-	}*/
+		joy_b3 = ((joystatus & 0x40) == 0);
+		joy_b4 = ((joystatus & 0x80) == 0);
+	}
+}
+
+
+
+/* check if the joystick is moved in the specified direction, defined in */
+/* osdepend.h. Return 0 if it is not pressed, nonzero otherwise. */
+int osd_joy_pressed(int joycode)
+{
+	/* compiler bug? If I don't declare these variables as volatile, */
+	/* joystick right is not detected */
+	extern volatile int joy_left, joy_right, joy_up, joy_down;
+	extern volatile int joy_b1, joy_b2;
+
+
+	switch (joycode)
+	{
+		case OSD_JOY_LEFT:
+			return joy_left;
+			break;
+		case OSD_JOY_RIGHT:
+			return joy_right;
+			break;
+		case OSD_JOY_UP:
+			return joy_up;
+			break;
+		case OSD_JOY_DOWN:
+			return joy_down;
+			break;
+		case OSD_JOY_FIRE1:
+			return joy_b1;
+			break;
+		case OSD_JOY_FIRE2:
+			return joy_b2;
+			break;
+		case OSD_JOY_FIRE3:
+			return joy_b3;
+			break;
+		case OSD_JOY_FIRE4:
+			return joy_b4;
+			break;
+		case OSD_JOY_FIRE:
+			return (joy_b1 || joy_b2 || joy_b3 || joy_b4);
+			break;
+		default:
+			return 0;
+			break;
+	}
 }

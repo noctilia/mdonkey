@@ -14,8 +14,7 @@ file(GLOB SRC
   src/*.c
   src/*.cpp
   src/ladybug/*.c
-  src/cclimber/*.c
-  src/ckong/*.c
+  src/dkong/*.c
   src/osd/*.cpp
   src/z80/*.c
 )

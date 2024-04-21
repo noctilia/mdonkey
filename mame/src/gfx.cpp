@@ -33,6 +33,51 @@ extern "C" {
     0xdb,0xdb,0xdb	/* WHITE */
   };
 
+  static unsigned char palette_ck[] =
+  {
+    0x00,0x00,0x00,	/* BLACK */
+    0x49,0x00,0x00,	/* DKRED1 */
+    0x92,0x00,0x00,	/* DKRED2 */
+    0xff,0x00,0x00,	/* RED */
+    0x00,0x24,0x00,	/* DKGRN1 */
+    0x92,0x24,0x00,	/* DKBRN1 */
+    0xb6,0x24,0x00,	/* DKBRN2 */
+    0xff,0x24,0x00,	/* LTRED1 */
+    0xdb,0x49,0x00,	/* BROWN */
+    0x00,0x6c,0x00,	/* DKGRN2 */
+    0xff,0x6c,0x00,	/* LTORG1 */
+    0x00,0x92,0x00,	/* DKGRN3 */
+    0x92,0x92,0x00,	/* DKYEL */
+    0xdb,0x92,0x00,	/* DKORG */
+    0xff,0x92,0x00,	/* ORANGE */
+    0x00,0xdb,0x00,	/* GREEN1 */
+    0x6d,0xdb,0x00,	/* LTGRN1 */
+    0x00,0xff,0x00,	/* GREEN2 */
+    0x49,0xff,0x00,	/* LTGRN2 */
+    0xff,0xff,0x00,	/* YELLOW */
+    0x00,0x00,0x55,	/* DKBLU1 */
+    0xff,0x00,0x55,	/* DKPNK1 */
+    0xff,0x24,0x55,	/* DKPNK2 */
+    0xff,0x6d,0x55,	/* LTRED2 */
+    0xdb,0x92,0x55,	/* LTBRN */
+    0xff,0x92,0x55,	/* LTORG2 */
+    0x24,0xff,0x55,	/* LTGRN3 */
+    0x49,0xff,0x55,	/* LTGRN4 */
+    0xff,0xff,0x55,	/* LTYEL */
+    0x00,0x00,0xaa,	/* DKBLU2 */
+    0xff,0x00,0xaa,	/* PINK1 */
+    0x00,0x24,0xaa,	/* DKBLU3 */
+    0xff,0x24,0xaa,	/* PINK2 */
+    0xdb,0xdb,0xaa,	/* CREAM */
+    0xff,0xdb,0xaa,	/* LTORG3 */
+    0x00,0x00,0xff,	/* BLUE */
+    0xdb,0x00,0xff,	/* PURPLE */
+    0x00,0xb6,0xff,	/* LTBLU1 */
+    0x92,0xdb,0xff,	/* LTBLU2 */
+    0xdb,0xdb,0xff,	/* WHITE1 */
+    0xff,0xff,0xff	/* WHITE2 */
+  };
+
   static unsigned char palette[] =
   {
     0x00,0x00,0x00,	/* BLACK */
@@ -93,32 +138,32 @@ extern "C" {
       ExportPPM::exportPPM(s, (unsigned char*)g->gfxdata->_private, g->gfxdata->width, g->gfxdata->height, palette);
     }
 
-    std::string s = std::format("gfx_{}_{}x{}.raw", n, g->gfxdata->width, g->gfxdata->height);
-    FILE* fo = fopen(s.c_str(), "wb");
+    //std::string s = std::format("gfx_{}_{}x{}.raw", n, g->gfxdata->width, g->gfxdata->height);
+    //FILE* fo = fopen(s.c_str(), "wb");
 
-    int w = g->gfxdata->width;
-    int h = g->gfxdata->height;
+    //int w = g->gfxdata->width;
+    //int h = g->gfxdata->height;
 
-    for (int y = 0; y < h; y++)
-    {
-      for (int x = 0; x < w; x++)
-      {
-        unsigned char* line = g->gfxdata->line[y];
-        unsigned char color = line[x];
-        auto c = g->colortable[color];
+    //for (int y = 0; y < h; y++)
+    //{
+    //  for (int x = 0; x < w; x++)
+    //  {
+    //    unsigned char* line = g->gfxdata->line[y];
+    //    unsigned char color = line[x];
+    //    auto c = g->colortable[color];
 
-        int r = palette[3 * c];
-        int g = palette[3 * c + 1];
-        int b = palette[3 * c + 2];
+    //    int r = palette[3 * c];
+    //    int g = palette[3 * c + 1];
+    //    int b = palette[3 * c + 2];
 
-        fwrite(&r, 1, 1, fo);
-        fwrite(&g, 1, 1, fo);
-        fwrite(&b, 1, 1, fo);
+    //    fwrite(&r, 1, 1, fo);
+    //    fwrite(&g, 1, 1, fo);
+    //    fwrite(&b, 1, 1, fo);
 
-        //fwrite(&color, 1, 1, fo);
-      }
-    }
-    fclose(fo);
+    //    //fwrite(&color, 1, 1, fo);
+    //  }
+    //}
+    //fclose(fo);
 
   }
 

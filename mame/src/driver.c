@@ -8,6 +8,7 @@ extern struct MachineDriver ladybug_driver;
 extern struct MachineDriver mrdo_driver;
 extern struct MachineDriver cclimber_driver;
 extern struct MachineDriver ckong_driver;
+extern struct MachineDriver dkong_driver;
 
 
 static struct RomModule pacman_rom[] =
@@ -334,44 +335,48 @@ unsigned ccboot_decode(dword A)
 
 static struct RomModule ckong_rom[] =
 {
-	///* code */
-	//{ "7.dat",  0x00000, 0x1000 },
-	//{ "8.dat",  0x01000, 0x1000 },
-	//{ "9.dat",  0x02000, 0x1000 },
-	//{ "10.dat", 0x03000, 0x1000 },
-	//{ "11.dat", 0x04000, 0x1000 },
-	////{ "12.dat", 0x05000, 0x1000 },
-	///* gfx */
-	//{ "6.dat",  0x10000, 0x1000 },
-	//{ "4.dat",  0x11000, 0x1000 },
-	//{ "5.dat",  0x12000, 0x1000 },
-	//{ "3.dat",  0x13000, 0x1000 },
-	//{ "2.dat",  0x14000, 0x0800 },
-	//{ "1.dat",  0x14800, 0x0800 },
-	///* samples */
-	//{ "14.dat", 0x18000, 0x1000 },
-	//{ "13.dat", 0x19000, 0x1000 },
-	//{ 0 }	/* end of table */
-
-	{ "falcon7",  0x00000, 0x1000 },
-	{ "falcon8",  0x01000, 0x1000 },
-	{ "falcon9",  0x02000, 0x1000 },
-	{ "falcon10", 0x03000, 0x1000 },
-	{ "falcon11", 0x04000, 0x1000 },
-	//{ "12.dat", 0x05000, 0x1000 },
+	/* code */
+	{ "7.dat",  0x00000, 0x1000 },
+	{ "8.dat",  0x01000, 0x1000 },
+	{ "9.dat",  0x02000, 0x1000 },
+	{ "10.dat", 0x03000, 0x1000 },
+	{ "11.dat", 0x04000, 0x1000 },
+	{ "12.dat", 0x05000, 0x1000 },
 	/* gfx */
-	{ "falcon6",  0x10000, 0x1000 },
-	{ "falcon4",  0x12000, 0x1000 },
-	{ "falcon5",  0x11000, 0x1000 },
-	{ "falcon3",  0x13000, 0x1000 },
-
-	{ "falcon2",  0x14000, 0x0800 },
-	{ "falcon1",  0x14800, 0x0800 },
+	{ "6.dat",  0x10000, 0x1000 },
+	{ "4.dat",  0x11000, 0x1000 },
+	{ "5.dat",  0x12000, 0x1000 },
+	{ "3.dat",  0x13000, 0x1000 },
+	{ "2.dat",  0x14000, 0x0800 },
+	{ "1.dat",  0x14800, 0x0800 },
 	/* samples */
-	//{ "falcon13", 0x18000, 0x1000 },
-	//{ "falcon14", 0x19000, 0x1000 },
+	{ "14.dat", 0x18000, 0x1000 },
+	{ "13.dat", 0x19000, 0x1000 },
 	{ 0 }	/* end of table */
+};
 
+
+
+static struct RomModule dkong_rom[] =
+{
+	/* code */
+	{ "c_5et_g.bin",  0x00000, 0x1000 },
+	{ "c_5ct_g.bin",  0x01000, 0x1000 },
+	{ "c_5bt_g.bin",  0x02000, 0x1000 },
+	{ "c_5at_g.bin",  0x03000, 0x1000 },
+	/* gfx */
+	{ "v_5h_b.bin",  0x10000, 0x0800 },
+	{ "v_3pt.bin",  0x10800, 0x0800 },
+
+	{ "l_4m_b.bin",  0x11000, 0x0800 },
+	{ "l_4n_b.bin",  0x11800, 0x0800 },
+	{ "l_4r_b.bin",  0x12000, 0x0800 },
+	{ "l_4s_b.bin",  0x12800, 0x0800 },
+
+	/* samples? */
+	//{ "dk.3f",  0x18000, 0x0800 },
+	//{ "dk.3h",  0x18800, 0x0800 },
+	{ 0 }	/* end of table */
 };
 
 
@@ -391,8 +396,9 @@ struct GameDriver drivers[] =
 	{ "ladybug",  ladybug_rom,  0,               &ladybug_driver },
 	//{ "mrdo",     mrdo_rom,     0,               &mrdo_driver },
 	//{ "mrlo",     mrlo_rom,     0,               &mrdo_driver },
-	{ "cclimber", cclimber_rom, cclimber_decode, &cclimber_driver },
+	//{ "cclimber", cclimber_rom, cclimber_decode, &cclimber_driver },
 	//{ "ccboot",   ccboot_rom,   ccboot_decode,   &cclimber_driver },
-	{ "ckong",    ckong_rom,    0,               &ckong_driver },
+	//{ "ckong",    ckong_rom,    0,               &ckong_driver },
+	{ "dkong",    dkong_rom,    0,               &dkong_driver },
 	{ 0	}	/* end of array */
 };

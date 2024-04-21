@@ -59,14 +59,14 @@ typedef struct ay8910_f AY8910;
 ** this is a handler for the AY8910's I/O ports -- called when
 ** AYWriteReg(AY_PORTA) or AYWriteReg(AY_PORTB) is called.
 */
-typedef unsigned char  (*AYPortHandler)(AY8910 *, int port, int iswrite, unsigned char  val);
+typedef byte (*AYPortHandler)(AY8910 *, int port, int iswrite, byte val);
 
 /* here's the virtual AY8910 ... */
 struct ay8910_f {
     SAMPLE *Buf;	/* sound buffer */
     int UserBuffer;	/* if user provided buffers */
     AYPortHandler Port[2];	/* 'A' and 'B' port */
-    unsigned char Regs[16];
+    byte Regs[16];
 
     /* state variables */
     int Incr0, Incr1, Incr2;
@@ -112,7 +112,7 @@ void AYWriteReg(int n, int r, int v);
 /*
 ** read register 'r' on AY8910 chip number 'n'
 */
-unsigned char  AYReadReg(int n, int r);
+byte AYReadReg(int n, int r);
 
 
 /*
