@@ -10,11 +10,9 @@
 
 #include <pc.h>
 #include <sys/farptr.h>
-#include <stdio.h>
-#include <string.h>
 #include <go32.h>
 #include <allegro.h>
-#include "osdepend.h"
+#include "driver.h"
 #include "TwkUser.c"
 #include <audio.h>
 
@@ -45,18 +43,23 @@ LPAUDIOWAVE lpWave[NUMVOICES];
 int osd_init(int argc,char **argv)
 {
 	int i;
+	int soundcard;
 
 
 	use_vesa = 0;
 	play_sound = 1;
 	noscanlines = 0;
 	use_joystick = 1;
+	soundcard = -1;
 	for (i = 1;i < argc;i++)
 	{
 		if (stricmp(argv[i],"-vesa") == 0)
 			use_vesa = 1;
-		if (stricmp(argv[i],"-nosound") == 0)
-			play_sound = 0;
+		if (stricmp(argv[i],"-soundcard") == 0)
+		{
+			i++;
+			if (i < argc) soundcard = atoi(argv[i]);
+		}
 		if (stricmp(argv[i],"-noscanlines") == 0)
 			noscanlines = 1;
 		if (stricmp(argv[i],"-nojoy") == 0)
@@ -77,46 +80,69 @@ int osd_init(int argc,char **argv)
 
 
 		/* initialize SEAL audio library */
-		AInitialize();
-
-		printf("\nSelect the audio device:\n(if you have an AWE 32, choose Sound Blaster for a more faithful emulation)\n");
-		for (i = 0;i < AGetAudioNumDevs();i++)
+		if (AInitialize() == AUDIO_ERROR_NONE)
 		{
-			AGetAudioDevCaps(i, &caps);
-			printf("  %2d. %s\n",i,caps.szProductName);
-		}
-		printf("\n");
-
-		scanf("%d",&i);
-
-		/* open audio device */
-//		info.nDeviceId = AUDIO_DEVICE_MAPPER;
-		info.nDeviceId = i;
-		info.wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
-		info.nSampleRate = SAMPLE_RATE;
-		AOpenAudio(&info);
-
-		/* open and allocate voices, allocate waveforms */
-		AOpenVoices(NUMVOICES);
-		for (i = 0; i < NUMVOICES; i++)
-		{
-			ACreateAudioVoice(&hVoice[i]);
-			ASetVoicePanning(hVoice[i],128);
-
-			if ((lpWave[i] = (LPAUDIOWAVE)malloc(sizeof(AUDIOWAVE))) == 0)
-// have to handle this better...
-				return 1;
-
-			lpWave[i]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
-			lpWave[i]->nSampleRate = SAMPLE_RATE;
-			lpWave[i]->dwLength = SAMPLE_BUFFER_LENGTH;
-			lpWave[i]->dwLoopStart = lpWave[i]->dwLoopEnd = 0;
-			if (ACreateAudioData(lpWave[i]) != AUDIO_ERROR_NONE)
+			if (soundcard == -1)
 			{
-// have to handle this better...
-				free(lpWave[i]);
+				printf("\nSelect the audio device:\n(if you have an AWE 32, choose Sound Blaster for a more faithful emulation)\n");
+				for (i = 0;i < AGetAudioNumDevs();i++)
+				{
+					if (AGetAudioDevCaps(i,&caps) == AUDIO_ERROR_NONE)
+						printf("  %2d. %s\n",i,caps.szProductName);
+				}
+				printf("\n");
 
-				return 1;
+				scanf("%d",&soundcard);
+			}
+
+			if (soundcard == 0)	/* silence */
+				play_sound = 0;
+			else
+			{
+				/* open audio device */
+//				info.nDeviceId = AUDIO_DEVICE_MAPPER;
+				info.nDeviceId = soundcard;
+				info.wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
+				info.nSampleRate = SAMPLE_RATE;
+				if (AOpenAudio(&info) != AUDIO_ERROR_NONE)
+				{
+					printf("audio initialization failed\n");
+					return 1;
+				}
+
+				/* open and allocate voices, allocate waveforms */
+				if (AOpenVoices(NUMVOICES) != AUDIO_ERROR_NONE)
+				{
+					printf("voices initialization failed\n");
+					return 1;
+				}
+
+				for (i = 0; i < NUMVOICES; i++)
+				{
+					if (ACreateAudioVoice(&hVoice[i]) != AUDIO_ERROR_NONE)
+					{
+						printf("voice #%d creation failed\n",i);
+						return 1;
+					}
+
+					ASetVoicePanning(hVoice[i],128);
+
+					if ((lpWave[i] = (LPAUDIOWAVE)malloc(sizeof(AUDIOWAVE))) == 0)
+// have to handle this better...
+						return 1;
+
+					lpWave[i]->wFormat = AUDIO_FORMAT_8BITS | AUDIO_FORMAT_MONO;
+					lpWave[i]->nSampleRate = SAMPLE_RATE;
+					lpWave[i]->dwLength = SAMPLE_BUFFER_LENGTH;
+					lpWave[i]->dwLoopStart = lpWave[i]->dwLoopEnd = 0;
+					if (ACreateAudioData(lpWave[i]) != AUDIO_ERROR_NONE)
+					{
+// have to handle this better...
+						free(lpWave[i]);
+
+						return 1;
+					}
+				}
 			}
 		}
 	}
@@ -153,6 +179,8 @@ void osd_exit(void)
 
 
 
+/* Create a bitmap. Also call clearbitmap() to appropriately initialize it to */
+/* the background color. */
 struct osd_bitmap *osd_create_bitmap(int width,int height)
 {
 	struct osd_bitmap *bitmap;
@@ -176,6 +204,8 @@ struct osd_bitmap *osd_create_bitmap(int width,int height)
 			bitmap->line[i] = &bm[i * width];
 
 		bitmap->private = bm;
+
+		clearbitmap(bitmap);
 	}
 
 	return bitmap;
@@ -194,7 +224,7 @@ void osd_free_bitmap(struct osd_bitmap *bitmap)
 
 
 
-Register scr224x288[] =
+Register scr224x288scanlines[] =
 {
 	{ 0x3c2, 0x00, 0xe3},{ 0x3d4, 0x00, 0x5f},{ 0x3d4, 0x01, 0x37},
 	{ 0x3d4, 0x02, 0x38},{ 0x3d4, 0x03, 0x82},{ 0x3d4, 0x04, 0x4a},
@@ -233,6 +263,19 @@ Register scr256x256scanlines[] =
 	{ 0x3c0, 0x13, 0x00}
 };
 
+Register scr320x204[] =
+{
+	{ 0x3c2, 0x00, 0xe3},{ 0x3d4, 0x00, 0x5f},{ 0x3d4, 0x01, 0x4f},
+	{ 0x3d4, 0x02, 0x50},{ 0x3d4, 0x03, 0x82},{ 0x3d4, 0x04, 0x54},
+	{ 0x3d4, 0x05, 0x80},{ 0x3d4, 0x06, 0xbf},{ 0x3d4, 0x07, 0x1f},
+	{ 0x3d4, 0x08, 0x00},{ 0x3d4, 0x09, 0x41},{ 0x3d4, 0x10, 0x9c},
+	{ 0x3d4, 0x11, 0x8e},{ 0x3d4, 0x12, 0x97},{ 0x3d4, 0x13, 0x28},
+	{ 0x3d4, 0x14, 0x40},{ 0x3d4, 0x15, 0x96},{ 0x3d4, 0x16, 0xb9},
+	{ 0x3d4, 0x17, 0xa3},{ 0x3c4, 0x01, 0x01},{ 0x3c4, 0x04, 0x0e},
+	{ 0x3ce, 0x05, 0x40},{ 0x3ce, 0x06, 0x05},{ 0x3c0, 0x10, 0x41},
+	{ 0x3c0, 0x13, 0x00}
+};
+
 
 /* Create a display screen, or window, large enough to accomodate a bitmap */
 /* of the given dimensions. I don't do any test here (224x288 will just do */
@@ -241,7 +284,8 @@ Register scr256x256scanlines[] =
 struct osd_bitmap *osd_create_display(int width,int height)
 {
 	if (!(width == 224 && height == 288) &&
-			!(width == 256 && height == 256))
+			!(width == 256 && height == 256) &&
+			!(width == 320 && height == 204))
 		use_vesa = 1;
 
 	if (use_vesa)
@@ -257,7 +301,7 @@ struct osd_bitmap *osd_create_display(int width,int height)
 			return 0;
 
 		if (width == 224 && height == 288)
-			outRegArray(scr224x288,sizeof(scr224x288)/sizeof(Register));
+			outRegArray(scr224x288scanlines,sizeof(scr224x288scanlines)/sizeof(Register));
 		else if (width == 256 && height == 256)
 		{
 			if (noscanlines)
@@ -265,6 +309,8 @@ struct osd_bitmap *osd_create_display(int width,int height)
 			else
 				outRegArray(scr256x256scanlines,sizeof(scr256x256)/sizeof(Register));
 		}
+		else if (width == 320 && height == 204)
+			outRegArray(scr320x204,sizeof(scr320x204)/sizeof(Register));
 	}
 
 	bitmap = osd_create_bitmap(width,height);

@@ -85,28 +85,26 @@ Coin insertion in left slot generates an interrupt, in right slot a NMI.
 ***************************************************************************/
 
 #include "driver.h"
-#include "machine.h"
-#include "common.h"
 
 
-int ladybug_IN0_r(int offset);
-int ladybug_IN1_r(int offset);
-int ladybug_interrupt(void);
+extern int ladybug_IN0_r(int offset);
+extern int ladybug_IN1_r(int offset);
+extern int ladybug_interrupt(void);
 
-unsigned char *ladybug_videoram;
-unsigned char *ladybug_colorram;
-unsigned char *ladybug_spriteram;
-void ladybug_videoram_w(int offset,int data);
-void ladybug_colorram_w(int offset,int data);
-void ladybug_vh_convert_color_prom(unsigned char *palette, unsigned char *colortable,const unsigned char *color_prom);
-int ladybug_vh_start(void);
-void ladybug_vh_stop(void);
-void ladybug_vh_screenrefresh(struct osd_bitmap *bitmap);
+extern unsigned char *ladybug_videoram;
+extern unsigned char *ladybug_colorram;
+extern unsigned char *ladybug_spriteram;
+extern void ladybug_videoram_w(int offset,int data);
+extern void ladybug_colorram_w(int offset,int data);
+extern void ladybug_vh_convert_color_prom(unsigned char *palette, unsigned char *colortable,const unsigned char *color_prom);
+extern int ladybug_vh_start(void);
+extern void ladybug_vh_stop(void);
+extern void ladybug_vh_screenrefresh(struct osd_bitmap *bitmap);
 
-void ladybug_sound1_w(int offset,int data);
-void ladybug_sound2_w(int offset,int data);
-int ladybug_sh_start(void);
-void ladybug_sh_update(void);
+extern void ladybug_sound1_w(int offset,int data);
+extern void ladybug_sound2_w(int offset,int data);
+extern int ladybug_sh_start(void);
+extern void ladybug_sh_update(void);
 
 
 
@@ -237,15 +235,13 @@ const struct MachineDriver ladybug_driver =
 	/* basic machine hardware */
 	4000000,	/* 4 Mhz */
 	60,
-	readmem,
-	writemem,
+	readmem,writemem,0,0,
 	input_ports,dsw,
 	0,
 	ladybug_interrupt,
-	0,
 
 	/* video hardware */
-	256,256,
+	32*8, 32*8, { 4*8, 28*8-1, 1*8, 31*8-1 },
 	gfxdecodeinfo,
 	32,4*24,
 	color_prom,ladybug_vh_convert_color_prom,0,0,
@@ -261,8 +257,6 @@ const struct MachineDriver ladybug_driver =
 	samples,
 	0,
 	ladybug_sh_start,
-	0,
-	0,
 	0,
 	ladybug_sh_update
 };

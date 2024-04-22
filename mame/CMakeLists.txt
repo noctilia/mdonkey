@@ -15,8 +15,10 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/z80)
 file(GLOB SRC 
   src/*.c
   src/*.cpp
-  src/ladybug/*.c
-  src/dkong/*.c
+  src/drivers/*.c
+  src/machine/*.c
+  src/vidhrdw/*.c
+  src/sndhrdw/*.c
   src/osd/*.cpp
   src/z80/*.c
 )
