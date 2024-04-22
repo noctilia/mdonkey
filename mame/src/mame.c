@@ -1,6 +1,7 @@
 #include "driver.h"
 #include <time.h>
 
+#include "gfx.h"
 
 //#if defined (UNIX) || defined (__MWERKS__)
 #define uclock_t clock_t
@@ -200,6 +201,8 @@ int vh_open(void)
 
 		Machine->gfx[i]->colortable = &remappedtable[drv->gfxdecodeinfo[i].color_codes_start];
 		Machine->gfx[i]->total_colors = drv->gfxdecodeinfo[i].total_color_codes;
+
+		write_gfx(Machine, i, Machine->gfx[i]);
 	}
 
 
