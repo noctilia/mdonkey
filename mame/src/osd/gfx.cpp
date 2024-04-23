@@ -80,7 +80,7 @@ extern "C" {
     0xff,0xff,0xff	/* WHITE2 */
   };
 
-  static unsigned char palette[] =
+  static unsigned char palettex[] =
   {
     0x00,0x00,0x00,	/* BLACK */
     0x49,0x00,0x00,	/* DKRED1 */
@@ -125,6 +125,25 @@ extern "C" {
     0xff,0xff,0xff	/* WHITE2 */
   };
 
+  static unsigned char palette[] =
+  {
+    0x00,0x00,0x00,	/* BLACK */
+    0xff,0xff,0xff,	/* WHITE */
+    0xff,0x00,0x00,	/* RED */
+    0xff,0x00,0xff,	/* PURPLE */
+    0x00,0xff,0xff,	/* CYAN */
+    0xff,0xff,0x80,	/* LTORANGE */
+    0xdb,0x00,0x00,	/* DKRED */
+    0x00,0x00,0xff,	/* BLUE */
+    0xff,0xff,0x00,	/* YELLOW */
+    239,3,239,	/* PINK */
+    3,180,239,	/* LTBLUE */
+    255,131,3,	/* ORANGE */
+    0x00,0xff,0x00,	/* GREEN */
+    167,3,3,	/* DKBROWN */
+    255,183,115,	/* LTBROWN */
+    0x00,0x46,0x00,	/* DKGREEN */
+  };
 
   void write_gfx(struct RunningMachine* Machine, int n, struct GfxElement* gfx)
   {
@@ -139,10 +158,10 @@ extern "C" {
     {
       std::string s = std::format("gfx_{}_{}x{}_#{}.ppm", n, gfx->width, gfx->height, i);
       int color = i >> 2;
-      auto palette = &gfx->colortable[gfx->color_granularity * (color % gfx->total_colors)];
+      auto p = &gfx->colortable[gfx->color_granularity * (color % gfx->total_colors)];
 
       unsigned char* line = (unsigned char*)gfx->gfxdata->_private + gfx->height * gfx->width * i;
-      ExportPPM::exportPPM(s, line, gfx->width, gfx->height, palette);
+      ExportPPM::exportPPM(s, line, gfx->width, gfx->height, palette, p);
     }
 
     //std::string s = std::format("gfx_{}_{}x{}.raw", n, g->gfxdata->width, g->gfxdata->height);

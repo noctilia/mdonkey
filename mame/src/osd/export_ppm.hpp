@@ -10,7 +10,7 @@ typedef struct RGB {
 class ExportPPM
 {
 public:
-	static void exportPPM(const std::string& filename, const unsigned char* data, int width, int height, const unsigned char* palette)
+	static void exportPPM(const std::string& filename, const unsigned char* data, int width, int height, const unsigned char* palette, const unsigned char* ctable)
 	{
 		std::cout << "Exporting to PPM file: " << filename << std::endl;
 
@@ -19,9 +19,10 @@ public:
 
 		for (int i = 0; i < width * height; i++) {
 
-			int c = data[i];
+			int m = data[i];
+			int c = ctable[m];
 
-			std::cout << " " << std::to_string(c);
+			//std::cout << " " << std::to_string(c);
 
 			const rgb palette_default[4] = {
 				{ 0, 0, 0 },
