@@ -156,12 +156,28 @@ extern "C" {
 
     for (int i = 0; i < gfx->total_elements; i++)
     {
-      std::string s = std::format("gfx_{}_{}x{}_#{}.ppm", n, gfx->width, gfx->height, i);
-      int color = i >> 2;
-      auto p = &gfx->colortable[gfx->color_granularity * (color % gfx->total_colors)];
+    
+      if (n==1)
+      {
+        for (int k = 0; k < 16; k++)
+        {
+          std::string s = std::format("gfx_s{}_{}_{}x{}_#{}.ppm", k, n, gfx->width, gfx->height, i);
+         
+          int color = k;
+          auto p = &gfx->colortable[gfx->color_granularity * (color % gfx->total_colors)];
 
-      unsigned char* line = (unsigned char*)gfx->gfxdata->_private + gfx->height * gfx->width * i;
-      ExportPPM::exportPPM(s, line, gfx->width, gfx->height, palette, p);
+          unsigned char* line = (unsigned char*)gfx->gfxdata->_private + gfx->height * gfx->width * i;
+          ExportPPM::exportPPM(s, line, gfx->width, gfx->height, palette, p);
+        } 
+      }
+      else {
+        std::string s = std::format("gfx_{}_{}x{}_#{}.ppm", n, gfx->width, gfx->height, i);
+        int color = i >> 2;
+        auto p = &gfx->colortable[gfx->color_granularity * (color % gfx->total_colors)];
+
+        unsigned char* line = (unsigned char*)gfx->gfxdata->_private + gfx->height * gfx->width * i;
+        ExportPPM::exportPPM(s, line, gfx->width, gfx->height, palette, p);
+      }
     }
 
     //std::string s = std::format("gfx_{}_{}x{}.raw", n, g->gfxdata->width, g->gfxdata->height);
